@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/persistence_2_1.xsd">
+
+    <persistence-unit name="tilos" transaction-type="RESOURCE_LOCAL">
+        <class>hu.radio.tilos.model.ListenerStat</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tilos2"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+
+            <!-- EclipseLink should create the database schema automatically -->
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode"
+                      value="database"/>
+
+
+            <property name="openjpa.ConnectionUserName" value="root"/>
+            <property name="openjpa.ConnectionPassword" value=""/>
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/tilos2"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+            <property name="ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+
+        </properties>
+
+
+    </persistence-unit>
+</persistence>
