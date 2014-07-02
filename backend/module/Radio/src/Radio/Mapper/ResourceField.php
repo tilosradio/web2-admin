@@ -12,6 +12,8 @@ class ResourceField extends FieldConverter
 
     private $baseUrl;
 
+    private $context = "/upload/";
+
     function __construct($name, $baseUrl)
     {
         parent::__construct($name);
@@ -21,7 +23,17 @@ class ResourceField extends FieldConverter
 
     protected function  convert($from)
     {
-        $var = $this->baseUrl . "/upload/" . $from;
+        $var = $this->baseUrl . $this->context . $from;
         return $var;
     }
+
+    /**
+     * @param string $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
+
+
 }

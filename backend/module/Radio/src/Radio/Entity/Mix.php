@@ -46,7 +46,7 @@ class Mix
     /**
      * @ORM\Column(type="integer")
      * */
-    protected $type;
+    protected $type = 0;
 
     /**
      * @return mixed
@@ -143,5 +143,22 @@ class Mix
     {
         $this->title = $title;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
 
 }

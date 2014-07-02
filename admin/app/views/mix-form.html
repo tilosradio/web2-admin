@@ -1,0 +1,53 @@
+<form class="form-horizontal">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Mix szerkesztése</legend>
+
+
+        <div class="control-group">
+            <label class="control-label" for="Author">Szerző</label>
+
+            <div class="controls">
+                <input id="Author" name="Author" type="text" class="input-xlarge" ng-model="mix.author">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="Title">Cím</label>
+
+            <div class="controls">
+                <input id="Title" name="Title" type="text" class="input-xlarge" ng-model="mix.title">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="File">File</label>
+
+            <div class="controls">
+                <input id="File" name="File" type="text" class="input-xlarge" ng-model="mix.file">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="Type">Típus</label>
+
+            <div class="controls">
+                <select id="Type" name="Type" type="text" class="input-xlarge" ng-model="mix.type" ng-options="c.id as c.name for c in types"></select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="Show">Kapcsolódó műsor</label>
+
+            <div class="controls">
+                <select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id" ng-options="s.id as s.name for s in shows"></select>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <input value="Mentés" type="submit" ng-click="save()"/>
+</form>
+
+

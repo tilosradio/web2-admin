@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Radio\Entity\Episode;
+use Radio\Entity\Mix;
 use Radio\Entity\Scheduling;
 use Radio\Entity\Show;
 use Radio\Entity\Author;
@@ -22,13 +23,12 @@ class BaseData implements FixtureInterface
     {
 
         //$manager->getConfiguration()->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
-
-        foreach (['Radio\Entity\Role', 'Radio\Entity\Author', 'Radio\Entity\User', 'Radio\Entity\Url', 'Radio\Entity\TextContent', 'Radio\Entity\Show', 'Radio\Entity\Scheduling', 'Radio\Entity\Episode', 'Radio\Entity\Tag'] as $type) {
+        $entities = ['Radio\Entity\Role', 'Radio\Entity\Author', 'Radio\Entity\User', 'Radio\Entity\Url', 'Radio\Entity\TextContent', 'Radio\Entity\Show', 'Radio\Entity\Scheduling', 'Radio\Entity\Episode', 'Radio\Entity\Tag', 'Radio\Entity\Mix'];
+        foreach ($entities as $type) {
             $metadata = $manager->getClassMetaData($type);
             $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
             $metadata->setIdGenerator(new \Doctrine\ORM\Id\AssignedGenerator());
         }
-
 
 
         $r1 = new Role();
@@ -202,7 +202,6 @@ class BaseData implements FixtureInterface
         $manager->persist($epi);
 
 
-
         $epi = new Episode();
         $epi->setId(2);
         $epi->setPlannedFrom(new DateTime("2013-01-21 10:30:00"));
@@ -212,13 +211,29 @@ class BaseData implements FixtureInterface
         $epi->setShow($show);
         $manager->persist($epi);
 
+        $mix = new Mix();
+        $mix->setId(1);
+        $mix->setAuthor("geza");
+        $mix->setDate(new DateTime());
+        $mix->setFile("home.mp3");
+        $mix->setTitle("asd");
+        $mix->setType(1);
+        $mix->setShow($show);
+        $manager->persist($mix);
 
-
+        $mix = new Mix();
+        $mix->setId(2);
+        $mix->setAuthor("geza");
+        $mix->setDate(new DateTime());
+        $mix->setFile("home.mp3");
+        $mix->setTitle("asd");
+        $mix->setType(1);
+        $manager->persist($mix);
 
 
         $manager->flush();
 
-        foreach (['Radio\Entity\Role', 'Radio\Entity\Author', 'Radio\Entity\User', 'Radio\Entity\Url', 'Radio\Entity\TextContent', 'Radio\Entity\Show', 'Radio\Entity\Scheduling', 'Radio\Entity\Episode', 'Radio\Entity\Tag'] as $type) {
+        foreach ($entities as $type) {
             $metadata = $manager->getClassMetaData($type);
             $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_AUTO);
             $metadata->setIdGenerator(new \Doctrine\ORM\Id\IdentityGenerator());

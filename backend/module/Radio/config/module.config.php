@@ -14,7 +14,10 @@ return array(
             'Radio\Controller\M3u' => 'Radio\Controller\M3u',
             'Radio\Controller\User' => 'Radio\Controller\User',
             'Radio\Controller\Atom' => 'Radio\Controller\Atom',
-            'Radio\Controller\Tag' => 'Radio\Controller\Tag'
+            'Radio\Controller\Tag' => 'Radio\Controller\Tag',
+            'Radio\Controller\Mix' => 'Radio\Controller\Mix',
+            'Radio\Controller\Search' => 'Radio\Controller\Search'
+
         ),
     ),
     'router' => array(
@@ -24,7 +27,9 @@ return array(
             require("route.author.php"),
             require("route.episode.php"),
             require("route.text.php"),
-            require("route.tag.php")
+            require("route.tag.php"),
+            require("route.mix.php"),
+            require("route.search.php")
 
 
 
