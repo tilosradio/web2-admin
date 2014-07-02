@@ -1,11 +1,9 @@
 package hu.radio.tilos.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity(name="author")
+@Entity()
+@Table(name = "author")
 public class Author {
 
     @Id

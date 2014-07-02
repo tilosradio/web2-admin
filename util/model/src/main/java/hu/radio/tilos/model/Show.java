@@ -1,12 +1,10 @@
 package hu.radio.tilos.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
-public class Radioshow {
+@Entity()
+@Table(name = "show")
+public class Show {
 
     @Id
     private int id;
@@ -17,15 +15,11 @@ public class Radioshow {
 
     @Basic
     @Column
-    private String definition;
-
-    @Basic
-    @Column
     private String alias;
 
     @Basic
     @Column
-    private String banner;
+    private String definition;
 
     @Basic
     @Column
@@ -55,14 +49,6 @@ public class Radioshow {
         this.name = name;
     }
 
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
     public String getAlias() {
         return alias;
     }
@@ -71,12 +57,12 @@ public class Radioshow {
         this.alias = alias;
     }
 
-    public String getBanner() {
-        return banner;
+    public String getDefinition() {
+        return definition;
     }
 
-    public void setBanner(String banner) {
-        this.banner = banner;
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 
     public String getDescription() {
@@ -85,21 +71,5 @@ public class Radioshow {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }
