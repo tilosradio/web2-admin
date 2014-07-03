@@ -1,0 +1,47 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+           xmlns:cxf="http://cxf.apache.org/blueprint/core"
+           xsi:schemaLocation="
+  http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+  http://cxf.apache.org/blueprint/jaxws http://cxf.apache.org/schemas/blueprint/jaxws.xsd
+  http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+  http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+    <!-- 1 -->
+    <cxf:bus id="cxfBus1">
+        <cxf:features>
+            <cxf:logging/>
+        </cxf:features>
+    </cxf:bus>
+
+    <bean id="GsonWriter" class="hu.tilos.radio.backend.util.GsonMessageBodyWriter"/>
+    <bean id="GsonReader" class="hu.tilos.radio.backend.util.GsonMessageBodyReader"/>
+
+
+    <reference id="entityManagerFactory" interface="javax.persistence.EntityManagerFactory" availability="mandatory" filter="(osgi.unit.name=tilos)">
+
+    </reference>
+
+
+
+    <jaxrs:server address="http://localhost:9090/api" id="smoketest">
+        <jaxrs:serviceBeans>
+            <!--bean class="hu.tilos.radio.backend.Smoketest"></bean>
+            <bean class="hu.tilos.radio.backend.Search">
+                <property name="entityManagerFactory" ref="entityManagerFactory"></property>
+            </bean-->
+            <bean class="hu.tilos.radio.backend.ShowController">
+                <property name="entityManagerFactory" ref="entityManagerFactory"></property>
+            </bean>
+            <!--<reference id="Search"></reference>-->
+        </jaxrs:serviceBeans>
+        <jaxrs:providers>
+            <ref component-id="GsonWriter"></ref>
+            <ref component-id="GsonReader"></ref>
+        </jaxrs:providers>
+    </jaxrs:server>
+
+
+</blueprint>
