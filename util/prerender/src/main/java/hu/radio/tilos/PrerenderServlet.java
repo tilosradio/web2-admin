@@ -14,13 +14,10 @@ public class PrerenderServlet extends HttpServlet {
 
     private String workDir = "/tmp/prerender";
 
-    //private String server = "http://tilos.hu/";
-    private String server = "http://localhost/";
-
-    private String[] excludes = new String[]{"png", "css", "js"};
+    private String server = "http://tilos.hu/";
+    //private String server = "http://localhost/";
 
     private static Logger LOG = LoggerFactory.getLogger(PrerenderServlet.class);
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
