@@ -1,5 +1,8 @@
 package hu.radio.tilos;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,19 +12,29 @@ import java.nio.charset.Charset;
 
 public class PrerenderServlet extends HttpServlet {
 
-    String workDir = "/tmp/prerender";
+    private String workDir = "/tmp/prerender";
+
+    //private String server = "http://tilos.hu/";
+    private String server = "http://localhost/";
+
+    private String[] excludes = new String[]{"png", "css", "js"};
+
+    private static Logger LOG = LoggerFactory.getLogger(PrerenderServlet.class);
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         checkWorkDir();
 
-        String command = workDir + "/node_modules/phantomjs/bin/phantomjs " + workDir + "/prerender.js http://tilos.hu/" + req.getRequestURI();
+        LOG.debug("Prerendering " + req.getRequestURI() + " for " + req.getHeader("User-Agent"));
+        String command = workDir + "/node_modules/phantomjs/bin/phantomjs " + workDir + "/prerender.js " + server + req.getRequestURI();
         resp.setCharacterEncoding("UTF-8");
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
 
         String html = execute(command).toString();
-        html = html.replaceAll("href=\"/\"", "href=\"http://tilos.hu/\"");
+        html = html.replaceAll("href=\"/\"", "href=\"" + server + "\"");
         html = html.replaceAll("<script.*/script>", "");
         resp.getWriter().write(html);
     }
