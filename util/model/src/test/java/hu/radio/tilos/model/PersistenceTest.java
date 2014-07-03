@@ -1,5 +1,6 @@
 package hu.radio.tilos.model;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,7 @@ import java.util.List;
 public class PersistenceTest {
 
     @Test
+    @Ignore
     public void test() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("tilos-test");
         EntityManager manager = factory.createEntityManager();
@@ -26,6 +28,7 @@ public class PersistenceTest {
     }
 
     @Test
+    @Ignore
     public void testSelect() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("tilos-test");
         EntityManager manager = factory.createEntityManager();

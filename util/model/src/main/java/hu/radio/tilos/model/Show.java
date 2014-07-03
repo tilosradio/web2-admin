@@ -3,7 +3,7 @@ package hu.radio.tilos.model;
 import javax.persistence.*;
 
 @Entity()
-@Table(name = "show")
+@Table(name = "radioshow")
 public class Show {
 
     @Id
