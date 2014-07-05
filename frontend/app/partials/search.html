@@ -1,0 +1,15 @@
+<h1>Keresési találatok</h1>
+
+
+<div class="panel panel-default episode-box ng-scope" ng-repeat="result in result.elements">
+    <div class="panel-heading ng-binding">
+        <b>
+           <a ng-href="{{result.uri}}">{{result.title}}</a>
+        </b>
+    </div>
+    <div class="panel-body">
+        {{result.description}}
+    </div>
+</div>
+</p>
+
