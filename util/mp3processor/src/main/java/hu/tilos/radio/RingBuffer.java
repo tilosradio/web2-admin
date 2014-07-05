@@ -1,5 +1,7 @@
 package hu.tilos.radio;
 
+import java.util.Arrays;
+
 public class RingBuffer {
     private int idx;
     private int[] data;
@@ -23,5 +25,31 @@ public class RingBuffer {
             realIndex += size;
         }
         return data[realIndex];
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RingBuffer)) {
+            return false;
+        }
+        RingBuffer b = (RingBuffer) o;
+        if (this.getSize() != b.getSize()) {
+            return false;
+        }
+        for (int i = 0; i < getSize(); i++) {
+            if (b.get(i) != get(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return size;
     }
 }
