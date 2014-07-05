@@ -7,6 +7,9 @@
         <class>hu.radio.tilos.model.ListenerStat</class>
         <class>hu.radio.tilos.model.Author</class>
         <class>hu.radio.tilos.model.Show</class>
+        <class>hu.radio.tilos.model.Episode</class>
+        <class>hu.radio.tilos.model.TextContent</class>
+
 
 
     </persistence-unit>

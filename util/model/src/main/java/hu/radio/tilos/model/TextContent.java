@@ -1,13 +1,10 @@
 package hu.radio.tilos.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.sql.Timestamp;
+import javax.persistence.*;
 
-@Entity
-public class Textcontent {
+@Entity()
+@Table(name = "textcontent")
+public class TextContent {
 
     @Id
     private int id;
@@ -28,17 +25,6 @@ public class Textcontent {
     @Column
     private String content;
 
-    @Basic
-    @Column
-    private Timestamp created;
-
-    @Basic
-    @Column
-    private Timestamp modified;
-
-    @Basic
-    @Column
-    private String author;
 
     @Basic
     @Column
@@ -82,30 +68,6 @@ public class Textcontent {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Timestamp getCreated() {
-        return created;
-    }
-
-    public void setCreated(Timestamp created) {
-        this.created = created;
-    }
-
-    public Timestamp getModified() {
-        return modified;
-    }
-
-    public void setModified(Timestamp modified) {
-        this.modified = modified;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getAlias() {

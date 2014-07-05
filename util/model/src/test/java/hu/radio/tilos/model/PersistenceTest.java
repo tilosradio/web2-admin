@@ -3,10 +3,7 @@ package hu.radio.tilos.model;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +29,14 @@ public class PersistenceTest {
     public void testSelect() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("tilos-test");
         EntityManager manager = factory.createEntityManager();
-
-        List<Author> authors = manager.createQuery("select a FROM Author a", Author.class).setMaxResults(10).getResultList();
-        for (Author a : authors) {
-            System.out.println(a.getName());
+        Query q = manager.createQuery("select a FROM Episode a where a.id = :id", Episode.class);
+        q.setParameter("id", 548);
+        q.setMaxResults(10);
+        List<Episode> resultList = q.getResultList();
+        for (Episode a : resultList) {
+            System.out.println(a.getId());
+            System.out.println(a.getShow().getId());
+            System.out.println(a.getText().getContent());
         }
         manager.close();
     }

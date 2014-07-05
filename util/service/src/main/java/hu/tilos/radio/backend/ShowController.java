@@ -17,19 +17,11 @@ import javax.ws.rs.Produces;
 
 import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 
-@Path("/v1")
+@Path("/v1/show")
 public class ShowController {
 
     private EntityManagerFactory emf;
 
-
-    @GET
-    @Path("pingx")
-    public String ping() {
-        return "pong";
-    }
-
-    @Path("show")
     @Produces("application/json")
     @GET
     public ShowDetailed list() {

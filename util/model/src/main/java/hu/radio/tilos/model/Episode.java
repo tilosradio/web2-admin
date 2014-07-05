@@ -1,13 +1,12 @@
 package hu.radio.tilos.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "episode")
 public class Episode {
+
     @Id
     private int id;
 
@@ -26,6 +25,14 @@ public class Episode {
     @Basic
     @Column
     private Timestamp realTo;
+
+    @ManyToOne()
+    @JoinColumn(name = "radioshow_id", referencedColumnName = "id")
+    Show show;
+
+    @OneToOne()
+    @JoinColumn(name = "textcontent_id", referencedColumnName = "id")
+    TextContent text;
 
     public int getId() {
         return id;
@@ -65,5 +72,21 @@ public class Episode {
 
     public void setRealTo(Timestamp realTo) {
         this.realTo = realTo;
+    }
+
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
+
+    public TextContent getText() {
+        return text;
+    }
+
+    public void setText(TextContent text) {
+        this.text = text;
     }
 }

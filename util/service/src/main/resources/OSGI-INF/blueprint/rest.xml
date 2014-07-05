@@ -28,14 +28,13 @@
 
     <jaxrs:server address="http://localhost:9090/api" id="smoketest">
         <jaxrs:serviceBeans>
-            <!--bean class="hu.tilos.radio.backend.Smoketest"></bean>
-            <bean class="hu.tilos.radio.backend.Search">
+            <bean class="hu.tilos.radio.backend.Smoketest"></bean>
+            <bean class="hu.tilos.radio.backend.SearchController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
-            </bean-->
+            </bean>
             <bean class="hu.tilos.radio.backend.ShowController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
             </bean>
-            <!--<reference id="Search"></reference>-->
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <ref component-id="GsonWriter"></ref>
