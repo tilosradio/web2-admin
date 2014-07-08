@@ -50,6 +50,7 @@
 
     <bean id="backend" class="hu.tilos.radio.backend.streamer.LocalBackend">
         <property name="root" value="${archive.path}"></property>
+        <property name="throttleLimit" value="${stream.throttle}"></property>
     </bean>
 
     <service interface="javax.servlet.http.HttpServlet">

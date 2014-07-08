@@ -13,6 +13,11 @@ public class LocalBackend implements Backend {
 
     private String root = "/home/elek/projects/tilos/archive-files/online";
 
+    /**
+     * Limit in Kbyte/sec.
+     */
+    private int throttleLimit = 0;
+
     public LocalBackend(String root) {
         this.root = root;
     }
@@ -30,8 +35,12 @@ public class LocalBackend implements Backend {
         }
         byte[] b = new byte[4096];
         int r;
-        //InputStream is = new ThrottledInputStream(new LimitedInputStream(new CombinedInputStream(streams),startOffset,endPosition),1024*1024*10);
         InputStream is = new LimitedInputStream(new CombinedInputStream(streams), startOffset, endPosition);
+        if (throttleLimit > 0) {
+            is = new ThrottledInputStream(is, throttleLimit * 1024);
+        }
+
+
         try {
             while ((r = is.read(b)) != -1) {
                 out.write(b, 0, r);
@@ -59,5 +68,9 @@ public class LocalBackend implements Backend {
 
     public void setRoot(String root) {
         this.root = root;
+    }
+
+    public void setThrottleLimit(int throttleLimit) {
+        this.throttleLimit = throttleLimit;
     }
 }
