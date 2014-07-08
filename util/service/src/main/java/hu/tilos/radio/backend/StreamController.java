@@ -81,7 +81,7 @@ public class StreamController extends HttpServlet {
         } catch (Exception e) {
             resp.setHeader("Content-Length", "" + e.getMessage().length());
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getOutputStream().write(e.getMessage().getBytes());
+            output.write(e.getMessage().getBytes());
             e.printStackTrace();
         }
     }

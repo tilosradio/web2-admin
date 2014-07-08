@@ -38,8 +38,9 @@ public class StreamControllerTest {
         };
         controller.setBackend(new LocalBackend("src/test/resources/"));
         HttpServletResponse resp = Mockito.mock(HttpServletResponse.class);
+
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(req.getRequestURI()).thenReturn("/mp3/tilos-20120405-1000-1200.mp3");
+        Mockito.when(req.getRequestURI()).thenReturn("/mp3/tilos-20120405-100000-120000.mp3");
 
         new File("target").mkdirs();
         //when
@@ -65,7 +66,7 @@ public class StreamControllerTest {
         controller.setBackend(new LocalBackend("src/test/resources/"));
         HttpServletResponse resp = Mockito.mock(HttpServletResponse.class);
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(req.getRequestURI()).thenReturn("/mp3/tilos-20120405-1000-1200.mp3");
+        Mockito.when(req.getRequestURI()).thenReturn("/mp3/tilos-20120405-100000-120000.mp3");
         Mockito.when(req.getHeader("Range")).thenReturn("bytes=18-");
 
         new File("target").mkdirs();
@@ -82,7 +83,7 @@ public class StreamControllerTest {
         //given
         StreamController controller = new StreamController();
         //when
-        StreamController.Segment segment = controller.parse("/mp3/tilos-20131012-2000-2300.mp3");
+        StreamController.Segment segment = controller.parse("/mp3/tilos-20131012-200000-230000.mp3");
 
         //then
         Assert.assertEquals(SDF.parse("201310122000"), segment.start);
