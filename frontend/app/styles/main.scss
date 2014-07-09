@@ -8,7 +8,6 @@
 @import "icons";
 @import "jplayer_custom";
 
-
 body{
   padding-top: 48px;
   @media all and (min-width: $screen-sm){
@@ -197,6 +196,7 @@ img{
 }
 .navbar-collapse{
   overflow-y: auto;
+  padding: 0;
   @media all and (min-width: $screen-sm){
     overflow-y: visible;
   }
@@ -220,6 +220,17 @@ img{
             }
           }
       }
+
+    > a {
+      @media all and (min-width: $screen-sm){
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+      @media all and (min-width: 1200px) {
+        padding-left: 27px;
+        padding-right: 27px;
+      }
+    }
       .scrolled &{
         @media all and (min-width: $screen-sm){
           font-size: 14px;
