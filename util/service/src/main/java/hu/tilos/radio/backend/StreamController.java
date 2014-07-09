@@ -27,6 +27,8 @@ public class StreamController extends HttpServlet {
     private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
 
 
+    private String serverUrl;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp, resp.getOutputStream());
@@ -39,6 +41,10 @@ public class StreamController extends HttpServlet {
         } catch (ParseException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             output.write(("Error on parsing url pattern" + e.getMessage()).getBytes());
+        }
+        if (segment.duration > 360) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            output.write(("Too long duration").getBytes());
         }
         try {
             ResourceCollection collection = getMp3Links(segment.start, segment.duration);
@@ -92,7 +98,7 @@ public class StreamController extends HttpServlet {
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + filename + ".m3u\"");
         resp.getOutputStream().write("#EXTM3U\n".getBytes());
         resp.getOutputStream().write(("#EXTINF:" + size + ", Tilos Rádió - " + FILE_NAME_FORMAT.format(segment.start) + "\n").getBytes());
-        resp.getOutputStream().write((req.getRequestURL().toString().replaceAll("\\.m3u", ".mp3")).getBytes());
+        resp.getOutputStream().write((serverUrl + req.getRequestURI().toString().replaceAll("\\.m3u", ".mp3")).getBytes());
 
     }
 
@@ -225,6 +231,9 @@ public class StreamController extends HttpServlet {
     public static class Segment {
         Date start;
         int duration;
+    }
+    public void setServerUrl(String url){
+        this.serverUrl = url;
     }
 
 }

@@ -59,6 +59,7 @@
         </service-properties>
         <bean class="hu.tilos.radio.backend.StreamController">
             <property name="backend" ref="backend"></property>
+            <property name="serverUrl" value="${server.url}"></property>
         </bean>
     </service>
 
