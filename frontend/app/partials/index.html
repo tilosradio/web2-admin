@@ -1,4 +1,8 @@
-<section class="col-md-6 main" role="main">
+<aside class="col-md-push-9 col-md-3">
+    <div ng-include src="'partials/sidebar_right.html'"></div>
+</aside>
+
+<section class="col-md-pull-3 col-md-6 main" role="main">
 
   <div ng-show="lead"  class="panel panel-default">
       <div class="panel-heading">
@@ -32,9 +36,7 @@
   </div>
 </section> <!-- col-md-6 -->
 
-</aside> <!-- col-md-3 -->
-
-<aside class="col-md-3">
+<aside class="col-md-pull-3 col-md-3">
 
 <div class="box">
   <h2><a href="http://hirek.tilos.hu" target="_blank">Tilos hírek</a></h2>
@@ -44,9 +46,4 @@
   </article>
   <a href="http://hirek.tilos.hu" target="_blank">további Tilos hírek &rarr;</a>
 </div>
-</aside>
-
-
-<aside class="col-md-3">
-  <div ng-include src="'partials/sidebar_right.html'"></div>
 </aside>
