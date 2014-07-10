@@ -319,8 +319,15 @@ img{
 }
 
 .navbar-form{
+    margin-left: 0;
+    margin-right: 0;
     padding: 0;
     position: relative;
+
+  .scrolled & {
+    margin-bottom: 0;
+    margin-top: -1px;
+  }
     input[type='search']{
         background: rgba(white, 0.1);
         border: 1px solid rgba(white, 0.1);
@@ -330,6 +337,10 @@ img{
         @include placeholder($placeholder-color);
         @include box-shadow($placeholder-color);
         @include form-control-focus(rgba($placeholder-color,0.6));
+
+      .scrolled & {
+        height: 36px;
+      }
     }
     button[type='submit']{
         font-size: 0;
