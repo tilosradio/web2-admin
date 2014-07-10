@@ -63,4 +63,23 @@
         </bean>
     </service>
 
+
+    <service interface="javax.servlet.Filter">
+        <service-properties>
+            <entry key="filter-name" value="logging"/>
+            <entry key="servletNames">
+                <array value-type="java.lang.String">
+                    <value>debug-filter</value>
+                </array>
+            </entry>
+            <entry key="urlPatterns">
+                <array value-type="java.lang.String">
+                    <value>/mp3/*</value>
+                </array>
+            </entry>
+        </service-properties>
+        <bean class="hu.tilos.radio.backend.DebugLogFilter"/>
+    </service>
+
+
 </blueprint>
