@@ -120,6 +120,9 @@ public class StreamController extends HttpServlet {
             s.start = SDF.parse(m.group(1) + m.group(2));
             Date end = SDF.parse(m.group(1) + m.group(3));
             s.duration = Math.round((end.getTime() - s.start.getTime()) / (1000 * 60));
+            if (s.duration < 0) {
+                s.duration += 24 * 60;
+            }
             return s;
 
         } else {
