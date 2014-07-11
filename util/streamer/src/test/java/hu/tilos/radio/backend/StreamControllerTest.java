@@ -91,6 +91,18 @@ public class StreamControllerTest {
     }
 
     @Test
+    public void testParseOldFormat() throws ParseException {
+        //given
+        StreamController controller = new StreamController();
+        //when
+        StreamController.Segment segment = controller.parse("/mp3/1404763200-135.mp3");
+
+        //then
+        Assert.assertEquals(SDF.parse("201407072200"), segment.start);
+        Assert.assertEquals(135, segment.duration);
+    }
+
+    @Test
     public void testGetPrevHalfHour() throws Exception {
         //given
         StreamController controller = new StreamController();

@@ -133,10 +133,10 @@ public class StreamController extends HttpServlet {
                 s.duration = Math.round((end.getTime() - s.start.getTime()) / (1000 * 60));
                 return s;
             } else {
-                m = Pattern.compile("^/mp3/tilos-(\\d+)-(\\d+).*$").matcher(requestURI);
+                m = Pattern.compile("^/mp3/(\\d+)-(\\d+).*$").matcher(requestURI);
                 if (m.matches()) {
                     s.start = new Date();
-                    s.start.setTime(Long.valueOf(m.group(1)));
+                    s.start.setTime(Long.valueOf(m.group(1)) * 1000);
                     s.duration = Integer.valueOf(m.group(2));
                     return s;
                 }
