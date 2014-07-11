@@ -2,6 +2,8 @@ package hu.tilos.radio.backend;
 
 import hu.tilos.radio.backend.streamer.Backend;
 import hu.tilos.radio.backend.streamer.LocalBackend;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +28,7 @@ public class StreamController extends HttpServlet {
 
     private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
 
+    private static final Logger LOG = LoggerFactory.getLogger(StreamController.class);
 
     private String serverUrl;
 
@@ -41,6 +44,7 @@ public class StreamController extends HttpServlet {
         } catch (ParseException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             output.write(("Error on parsing url pattern" + e.getMessage()).getBytes());
+            LOG.error("Error on parsing url pattern " + req.getRequestURI(), e);
         }
         if (segment.duration > 360) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -85,10 +89,14 @@ public class StreamController extends HttpServlet {
                 backend.stream(collection, 0, size, output);
             }
         } catch (Exception e) {
-            resp.setHeader("Content-Length", "" + e.getMessage().length());
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            output.write(e.getMessage().getBytes());
-            e.printStackTrace();
+            if (e.getMessage() != null) {
+                resp.setHeader("Content-Length", "" + e.getMessage().length());
+                output.write(e.getMessage().getBytes());
+            }
+
+            LOG.error("Error on streaming data", e);
+
         }
     }
 
@@ -232,7 +240,8 @@ public class StreamController extends HttpServlet {
         Date start;
         int duration;
     }
-    public void setServerUrl(String url){
+
+    public void setServerUrl(String url) {
         this.serverUrl = url;
     }
 
