@@ -28,12 +28,18 @@ public class PrerenderServlet extends HttpServlet {
         String command = workDir + "/node_modules/phantomjs/bin/phantomjs " + workDir + "/prerender.js " + server + req.getRequestURI();
         resp.setCharacterEncoding("UTF-8");
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        resp.setStatus(HttpServletResponse.SC_OK);
 
-        String html = execute(command).toString();
-        html = html.replaceAll("href=\"/\"", "href=\"" + server + "\"");
-        html = html.replaceAll("<script.*/script>", "");
-        resp.getWriter().write(html);
+
+        String html = execute(command);
+        if (html == null) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } else {
+            html = html.replaceAll("href=\"/\"", "href=\"" + server + "\"");
+            html = html.replaceAll("<script.*/script>", "");
+            resp.getWriter().write(html);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
+
     }
 
     private String execute(String command) {
@@ -43,14 +49,13 @@ public class PrerenderServlet extends HttpServlet {
             BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(), Charset.forName("UTF-8")));
             StringBuilder b = new StringBuilder();
             while ((line = input.readLine()) != null) {
-                //System.out.println(line);
                 b.append(line);
                 b.append("\n");
             }
             input.close();
             return b.toString();
         } catch (Exception err) {
-            err.printStackTrace();
+            LOG.error("Error on prerendering with command: " + command, err);
             return null;
         }
     }
