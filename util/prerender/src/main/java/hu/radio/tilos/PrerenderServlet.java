@@ -24,7 +24,7 @@ public class PrerenderServlet extends HttpServlet {
 
         checkWorkDir();
 
-        LOG.debug("Prerendering " + req.getRequestURI() + " for " + req.getHeader("User-Agent"));
+        LOG.debug("Prerendering | " + req.getRequestURI() + " | " + req.getHeader("User-Agent"));
         String command = workDir + "/node_modules/phantomjs/bin/phantomjs " + workDir + "/prerender.js " + server + req.getRequestURI();
         resp.setCharacterEncoding("UTF-8");
         resp.addHeader("Content-Type", "text/html; charset=utf-8");

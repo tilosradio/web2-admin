@@ -46,7 +46,9 @@ public class LocalBackend implements Backend {
                 out.write(b, 0, r);
             }
         } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage(), ex);
+            if (!ex.getClass().getName().contains("EofException")) {
+                throw new RuntimeException(ex.getMessage(), ex);
+            }
         } finally {
             is.close();
         }

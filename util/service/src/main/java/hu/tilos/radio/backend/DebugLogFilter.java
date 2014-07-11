@@ -22,12 +22,15 @@ public class DebugLogFilter implements Filter {
             IOException, ServletException {
         HttpServletRequest hsr = (HttpServletRequest) servletRequest;
         Enumeration en = hsr.getHeaderNames();
-        LOG.debug("New request " + hsr.getRequestURI());
+        StringBuilder builder = new StringBuilder();
+        builder.append("New request " + hsr.getRequestURI());
+        builder.append(" | ");
         while (en.hasMoreElements()) {
             String key = (String) en.nextElement();
-            LOG.debug("   " + key + ":" + hsr.getHeader(key));
+            builder.append(key + ":" + hsr.getHeader(key) + " | ");
 
         }
+        LOG.debug(builder.toString());
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
