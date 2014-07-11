@@ -48,38 +48,4 @@
     </jaxrs:server>
 
 
-    <bean id="backend" class="hu.tilos.radio.backend.streamer.LocalBackend">
-        <property name="root" value="${archive.path}"></property>
-        <property name="throttleLimit" value="${stream.throttle}"></property>
-    </bean>
-
-    <service interface="javax.servlet.http.HttpServlet">
-        <service-properties>
-            <entry key="alias" value="/mp3"/>
-        </service-properties>
-        <bean class="hu.tilos.radio.backend.StreamController">
-            <property name="backend" ref="backend"></property>
-            <property name="serverUrl" value="${server.url}"></property>
-        </bean>
-    </service>
-
-
-    <service interface="javax.servlet.Filter">
-        <service-properties>
-            <entry key="filter-name" value="logging"/>
-            <entry key="servletNames">
-                <array value-type="java.lang.String">
-                    <value>debug-filter</value>
-                </array>
-            </entry>
-            <entry key="urlPatterns">
-                <array value-type="java.lang.String">
-                    <value>/mp3/*</value>
-                </array>
-            </entry>
-        </service-properties>
-        <bean class="hu.tilos.radio.backend.DebugLogFilter"/>
-    </service>
-
-
 </blueprint>
