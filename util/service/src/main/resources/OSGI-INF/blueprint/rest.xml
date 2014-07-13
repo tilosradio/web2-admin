@@ -39,7 +39,6 @@
 
     <jaxrs:server address="http://localhost:9090/api" id="smoketest">
         <jaxrs:serviceBeans>
-
             <bean class="hu.tilos.radio.backend.Smoketest"></bean>
             <bean class="hu.tilos.radio.backend.SearchController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
@@ -52,7 +51,12 @@
         <jaxrs:providers>
             <ref component-id="GsonWriter"></ref>
             <ref component-id="GsonReader"></ref>
+            <bean class="hu.tilos.radio.backend.AuthenticationFilter"></bean>
         </jaxrs:providers>
+        <jaxrs:invoker>
+            <bean class="hu.tilos.radio.backend.AuthorizationInvoker"></bean>
+        </jaxrs:invoker>
+
     </jaxrs:server>
 
 

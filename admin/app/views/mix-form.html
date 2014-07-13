@@ -30,10 +30,20 @@
         </div>
 
         <div class="control-group">
+            <label class="control-label" for="Date">Dátum (pl. 2013-04-05)</label>
+
+            <div class="controls">
+                <input id="Date" name="Date" type="text" class="input-xlarge" ng-model="mix.date">
+            </div>
+        </div>
+
+
+        <div class="control-group">
             <label class="control-label" for="Type">Típus</label>
 
             <div class="controls">
-                <select id="Type" name="Type" type="text" class="input-xlarge" ng-model="mix.type" ng-options="c.id as c.name for c in types"></select>
+                <select id="Type" name="Type" type="text" class="input-xlarge" ng-model="mix.type"
+                        ng-options="c.id as c.name for c in types"></select>
             </div>
         </div>
 
@@ -41,7 +51,8 @@
             <label class="control-label" for="Show">Kapcsolódó műsor</label>
 
             <div class="controls">
-                <select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id" ng-options="s.id as s.name for s in shows"></select>
+                <select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id"
+                        ng-options="s.id as s.name for s in shows"></select>
             </div>
         </div>
 

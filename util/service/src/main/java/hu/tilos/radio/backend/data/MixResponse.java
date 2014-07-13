@@ -20,6 +20,10 @@ public class MixResponse {
 
     private String typeText;
 
+    private String date;
+
+
+
     public int getId() {
         return id;
     }
@@ -74,5 +78,13 @@ public class MixResponse {
 
     public void setTypeText(String typeText) {
         this.typeText = typeText;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

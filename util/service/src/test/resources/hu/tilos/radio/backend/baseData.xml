@@ -11,6 +11,6 @@
     <radioshow id="1" name="3. utas" alias="3utas" description="a potyoutasok műsora" type="0" status="1"></radioshow>
     <radioshow id="2" name="Haza és Haladás" alias="hazaeshaladas" description="h%h" type="0" status="1"></radioshow>
 
-    <mix id="1" type="1" author="asd" title="good mix" file="asd.mp3" show_id="1"></mix>
+    <mix id="1" type="1" author="asd" title="good mix" file="asd.mp3" date="2013-04-05" show_id="1"></mix>
     <mix id="2" type="1" author="asd" title="good mix2" file="asd2.mp3"></mix>
 </dataset>

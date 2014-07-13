@@ -4,6 +4,7 @@
         <bundle>mvn:com.google.code.gson/gson/1.7.2</bundle>
         <bundle>mvn:commons-beanutils/commons-beanutils/1.9.1</bundle>
         <bundle>mvn:commons-collections/commons-collections/3.2.1</bundle>
+        <bundle>mvn:mysql/mysql-connector-java/5.1.30</bundle>
         <bundle>mvn:net.sf.dozer/dozer-osgi/5.5.1</bundle>
         <bundle>mvn:org.apache.commons/commons-lang3/3.2.1</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jakarta-regexp/1.4_1</bundle>

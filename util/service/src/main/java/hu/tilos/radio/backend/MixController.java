@@ -2,11 +2,9 @@ package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
 import hu.radio.tilos.model.MixType;
+import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.Show;
-import hu.tilos.radio.backend.converters.ChildEntityFieldConverter;
-import hu.tilos.radio.backend.converters.EntityTextConverter;
-import hu.tilos.radio.backend.converters.MappingFactory;
-import hu.tilos.radio.backend.converters.ShowStatusConverter;
+import hu.tilos.radio.backend.converters.*;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.MixRequest;
 import hu.tilos.radio.backend.data.MixResponse;
@@ -35,13 +33,22 @@ public class MixController {
 
         @Override
         protected void configure() {
-            mapping(Mix.class, MixResponse.class).fields("type", "typeText", new FieldsMappingOption() {
-                @Override
-                public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
-                    fieldMappingBuilder.customConverter(EntityTextConverter.class);
-                    fieldMappingBuilder.customConverterParam("Beszélgetés,Zene");
-                }
-            }).fields("type", "type");
+            mapping(Mix.class, MixResponse.class)
+                    .fields("type", "typeText", new FieldsMappingOption() {
+                        @Override
+                        public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
+                            fieldMappingBuilder.customConverter(EntityTextConverter.class);
+                            fieldMappingBuilder.customConverterParam("Beszélgetés,Zene");
+                        }
+                    })
+                    .fields("type", "type")
+                    .fields("date", "date", new FieldsMappingOption() {
+                        @Override
+                        public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
+                            fieldMappingBuilder.customConverter(DateToTextConverter.class);
+                            fieldMappingBuilder.customConverterParam("yyyy-MM-dd");
+                        }
+                    });
         }
     };
 
@@ -56,6 +63,13 @@ public class MixController {
                             fieldMappingBuilder.customConverterId(ChildEntityFieldConverter.ID);
                         }
                     })
+                    .fields("date", "date", new FieldsMappingOption() {
+                        @Override
+                        public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
+                            fieldMappingBuilder.customConverter(DateToTextConverter.class);
+                            fieldMappingBuilder.customConverterParam("yyyy-MM-dd");
+                        }
+                    })
                     .exclude("id");
 
 
@@ -63,6 +77,7 @@ public class MixController {
     };
 
     @Produces("application/json")
+    @Security(role = Role.GUEST)
     @GET
     public List<MixResponse> list() {
 
@@ -84,6 +99,7 @@ public class MixController {
     }
 
     @Produces("application/json")
+    @Security(role = Role.ADMIN)
     @POST
     public CreateResponse create(MixRequest newMix) {
 
@@ -98,6 +114,7 @@ public class MixController {
     }
 
     @Produces("application/json")
+    @Security(role = Role.ADMIN)
     @PUT
     @Path("/{id}")
     public CreateResponse update(@PathParam("id") int id, MixRequest newMix) {
@@ -114,6 +131,7 @@ public class MixController {
 
     @GET
     @Path("/{id}")
+    @Security(role = Role.GUEST)
     @Produces("application/json")
     public MixResponse get(@PathParam("id") int i) {
 

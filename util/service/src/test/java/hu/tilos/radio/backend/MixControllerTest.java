@@ -111,6 +111,7 @@ public class MixControllerTest {
         req.setFile(r.getFile());
         req.setId(r.getId());
         req.setTitle("this Is the title");
+        req.setDate("2014-10-23");
         req.setShow(new EntitySelector(2));
 
         //when
@@ -124,6 +125,8 @@ public class MixControllerTest {
 
         Mix mix = em.find(Mix.class, 1);
         Assert.assertEquals("this Is the title", mix.getTitle());
+        Assert.assertEquals(9, mix.getDate().getMonth());
+        Assert.assertEquals(23, mix.getDate().getDate());
         em.close();
     }
 
