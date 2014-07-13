@@ -83,7 +83,8 @@ public class StreamController extends HttpServlet {
             } else {
                 resp.setHeader("Content-Length", "" + size);
                 resp.setHeader("Content-Type", "audio/mpeg");
-                resp.setHeader("Content-Disposition", "inline; filename=\"filename.mp3\"");
+                String filename = "tilos-" + FILE_NAME_FORMAT.format(segment.start) + "-" + segment.duration;
+                resp.setHeader("Content-Disposition", "inline; filename=\"" + filename + ".mp3\"");
 
                 resp.setHeader("Accept-Ranges", "bytes");
                 backend.stream(collection, 0, size, output);
