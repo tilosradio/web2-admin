@@ -32,7 +32,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
 
 angular.module('tilosAdmin')
     .controller('MixListCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $scope) {
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/mix').success(function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/mix').success(function (data) {
             $scope.mixes = data;
         });
 
@@ -48,7 +48,7 @@ angular.module('tilosAdmin')
             {id: 1, 'name': "Zenés"}
         ];
         //if (!$scope.mix.show.length == 0) {
-        $scope.mix.$promise.then(function(a){
+        $scope.mix.$promise.then(function (a) {
             if (a.show.length == 0) {
                 $scope.mix.show = {};
             }
@@ -58,10 +58,10 @@ angular.module('tilosAdmin')
             $scope.shows = data;
         });
         $scope.save = function () {
-            $http.put(API_SERVER_ENDPOINT + '/api/v0/mix/' + $scope.mix.id, $scope.mix).success(function (data) {
+            $http.put(API_SERVER_ENDPOINT + '/api/v1/mix/' + $scope.mix.id, $scope.mix).success(function (data) {
                 var httpCache = $cacheFactory.get('$http');
-                httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/mix/' + $scope.mix.id);
-                httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/mixes');
+                httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/mix/' + $scope.mix.id);
+                httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/mixes');
                 $location.path('/mix/' + $scope.mix.id);
             });
         }
@@ -71,14 +71,17 @@ angular.module('tilosAdmin')
 angular.module('tilosAdmin')
     .controller('MixNewCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes) {
         $scope.mix = {};
+        $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
+            $scope.shows = data;
+        });
         $scope.types = [
             {id: 1, 'name': "Beszélgetős"},
             {id: 0, 'name': "Zenés"}
         ]
         $scope.save = function () {
-            $http.post(API_SERVER_ENDPOINT + '/api/v0/mix', $scope.mix).success(function (data) {
-                $location.path('/mix/' + data.data.id);
-                httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/mixes');
+            $http.post(API_SERVER_ENDPOINT + '/api/v1/mix', $scope.mix).success(function (data) {
+                $location.path('/mix/' + data.id);
+                httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/mixes');
             });
         }
     }
@@ -94,7 +97,7 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin').factory('Mixes', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-    return $resource(server + '/api/v0/mix/:id', null, {
+    return $resource(server + '/api/v1/mix/:id', null, {
         'update': { method: 'PUT'}
     });
 }]);
