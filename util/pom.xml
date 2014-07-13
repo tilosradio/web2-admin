@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>hu.tilos.radio</groupId>
     <artifactId>util</artifactId>
@@ -14,7 +13,8 @@
         <module>smoketest</module>
         <module>service</module>
 	<module>streamer</module>
-    </modules>
+    <module>feature</module>
+  </modules>
     <properties>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,8 +42,6 @@
                 <configuration>
                     <instructions>
                         <Bundle-Name>${project.name}</Bundle-Name>
-                        <Bundle-Activator>hu.tilos.radio.index.SearchActivator</Bundle-Activator>
-
                     </instructions>
 
                 </configuration>

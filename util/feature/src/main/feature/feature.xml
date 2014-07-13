@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+    <feature name='tilos-lucene' description='Lucene artifacts' version='${project.version}'>
+
+
+        <bundle>mvn:com.google.code.gson/gson/1.7.2</bundle>
+        <bundle>mvn:mysql/mysql-connector-java/5.1.30</bundle>
+        <bundle>mvn:commons-beanutils/commons-beanutils/1.9.1</bundle>
+        <bundle>mvn:commons-collections/commons-collections/3.2.1</bundle>
+        <bundle>mvn:org.apache.commons/commons-lang3/3.2.1</bundle>
+
+        <bundle>mvn:net.sf.dozer/dozer-osgi/5.5.1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jakarta-regexp/1.4_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene/4.8.1_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-analyzers-common/4.8.1_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queries/4.8.1_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queryparser/4.8.1_1</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-sandbox/4.8.1_1</bundle>
+
+    </feature>
+
+</features>
