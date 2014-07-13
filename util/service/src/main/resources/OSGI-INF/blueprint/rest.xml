@@ -3,6 +3,8 @@
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
            xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
            xmlns:cxf="http://cxf.apache.org/blueprint/core"
+           xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+           xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
            xsi:schemaLocation="
   http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
   http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
@@ -30,13 +32,19 @@
 
     </reference>
 
+    <bean id="mixController" class="hu.tilos.radio.backend.MixController">
+        <jpa:context unitname="tilos" property="entityManager"/>
+        <tx:transaction method="*" value="Required"/>
+    </bean>
 
     <jaxrs:server address="http://localhost:9090/api" id="smoketest">
         <jaxrs:serviceBeans>
+
             <bean class="hu.tilos.radio.backend.Smoketest"></bean>
             <bean class="hu.tilos.radio.backend.SearchController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
             </bean>
+            <ref component-id="mixController"></ref>
             <bean class="hu.tilos.radio.backend.ShowController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
             </bean>

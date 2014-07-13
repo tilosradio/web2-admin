@@ -1,0 +1,134 @@
+package hu.tilos.radio.backend;
+
+import hu.radio.tilos.model.Mix;
+import hu.radio.tilos.model.MixType;
+import hu.radio.tilos.model.Show;
+import hu.tilos.radio.backend.converters.ChildEntityFieldConverter;
+import hu.tilos.radio.backend.converters.EntityTextConverter;
+import hu.tilos.radio.backend.converters.MappingFactory;
+import hu.tilos.radio.backend.converters.ShowStatusConverter;
+import hu.tilos.radio.backend.data.CreateResponse;
+import hu.tilos.radio.backend.data.MixRequest;
+import hu.tilos.radio.backend.data.MixResponse;
+import hu.tilos.radio.backend.data.ShowDetailed;
+import org.dozer.DozerBeanMapper;
+import org.dozer.loader.DozerBuilder;
+import org.dozer.loader.api.BeanMappingBuilder;
+import org.dozer.loader.api.FieldsMappingOption;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.ws.rs.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
+
+@Path("/v1/mix")
+public class MixController {
+
+    private EntityManager entityManager;
+
+    BeanMappingBuilder retrieveBuilder = new BeanMappingBuilder() {
+
+        @Override
+        protected void configure() {
+            mapping(Mix.class, MixResponse.class).fields("type", "typeText", new FieldsMappingOption() {
+                @Override
+                public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
+                    fieldMappingBuilder.customConverter(EntityTextConverter.class);
+                    fieldMappingBuilder.customConverterParam("Beszélgetés,Zene");
+                }
+            }).fields("type", "type");
+        }
+    };
+
+    BeanMappingBuilder updateBuilder = new BeanMappingBuilder() {
+
+        @Override
+        protected void configure() {
+            mapping(MixRequest.class, Mix.class)
+                    .fields("show", "show", new FieldsMappingOption() {
+                        @Override
+                        public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
+                            fieldMappingBuilder.customConverterId(ChildEntityFieldConverter.ID);
+                        }
+                    })
+                    .exclude("id");
+
+
+        }
+    };
+
+    @Produces("application/json")
+    @GET
+    public List<MixResponse> list() {
+
+
+        Query q = entityManager.createQuery("SELECT m from Mix m", Mix.class);
+        List<Mix> mixes = q.getResultList();
+
+
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        mapper.addMapping(retrieveBuilder);
+
+        List<MixResponse> response = new ArrayList<>();
+        for (Mix mix : mixes) {
+            response.add(mapper.map(mix, MixResponse.class));
+        }
+
+        return response;
+
+    }
+
+    @Produces("application/json")
+    @POST
+    public CreateResponse create(MixRequest newMix) {
+
+        DozerBeanMapper mapper = MappingFactory.createDozer(entityManager, updateBuilder);
+
+        Mix mix = mapper.map(newMix, Mix.class);
+
+        entityManager.persist(mix);
+
+        return new CreateResponse(mix.getId());
+
+    }
+
+    @Produces("application/json")
+    @PUT
+    @Path("/{id}")
+    public CreateResponse update(@PathParam("id") int id, MixRequest newMix) {
+
+        Mix mix = entityManager.find(Mix.class, id);
+
+        DozerBeanMapper mapper = MappingFactory.createDozer(entityManager, updateBuilder);
+
+        mapper.map(newMix, mix);
+
+        return new CreateResponse(mix.getId());
+    }
+
+
+    @GET
+    @Path("/{id}")
+    @Produces("application/json")
+    public MixResponse get(@PathParam("id") int i) {
+
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        mapper.addMapping(retrieveBuilder);
+        MixResponse r = mapper.map(entityManager.find(Mix.class, i), MixResponse.class);
+
+        return r;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+}
