@@ -25,18 +25,18 @@ public class PersistenceTest {
     }
 
     @Test
-    @Ignore
+
     public void testSelect() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("tilos-test");
         EntityManager manager = factory.createEntityManager();
-        Query q = manager.createQuery("select a FROM Episode a where a.id = :id", Episode.class);
-        q.setParameter("id", 548);
-        q.setMaxResults(10);
-        List<Episode> resultList = q.getResultList();
-        for (Episode a : resultList) {
+        Query q = manager.createQuery("SELECT m from Mix m", Mix.class);
+//        q.setParameter("id", 548);
+//        q.setMaxResults(10);
+        List<Mix> resultList = q.getResultList();
+        for (Mix a : resultList) {
             System.out.println(a.getId());
-            System.out.println(a.getShow().getId());
-            System.out.println(a.getText().getContent());
+            System.out.println(a.getTitle());
+
         }
         manager.close();
     }

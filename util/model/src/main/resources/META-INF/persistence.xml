@@ -9,7 +9,7 @@
         <class>hu.radio.tilos.model.Show</class>
         <class>hu.radio.tilos.model.Episode</class>
         <class>hu.radio.tilos.model.TextContent</class>
-
+        <class>hu.radio.tilos.model.Mix</class>
 
 
     </persistence-unit>
