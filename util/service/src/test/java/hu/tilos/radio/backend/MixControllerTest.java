@@ -21,17 +21,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Properties;
 
 public class MixControllerTest {
     private static EntityManagerFactory factory;
 
     @BeforeClass
     public static void setUp() throws Exception {
-        factory = Persistence.createEntityManagerFactory("tilos-test");
-
-        JdbcDatabaseTester tester = new JdbcDatabaseTester("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/tilos_test", "root", "");
-        tester.setDataSet(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
-        tester.onSetup();
+        factory = TestUtil.initPersistence();
+        TestUtil.inidTestData();
     }
 
     @Test

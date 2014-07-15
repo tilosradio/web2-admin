@@ -2,6 +2,7 @@ package hu.tilos.radio.backend.converters;
 
 import org.dozer.DozerConverter;
 
+import javax.ws.rs.PathParam;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,13 +15,20 @@ public class DateToTextConverter extends DozerConverter<Date, String> {
 
     @Override
     public String convertTo(Date source, String destination) {
+        if (source == null) {
+            return "";
+        }
         return new SimpleDateFormat(getParameter()).format(source);
     }
 
     @Override
     public Date convertFrom(String source, Date destination) {
         try {
-            return new SimpleDateFormat(getParameter()).parse(source);
+            if (source == null) {
+                return null;
+            } else {
+                return new SimpleDateFormat(getParameter()).parse(source);
+            }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

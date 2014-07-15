@@ -2,6 +2,7 @@ package hu.tilos.radio.backend.converters;
 
 import hu.radio.tilos.model.Mix;
 import hu.tilos.radio.backend.SearchControllerTest;
+import hu.tilos.radio.backend.TestUtil;
 import hu.tilos.radio.backend.data.EntitySelector;
 import hu.tilos.radio.backend.data.MixRequest;
 import org.dbunit.JdbcDatabaseTester;
@@ -27,11 +28,8 @@ public class ChildEntityFieldConverterTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        factory = Persistence.createEntityManagerFactory("tilos-test");
-
-        JdbcDatabaseTester tester = new JdbcDatabaseTester("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/tilos_test", "root", "");
-        tester.setDataSet(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
-        tester.onSetup();
+        factory = TestUtil.initPersistence();
+        TestUtil.inidTestData();
     }
 
     @Test

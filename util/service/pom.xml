@@ -13,6 +13,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <tilos.jdbc.url>jdbc:mysql://localhost:3306/tilos_test</tilos.jdbc.url>
+        <tilos.jdbc.user>root</tilos.jdbc.user>
+        <tilos.jdbc.password></tilos.jdbc.password>
+    </properties>
     <dependencies>
 
 
@@ -111,6 +116,12 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
 
 
