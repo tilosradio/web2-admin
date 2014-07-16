@@ -157,13 +157,23 @@ public class StreamControllerTest {
     }
 
     @Test
-    public void stream() throws ParseException {
+    public void stream() throws Exception {
         StreamController controller = new StreamController();
         StreamController.ResourceCollection resources = controller.getMp3Links(SDF.parse("201406041005"), 90);
+        resources.getCollection().get(0).setStartOffset(2);
+        resources.getCollection().get(1).setEndOffset(8);
         for (StreamController.Mp3File f : resources.getCollection()) {
             System.out.println(f.getName());
+            System.out.println(f.getStartOffset());
+            System.out.println(f.getEndOffset());
         }
+        LocalBackend n = new LocalBackend("src/test/resources");
+        n.stream(resources, 0, 40, new FileOutputStream(new File("target/stream.out")));
+        Assert.assertEquals(36, n.getSize(resources));
+
     }
+
+  
 
 
 }

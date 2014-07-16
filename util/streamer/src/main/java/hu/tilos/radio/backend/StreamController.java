@@ -61,7 +61,6 @@ public class StreamController extends HttpServlet {
 
             if (req.getHeader("Range") != null) {
                 String range = req.getHeader("Range");
-                System.out.println(range);
                 Matcher m = RANGE_PATTERN.matcher(range);
                 if (m.matches()) {
                     int start = Integer.valueOf(m.group(1));
@@ -167,16 +166,20 @@ public class StreamController extends HttpServlet {
         end.setTime(start.getTime() + 60 * 1000 * duration);
 
         Date i = new Date();
+        Date lastStart = new Date();
         i.setTime(from.getTime());
         while (i.compareTo(end) < 0) {
 
             SimpleDateFormat d = new SimpleDateFormat("'/'yyyy'/'MM'/'dd'/tilosradio-'yyyMMdd'-'HHmm'.mp3'");
             collection.add(new Mp3File(d.format(i)));
+            lastStart.setTime(i.getTime());
             i.setTime(i.getTime() + 60 * 30 * 1000);
         }
 
-        int offset = (int) ((start.getTime() - from.getTime()) / 1000);
-        collection.getCollection().get(0).setStartOffset((int) Math.round(offset * 38.28125 * 836));
+        int startOffset = (int) ((start.getTime() - from.getTime()) / 1000);
+        collection.getCollection().get(0).setStartOffset((int) Math.round(startOffset * 38.28125 * 836));
+        int endOffset = (int) ((end.getTime() - lastStart.getTime())) / 1000;
+        collection.getCollection().get(collection.getCollection().size() - 1).setEndOffset((int) Math.round(endOffset * 38.28125 * 836));
         return collection;
     }
 
