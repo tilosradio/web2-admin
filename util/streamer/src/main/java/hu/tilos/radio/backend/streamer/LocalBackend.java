@@ -52,6 +52,8 @@ public class LocalBackend implements Backend {
         } finally {
             is.close();
         }
+        out.flush();
+        out.close();
     }
 
     @Override
@@ -65,7 +67,11 @@ public class LocalBackend implements Backend {
 
 
     public long size(StreamController.Mp3File file) {
-        return new File(root + file.getName()).length();
+        long size = new File(root + file.getName()).length();
+        if (file.getEndOffset() < size) {
+            size = file.getEndOffset();
+        }
+        return size - file.getStartOffset();
     }
 
     public void setRoot(String root) {
