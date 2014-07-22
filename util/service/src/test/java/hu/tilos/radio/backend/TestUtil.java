@@ -2,10 +2,13 @@ package hu.tilos.radio.backend;
 
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.dataset.xml.XmlDataSetWriter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.FileWriter;
 import java.util.Properties;
 
 public class TestUtil {
@@ -34,6 +37,7 @@ public class TestUtil {
                     properties.getProperty("jdbc.user"),
                     properties.getProperty("jdbc.password"));
             tester.setDataSet(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
+            //new XmlDataSetWriter(new FileWriter("/tmp/test.xml")).write(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
             tester.onSetup();
         } catch (Exception ex) {
             throw new RuntimeException(ex);

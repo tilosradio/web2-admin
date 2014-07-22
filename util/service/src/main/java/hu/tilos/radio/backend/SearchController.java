@@ -48,7 +48,7 @@ import java.util.List;
 import static org.apache.lucene.util.Version.*;
 import static org.apache.lucene.util.Version.LUCENE_48;
 
-@Path("v1/search")
+@Path("api/v1/search")
 public class SearchController {
 
     private EntityManagerFactory emf;

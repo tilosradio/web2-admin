@@ -1,15 +1,39 @@
 <dataset>
     <url></url>
     <author_url></author_url>
+    <show_url></show_url>
     <contribution></contribution>
-    <scheduling></scheduling>
-    <author id="1" name="AUTHOR1" photo="asd" avatar="asd" introduction="nothing"></author>
+
 
     <textcontent id="1" title="tamogatas" type="page" format="legacy" content="asd" author="asd" alias="asd"
                  created="2012-12-12 12:12:12" modified="2012-12-12 12:12:12"></textcontent>
 
+    <textcontent id="2" title="Jo musor" type="episode" format="legacy" content="fasza am" author="asd" alias="asd"
+                 created="2012-12-12 12:12:12" modified="2012-12-12 12:12:12"></textcontent>
+
     <radioshow id="1" name="3. utas" alias="3utas" description="a potyoutasok műsora" type="0" status="1"></radioshow>
     <radioshow id="2" name="Haza és Haladás" alias="hazaeshaladas" description="h%h" type="0" status="1"></radioshow>
+
+    <episode id="2"
+             radioshow_id="1"
+             textcontent_id="2"
+             plannedFrom="2014-04-11 08:00:00"
+             plannedTo="2014-04-11 10:00:00"
+             realFrom="2014-04-11 08:00:00"
+             realTo="2014-04-11 10:00:00"
+            ></episode>
+
+    <episode id="1" radioshow_id="1" plannedFrom="2014-04-04 08:00:00" plannedTo="2014-04-04 10:00:00"
+             realTo="2014-04-04 10:00:00" realFrom="2014-04-04 08:00:00"></episode>
+
+
+    <scheduling validFrom="2014-04-15 10:00:00" validTo="2014-06-10 10:00:00" hourFrom="8" minFrom="0" duration="120"
+                weekType="1" base="2014-04-15 10:00:00" weekDay="5" radioshow_id="1"></scheduling>
+
+    <author></author>
+
+    <author id="1" name="AUTHOR1" photo="asd" avatar="asd" introduction="nothing"></author>
+
 
     <mix id="1" type="1" author="asd" title="good mix" file="asd.mp3" date="2013-04-05" show_id="1"></mix>
     <mix id="2" type="1" author="asd" title="good mix2" file="asd2.mp3"></mix>

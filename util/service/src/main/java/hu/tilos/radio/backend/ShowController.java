@@ -17,7 +17,7 @@ import javax.ws.rs.Produces;
 
 import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 
-@Path("/v1/show")
+@Path("/api/v1/show")
 public class ShowController {
 
     private EntityManagerFactory emf;

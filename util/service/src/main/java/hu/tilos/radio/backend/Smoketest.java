@@ -9,7 +9,7 @@ import javax.ws.rs.Path;
 public class Smoketest {
 
     @GET
-    @Path("v1/ping")
+    @Path("api/v1/ping")
     @Security(role = Role.GUEST)
     public String ping() {
         return "pong";
