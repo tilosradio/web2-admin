@@ -25,7 +25,6 @@ public class TextContent {
     @Column
     private String content;
 
-
     @Basic
     @Column
     private String alias;

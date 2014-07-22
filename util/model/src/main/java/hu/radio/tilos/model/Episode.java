@@ -2,6 +2,7 @@ package hu.radio.tilos.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "episode")
@@ -10,21 +11,21 @@ public class Episode {
     @Id
     private int id;
 
-    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Timestamp plannedFrom;
+    private Date plannedFrom;
 
-    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Timestamp plannedTo;
+    private Date plannedTo;
 
-    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Timestamp realFrom;
+    private Date realFrom;
 
-    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Timestamp realTo;
+    private Date realTo;
 
     @ManyToOne()
     @JoinColumn(name = "radioshow_id", referencedColumnName = "id")
@@ -42,32 +43,36 @@ public class Episode {
         this.id = id;
     }
 
-    public Timestamp getPlannedFrom() {
+    public Date getPlannedFrom() {
         return plannedFrom;
     }
 
-    public void setPlannedFrom(Timestamp plannedFrom) {
+    public void setPlannedFrom(Date plannedFrom) {
         this.plannedFrom = plannedFrom;
     }
 
-    public Timestamp getPlannedTo() {
+    public Date getPlannedTo() {
         return plannedTo;
     }
 
-    public void setPlannedTo(Timestamp plannedTo) {
+    public void setPlannedTo(Date plannedTo) {
         this.plannedTo = plannedTo;
     }
 
-    public Timestamp getRealFrom() {
+    public Date getRealFrom() {
         return realFrom;
     }
 
-    public void setRealFrom(Timestamp realFrom) {
+    public void setRealFrom(Date realFrom) {
         this.realFrom = realFrom;
     }
 
-    public Timestamp getRealTo() {
+    public Date getRealTo() {
         return realTo;
+    }
+
+    public void setRealTo(Date realTo) {
+        this.realTo = realTo;
     }
 
     public void setRealTo(Timestamp realTo) {
@@ -89,4 +94,5 @@ public class Episode {
     public void setText(TextContent text) {
         this.text = text;
     }
+
 }
