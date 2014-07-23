@@ -40,13 +40,13 @@ public class FeedController {
     private EpisodeUtil episodeUtil;
 
     @GET
-    @Path("/show/{id}")
+    @Path("/show/{alias}")
     @Security(role = Role.GUEST)
     @Produces("application/atom+xml")
-    public Feed feed(@PathParam("id") int id) {
+    public Feed feed(@PathParam("alias") String alias) {
         Feed feed = new Feed();
         try {
-            Show show = entityManager.find(Show.class, id);
+            Show show = (Show) entityManager.createQuery("SELECT s from Show s where s.alias = :alias").setParameter("alias", alias).getSingleResult();
             if (show == null) {
                 //todo;
             }
@@ -70,7 +70,7 @@ public class FeedController {
             List<Person> authors = new ArrayList();
             authors.add(p);
 
-            for (EpisodeData episode : episodeUtil.getEpisodeData(id, start, end)) {
+            for (EpisodeData episode : episodeUtil.getEpisodeData(show.getId(), start, end)) {
                 try {
                     Entry e = new Entry();
                     if (episode.getText() != null) {

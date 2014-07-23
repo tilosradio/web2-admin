@@ -52,7 +52,7 @@ public class FeedControllerTest {
         c.setEntityManager(emf.createEntityManager());
 
         //when
-        Feed feed = c.feed(1);
+        Feed feed = c.feed("3utas");
 
         //then
         JAXBContext jaxbc = JAXBContext.newInstance(Feed.class);
