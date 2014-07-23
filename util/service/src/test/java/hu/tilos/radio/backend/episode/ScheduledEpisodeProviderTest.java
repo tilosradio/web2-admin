@@ -32,7 +32,7 @@ public class ScheduledEpisodeProviderTest {
         List<EpisodeData> episodes = p.listEpisode(1, SDF.parse("2014-04-03 12:00:00"), SDF.parse("2014-05-03 12:00:00"));
 
         //then
-        Assert.assertEquals(5, episodes.size());
+        Assert.assertEquals(3, episodes.size());
         p.getEntityManager().close();
     }
 }

@@ -54,19 +54,36 @@ public class ScheduledEpisodeProvider {
 
         List<EpisodeData> result = new ArrayList<>();
         while (c.compareTo(toCalendar) < 0 && c.compareTo(scheduledUntil) < 0) {
-            EpisodeData d = new EpisodeData();
-            d.setPlannedFrom(c.getTime().getTime());
-            d.setPlannedTo(d.getPlannedFrom() + s.getDuration() * 60 * 1000);
-            d.setRealFrom(d.getPlannedFrom());
-            d.setRealTo(d.getPlannedTo());
-            d.setPersistent(false);
-            d.setShow(mapper.map(s.getShow(), ShowSimple.class));
-            result.add(d);
+            if (isValidDate(c, s, from, to)) {
+                //create episode from scheduling
+                EpisodeData d = new EpisodeData();
+                d.setPlannedFrom(c.getTime().getTime());
+                d.setPlannedTo(d.getPlannedFrom() + s.getDuration() * 60 * 1000);
+                d.setRealFrom(d.getPlannedFrom());
+                d.setRealTo(d.getPlannedTo());
+                d.setPersistent(false);
+                d.setShow(mapper.map(s.getShow(), ShowSimple.class));
+                result.add(d);
+            }
             c.add(Calendar.DAY_OF_MONTH, 7);
         }
         return result;
 
 
+    }
+
+    protected boolean isValidDate(Calendar c, Scheduling s, Date from, Date to) {
+        if (s.getWeekType() > 1) {
+            int weekNo = (int) Math.floor((c.getTime().getTime() - s.getBase().getTime()) / (7 * 60 * 60 * 24));
+            if (weekNo % s.getWeekType() != 0) {
+                return false;
+            }
+        }
+        Date realTime = c.getTime();
+        if (realTime.compareTo(from) >= 0 && realTime.compareTo(to) < 0 && realTime.compareTo(s.getValidFrom()) >= 0 && realTime.compareTo(s.getValidTo()) < 0) {
+            return true;
+        }
+        return false;
     }
 
     private Date weekStart(Date validFrom) {
