@@ -41,6 +41,8 @@ public class FeedControllerTest {
                 }
             }
         };
+        c.setServerUrl("http://tilos.hu");
+
         EpisodeUtil u = new EpisodeUtil();
         ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider();
         sp.setEntityManager(emf.createEntityManager());
@@ -52,7 +54,7 @@ public class FeedControllerTest {
         c.setEntityManager(emf.createEntityManager());
 
         //when
-        Feed feed = c.feed("3utas");
+        Feed feed = (Feed) c.feed("3utas").getEntity();
 
         //then
         JAXBContext jaxbc = JAXBContext.newInstance(Feed.class);
