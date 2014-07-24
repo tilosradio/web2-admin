@@ -10,11 +10,13 @@ import org.jboss.resteasy.plugins.providers.atom.Link;
 import org.jboss.resteasy.plugins.providers.atom.Person;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,25 +41,33 @@ public class FeedController {
 
     private EpisodeUtil episodeUtil;
 
+    private String serverUrl;
+
     @GET
     @Path("/show/{alias}")
     @Security(role = Role.GUEST)
     @Produces("application/atom+xml")
-    public Feed feed(@PathParam("alias") String alias) {
+    public Response feed(@PathParam("alias") String alias) {
         Feed feed = new Feed();
         try {
-            Show show = (Show) entityManager.createQuery("SELECT s from Show s where s.alias = :alias").setParameter("alias", alias).getSingleResult();
-            if (show == null) {
-                //todo;
+            Show show = null;
+            try {
+                show = (Show) entityManager.createQuery("SELECT s from Show s where s.alias = :alias").setParameter("alias", alias).getSingleResult();
+            } catch (NoResultException ex) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Show is missing: " + alias).build();
             }
 
             feed.setTitle(show.getName() + " [Tilos Rádió podcast]");
             feed.setUpdated(new Date());
 
+
             Link showLink = new Link();
             showLink.setRel("self");
-            showLink.setHref(new URI("http://tilos.hu/show/" + show.getAlias()));
+            showLink.setType(new MediaType("application", "atom+xml"));
+            showLink.setHref(new URI(serverUrl + "/feed2/show/" + show.getAlias()));
+
             feed.getLinks().add(showLink);
+            feed.setId(new URI("tilos:show/" + show.getAlias()));
 
 
             Date end = getNow();
@@ -78,14 +88,14 @@ public class FeedController {
                         e.setSummary(episode.getText().getContent());
                     } else {
                         e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + "adásnapló");
-                        e.setSummary("");
+                        e.setSummary("adás archívum");
                     }
 
 
                     e.setPublished(dateFromEpoch(episode.getRealTo()));
                     e.setUpdated(dateFromEpoch(episode.getRealTo()));
 
-                    URL url = new URL("http://tilos.hu/episode/" + show.getAlias() + "/" + YYYY_PER_MM_PER_DD.format(e.getPublished()));
+                    URL url = new URL(serverUrl + "/episode/" + show.getAlias() + "/" + YYYY_PER_MM_PER_DD.format(e.getPublished()));
 
                     e.setId(url.toURI());
 
@@ -119,7 +129,7 @@ public class FeedController {
             ex.printStackTrace();
             //TODO
         }
-        return feed;
+        return Response.ok().entity(feed).build();
     }
 
     private Date dateFromEpoch(long realTo) {
@@ -146,5 +156,13 @@ public class FeedController {
 
     public void setEpisodeUtil(EpisodeUtil episodeUtil) {
         this.episodeUtil = episodeUtil;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
     }
 }

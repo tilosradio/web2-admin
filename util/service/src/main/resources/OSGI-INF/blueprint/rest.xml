@@ -63,6 +63,7 @@
             <bean class="hu.tilos.radio.backend.FeedController">
                 <property name="episodeUtil" ref="episodeUtil"></property>
                 <jpa:context unitname="tilos" property="entityManager"/>
+                <property name="serverUrl" value="${server.url}"></property>
             </bean>
         </jaxrs:serviceBeans>
         <jaxrs:providers>
