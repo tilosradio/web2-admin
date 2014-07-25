@@ -3,18 +3,7 @@ var tilos = angular.module('tilosApp', ['ngRoute', 'ngSanitize', 'configuration'
 
 tilos.config(function($locationProvider){
   $locationProvider.html5Mode(true);
-
 });
-tilos.run(function( $rootScope){
-    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-        if (next.templateUrl == "partials/index.html"){
-            $rootScope.donation = true;
-        } else {
-            $rootScope.donation = false;
-        }
-    });
-});
-
 tilos.weekStart = function (date) {
   var first = date.getDate() - date.getDay() + 1;
   date.setHours(0);
