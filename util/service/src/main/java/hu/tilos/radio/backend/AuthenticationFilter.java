@@ -27,7 +27,7 @@ public class AuthenticationFilter implements RequestHandler {
         //String cookie = m.get(M)
         HttpServletRequest request = (HttpServletRequest) m.get("HTTP.REQUEST");
         //TODO: not an admin site
-        if (request.getServerName().contains("admin") && request.getServerName().contains("tilosa")) {
+        if (!request.getServerName().contains("admin") && !request.getServerName().contains("tilosa")) {
             return null;
         }
         for (Cookie cookie : request.getCookies()) {
