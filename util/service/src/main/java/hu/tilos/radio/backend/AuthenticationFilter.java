@@ -18,11 +18,18 @@ import java.net.URLConnection;
 import java.util.Scanner;
 
 public class AuthenticationFilter implements RequestHandler {
+
+    private String serverUrl;
+
     @Override
     public Response handleRequest(Message m, ClassResourceInfo resourceClass) {
         UserResponse user = null;
         //String cookie = m.get(M)
         HttpServletRequest request = (HttpServletRequest) m.get("HTTP.REQUEST");
+        //TODO: not an admin site
+        if (request.getServerName().contains("admin") && request.getServerName().contains("tilosa")) {
+            return null;
+        }
         for (Cookie cookie : request.getCookies()) {
             if (cookie.getName().equals("PHPSESSID")) {
                 user = getResponse(cookie.getValue());
@@ -34,17 +41,14 @@ public class AuthenticationFilter implements RequestHandler {
 
     private UserResponse getResponse(String value) {
         try {
-            URL myUrl = new URL("http://tilosadmin/api/v0/user/me");
+
+            URL myUrl = new URL(serverUrl + "/api/v0/user/me");
             URLConnection connection = myUrl.openConnection();
             connection.setRequestProperty("Cookie", "PHPSESSID=" + value);
             connection.connect();
             String responseTxt = new Scanner(connection.getInputStream()).useDelimiter("//Z").next();
             if (responseTxt.equals("[]")) {
-                UserResponse response = new UserResponse();
-                response.setId(-1);
-                response.setRole(new RoleData(1, "guest"));
-                response.setUsername("Guest");
-                return response;
+                return null;
             }
             UserResponse response = new Gson().fromJson(responseTxt, UserResponse.class);
             return response;
@@ -54,5 +58,13 @@ public class AuthenticationFilter implements RequestHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
     }
 }
