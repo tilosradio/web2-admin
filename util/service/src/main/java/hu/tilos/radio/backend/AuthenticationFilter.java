@@ -2,6 +2,7 @@ package hu.tilos.radio.backend;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import hu.tilos.radio.backend.data.RoleData;
 import hu.tilos.radio.backend.data.UserResponse;
 import org.apache.cxf.jaxrs.ext.RequestHandler;
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;
@@ -38,6 +39,13 @@ public class AuthenticationFilter implements RequestHandler {
             connection.setRequestProperty("Cookie", "PHPSESSID=" + value);
             connection.connect();
             String responseTxt = new Scanner(connection.getInputStream()).useDelimiter("//Z").next();
+            if (responseTxt.equals("[]")) {
+                UserResponse response = new UserResponse();
+                response.setId(-1);
+                response.setRole(new RoleData(1, "guest"));
+                response.setUsername("Guest");
+                return response;
+            }
             UserResponse response = new Gson().fromJson(responseTxt, UserResponse.class);
             return response;
         } catch (MalformedURLException e) {

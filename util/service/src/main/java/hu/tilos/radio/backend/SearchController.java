@@ -1,10 +1,7 @@
 package hu.tilos.radio.backend;
 
 
-import hu.radio.tilos.model.Author;
-import hu.radio.tilos.model.Episode;
-import hu.radio.tilos.model.Show;
-import hu.radio.tilos.model.TextContent;
+import hu.radio.tilos.model.*;
 import hu.tilos.radio.backend.data.SearchResponse;
 import hu.tilos.radio.backend.data.SearchResponseElement;
 import org.apache.lucene.analysis.Analyzer;
@@ -117,6 +114,7 @@ public class SearchController {
     @Path(value = "query")
     @GET
     @Produces("application/json")
+    @Security(role = Role.GUEST)
     public SearchResponse search(@QueryParam("q") String search) throws IOException, ParseException {
 
 
