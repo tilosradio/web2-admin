@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 
-@Path("/v1/mix")
+@Path("/api/v1/mix")
 public class MixController {
 
     private EntityManager entityManager;
