@@ -71,8 +71,8 @@ angular.module('tilosAdmin')
         });
 
         $scope.save = function () {
-            $scope.episode.realFrom = dateUtil.setDate($scope.episode.realFrom, $scope.realFrom);
-            $scope.episode.realTo = dateUtil.setDate($scope.episode.realTo, $scope.realTo);
+            $scope.episode.realFrom = dateUtil.setDate($scope.episode.plannedFrom, $scope.realFrom);
+            $scope.episode.realTo = dateUtil.setDate($scope.episode.plannedTo, $scope.realTo);
             $http.put(API_SERVER_ENDPOINT + '/api/v0/episode/' + $scope.episode.id, $scope.episode).success(function (data) {
 
                 var httpCache = $cacheFactory.get('$http');
