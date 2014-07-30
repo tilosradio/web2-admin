@@ -5,6 +5,6 @@ angular.module('tilosApp')
         $scope.isCollapsed = false;
         $scope.searchTerm = "";
         $scope.search = function () {
-            $location.path( "/search/" + $scope.searchTerm );
+            $location.path('/search/' + $scope.searchTerm);
         };
     });

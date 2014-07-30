@@ -6,7 +6,7 @@ angular.module('tilosApp').config(function ($routeProvider) {
         controller: 'ExperimentalCtrl',
     });
 });
-;
+
 
 angular.module('tilosApp').controller('ExperimentalCtrl', function ($rootScope, $scope) {
     $rootScope.experimental = true;
