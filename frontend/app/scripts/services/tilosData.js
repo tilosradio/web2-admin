@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('tilosApp')
-  .factory('tilosData', ['$rootScope', '$http', 'API_SERVER_ENDPOINT', 'validateUrl', function ($root, $http, $server, validateUrl) {
+  .factory('tilosData', ['$rootScope', '$http', 'API_SERVER_ENDPOINT', function ($root, $http, $server) {
 
 
     return {

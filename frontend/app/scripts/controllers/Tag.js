@@ -22,12 +22,12 @@ angular.module('tilosApp').config(function ($routeProvider) {
     });
 });
 angular.module('tilosApp')
-    .controller('TagCtrl', function ($scope, Tags, $routeParams, data, $sce) {
+    .controller('TagCtrl', function ($scope, Tags, $routeParams, data) {
         $scope.tag = data;
     });
 
 angular.module('tilosApp')
-    .controller('TagListCtrl', function ($scope, Tags, $routeParams, list, $sce) {
+    .controller('TagListCtrl', function ($scope, Tags, $routeParams, list) {
         $scope.tags = list;
 
     });

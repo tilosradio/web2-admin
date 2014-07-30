@@ -13,7 +13,7 @@ angular.module('tilosApp')
         });
     });
 
-angular.module("tilosApp").controller("SearchBox", function ($scope, $location) {
+angular.module('tilosApp').controller('SearchBox', function ($scope, $location) {
     $scope.search = function () {
         $location.path('search/' + $scope.term);
     };
