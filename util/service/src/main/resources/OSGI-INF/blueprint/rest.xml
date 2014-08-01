@@ -11,7 +11,7 @@
   http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
 
-    <cm:property-placeholder persistent-id="hu.tilos.radio" update-strategy="reload">
+    <cm:property-placeholder persistent-id="hu.tilos.radio">
         <cm:default-properties>
             <cm:property name="environment" value="local"/>
         </cm:default-properties>
@@ -64,6 +64,10 @@
                 <property name="episodeUtil" ref="episodeUtil"></property>
                 <jpa:context unitname="tilos" property="entityManager"/>
                 <property name="serverUrl" value="${server.url}"></property>
+            </bean>
+            <bean class="hu.tilos.radio.backend.M3uController">
+                <property name="episodeUtil" ref="episodeUtil"></property>
+                <jpa:context unitname="tilos" property="entityManager"/>
             </bean>
         </jaxrs:serviceBeans>
         <jaxrs:providers>

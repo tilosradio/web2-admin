@@ -108,10 +108,7 @@ public class FeedController {
                     Link sound = new Link();
                     sound.setType(new MediaType("audio", "mpeg"));
                     sound.setRel("enclosure");
-                    sound.setHref(new URI("http://tilos.hu/mp3/tilos-" +
-                            YYYYMMDD.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                            HHMMSS.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                            HHMMSS.format(dateFromEpoch(episode.getRealTo())) + ".mp3"));
+                    sound.setHref(new URI(createDownloadURI(episode)));
                     e.getLinks().add(sound);
 
 
@@ -132,7 +129,14 @@ public class FeedController {
         return Response.ok().entity(feed).build();
     }
 
-    private Date dateFromEpoch(long realTo) {
+    public static String createDownloadURI(EpisodeData episode) {
+        return "http://tilos.hu/mp3/tilos-" +
+                YYYYMMDD.format(dateFromEpoch(episode.getRealFrom())) + "-" +
+                HHMMSS.format(dateFromEpoch(episode.getRealFrom())) + "-" +
+                HHMMSS.format(dateFromEpoch(episode.getRealTo())) + ".mp3";
+    }
+
+    private static Date dateFromEpoch(long realTo) {
         Date d = new Date();
         d.setTime(realTo);
         return d;

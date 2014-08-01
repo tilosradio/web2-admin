@@ -21,10 +21,17 @@ public class ScheduledEpisodeProvider {
 
     public List<EpisodeData> listEpisode(int showId, Date from, Date to) {
         DozerBeanMapper mapper = MappingFactory.createDozer(entityManager);
-        Query q = entityManager.createQuery("SELECT s from Scheduling s WHERE s.validFrom < :end AND s.validTo > :start AND s.show.id = :showId");
+
+        String query = "SELECT s from Scheduling s WHERE s.validFrom < :end AND s.validTo > :start";
+        if (showId > 0) {
+            query += "AND s.show.id = :showId";
+        }
+        Query q = entityManager.createQuery(query);
         q.setParameter("start", from);
         q.setParameter("end", to);
-        q.setParameter("showId", showId);
+        if (showId > 0) {
+            q.setParameter("showId", showId);
+        }
         List<Scheduling> schedulings = q.getResultList();
 
         List<EpisodeData> result = new ArrayList<>();

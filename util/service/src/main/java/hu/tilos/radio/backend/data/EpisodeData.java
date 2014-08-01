@@ -18,11 +18,11 @@ public class EpisodeData {
     private ShowSimple show;
 
     private TextData text;
-
     /**
      * false if generated from scheduling true if comes from real record.
      */
     private boolean persistent = false;
+
 
     public int getId() {
         return id;
@@ -87,4 +87,6 @@ public class EpisodeData {
     public void setText(TextData text) {
         this.text = text;
     }
+
+
 }

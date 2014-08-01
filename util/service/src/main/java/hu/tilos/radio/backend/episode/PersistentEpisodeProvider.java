@@ -34,10 +34,16 @@ public class PersistentEpisodeProvider {
             }
         });
 
-        Query q = entityManager.createQuery("SELECT e from Episode e WHERE e.plannedFrom < :end AND e.plannedTo > :start AND e.show.id = :showId");
+        String query = "SELECT e from Episode e WHERE e.plannedFrom < :end AND e.plannedTo > :start";
+        if (showId > 0) {
+            query += "AND e.show.id = :showId";
+        }
+        Query q = entityManager.createQuery(query);
         q.setParameter("start", from);
         q.setParameter("end", to);
-        q.setParameter("showId", showId);
+        if (showId > 0) {
+            q.setParameter("showId", showId);
+        }
         List<Episode> episodes = q.getResultList();
 
 

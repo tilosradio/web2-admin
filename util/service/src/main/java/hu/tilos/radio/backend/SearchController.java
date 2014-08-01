@@ -95,7 +95,7 @@ public class SearchController {
 
                 TokenStream tok = new StandardFilter(matchVersion, src);
                 tok = new LowerCaseFilter(matchVersion, tok);
-                tok = new ASCIIFoldingFilter(tok);
+                tok = new ASCIIFoldingFilter(tok, true);
                 tok = new StopFilter(matchVersion, tok, stopwords);
 
                 return new TokenStreamComponents(src, tok) {

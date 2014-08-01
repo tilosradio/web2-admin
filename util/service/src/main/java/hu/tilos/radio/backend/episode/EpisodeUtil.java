@@ -6,8 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 public class EpisodeUtil {
+
     private PersistentEpisodeProvider persistentProvider;
+
     private ScheduledEpisodeProvider scheduledProvider;
+
     private Merger merger = new Merger();
 
     public List<EpisodeData> getEpisodeData(int showId, Date from, Date to) {
