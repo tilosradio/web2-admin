@@ -36,7 +36,7 @@ public class PersistentEpisodeProvider {
 
         String query = "SELECT e from Episode e WHERE e.plannedFrom < :end AND e.plannedTo > :start";
         if (showId > 0) {
-            query += "AND e.show.id = :showId";
+            query += " AND e.show.id = :showId";
         }
         Query q = entityManager.createQuery(query);
         q.setParameter("start", from);

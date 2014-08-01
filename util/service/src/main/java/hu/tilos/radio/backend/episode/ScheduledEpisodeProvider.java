@@ -24,7 +24,7 @@ public class ScheduledEpisodeProvider {
 
         String query = "SELECT s from Scheduling s WHERE s.validFrom < :end AND s.validTo > :start";
         if (showId > 0) {
-            query += "AND s.show.id = :showId";
+            query += " AND s.show.id = :showId";
         }
         Query q = entityManager.createQuery(query);
         q.setParameter("start", from);
