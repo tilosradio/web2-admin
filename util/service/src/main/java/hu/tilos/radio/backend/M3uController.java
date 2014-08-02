@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
+import hu.radio.tilos.model.Scheduling;
 import hu.tilos.radio.backend.data.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 
@@ -10,6 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,13 @@ public class M3uController {
         weekAgo.setTime(now.getTime() - (long) 604800000L);
         List<EpisodeData> episodes = episodeUtil.getEpisodeData(-1, weekAgo, now);
 
+        Collections.sort(episodes, new Comparator<EpisodeData>() {
+            @Override
+            public int compare(EpisodeData o1, EpisodeData o2) {
+                return -1 * Long.valueOf(o1.getRealFrom()).compareTo(Long.valueOf(o2.getRealFrom()));
+            }
+        });
+
         StringBuilder result = new StringBuilder();
         result.append("#EXTM3U\n");
         for (EpisodeData episode : episodes) {
@@ -48,7 +58,7 @@ public class M3uController {
             result.append("#EXTINF:-1, " + artist + " - " + title + "\n");
             result.append(FeedController.createDownloadURI(episode) + "\n");
         }
-        return Response.ok(result.toString()).header("Content-Type","audio/x-mpegurl; charset=utf-8").build();
+        return Response.ok(result.toString()).header("Content-Type", "audio/x-mpegurl; charset=utf-8").build();
     }
 
     public EntityManager getEntityManager() {

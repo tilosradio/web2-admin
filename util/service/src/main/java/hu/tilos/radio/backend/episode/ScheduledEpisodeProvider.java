@@ -56,7 +56,7 @@ public class ScheduledEpisodeProvider {
         if (offset < 0) {
             offset += 7;
         }
-        c.add(Calendar.DAY_OF_MONTH, -1 * offset + (s.getWeekDay() - 1));
+        c.add(Calendar.DAY_OF_MONTH, -1 * offset + s.getWeekDay());
         c.set(Calendar.MILLISECOND, 0);
 
         List<EpisodeData> result = new ArrayList<>();
