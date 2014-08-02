@@ -45,8 +45,16 @@ public class M3uController {
             }
         });
 
+        episodes.remove(0);
+
         StringBuilder result = new StringBuilder();
         result.append("#EXTM3U\n");
+        result.append("#EXTINF:-1, Tilos Rádió - élő adás (256kb/s) \n");
+        result.append("http://stream.tilos.hu/tilos\n");
+        result.append("#EXTINF:-1, Tilos Rádió - [CSAKASZAVAK] Szöveges archívum \n");
+        result.append("http://stream.tilos.hu/csakaszavak.ogg\n");
+        result.append("#EXTINF:-1, Tilos Rádió - [CSAKAZENE] Zenés archívum\n");
+        result.append("http://stream.tilos.hu/csakazene.ogg\n");
         for (EpisodeData episode : episodes) {
             String artist = episode.getShow().getName();
             String title = YYYY_DD_MM.format(episode.getPlannedFrom());
