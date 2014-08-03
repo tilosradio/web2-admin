@@ -30,7 +30,7 @@ public class M3uController {
 
     @GET
     @Path("lastweek")
-    @Produces("text/plain")
+    @Produces("audio/x-mpegurl; charset=iso-8859-2")
     @Security(role = Role.GUEST)
     public Response lastWeek() {
         Date now = new Date();
@@ -66,7 +66,7 @@ public class M3uController {
             result.append("#EXTINF:-1, " + artist + " - " + title + "\n");
             result.append(FeedController.createDownloadURI(episode) + "\n");
         }
-        return Response.ok(result.toString()).header("Content-Type", "audio/x-mpegurl; charset=utf-8").build();
+        return Response.ok(result.toString()).build();
     }
 
     public EntityManager getEntityManager() {
