@@ -81,7 +81,7 @@ public class ScheduledEpisodeProvider {
 
     protected boolean isValidDate(Calendar c, Scheduling s, Date from, Date to) {
         if (s.getWeekType() > 1) {
-            int weekNo = (int) Math.floor((c.getTime().getTime() - s.getBase().getTime()) / (7 * 60 * 60 * 24));
+            int weekNo = (int) Math.floor((c.getTime().getTime() - s.getBase().getTime()) / (7000l * 60 * 60 * 24));
             if (weekNo % s.getWeekType() != 0) {
                 return false;
             }

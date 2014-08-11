@@ -35,4 +35,18 @@ public class ScheduledEpisodeProviderTest {
         Assert.assertEquals(3, episodes.size());
         p.getEntityManager().close();
     }
+
+    @Test
+    public void testListEpisodeWithBase() throws Exception {
+        //given
+        ScheduledEpisodeProvider p = new ScheduledEpisodeProvider();
+        p.setEntityManager(emf.createEntityManager());
+
+        //when
+        List<EpisodeData> episodes = p.listEpisode(3, SDF.parse("2014-04-03 12:00:00"), SDF.parse("2014-05-03 12:00:00"));
+
+        //then
+        Assert.assertEquals(2, episodes.size());
+        p.getEntityManager().close();
+    }
 }
