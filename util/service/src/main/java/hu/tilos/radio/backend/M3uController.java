@@ -1,14 +1,15 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
-import hu.radio.tilos.model.Scheduling;
 import hu.tilos.radio.backend.data.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
+import hu.tilos.radio.backend.util.Days;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -26,13 +27,21 @@ public class M3uController {
 
     private EpisodeUtil episodeUtil;
 
-    private static final SimpleDateFormat YYYY_DD_MM = new SimpleDateFormat("yyyy'.'MM'.'dd");
+    private static final SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy'.'MM'.'dd");
+
+    private static final SimpleDateFormat MM_DD = new SimpleDateFormat("MM'.'dd");
+
+    private static final SimpleDateFormat HH_MM = new SimpleDateFormat("HH':'mm");
 
     @GET
     @Path("lastweek")
     @Produces("audio/x-mpegurl; charset=iso-8859-2")
     @Security(role = Role.GUEST)
-    public Response lastWeek() {
+    public Response lastWeek(@QueryParam("stream") String query) {
+        if (query == null) {
+            query = "/tilos";
+        }
+        query = query.replace(".m3u", "");
         Date now = new Date();
         Date weekAgo = new Date();
         weekAgo.setTime(now.getTime() - (long) 604800000L);
@@ -50,14 +59,18 @@ public class M3uController {
         StringBuilder result = new StringBuilder();
         result.append("#EXTM3U\n");
         result.append("#EXTINF:-1, Tilos Rádió - élő adás (256kb/s) \n");
-        result.append("http://stream.tilos.hu/tilos\n");
+        result.append("http://stream.tilos.hu" + query + "\n");
         result.append("#EXTINF:-1, Tilos Rádió - [CSAKASZAVAK] Szöveges archívum \n");
         result.append("http://stream.tilos.hu/csakaszavak.ogg\n");
         result.append("#EXTINF:-1, Tilos Rádió - [CSAKAZENE] Zenés archívum\n");
         result.append("http://stream.tilos.hu/csakazene.ogg\n");
         for (EpisodeData episode : episodes) {
-            String artist = episode.getShow().getName();
-            String title = YYYY_DD_MM.format(episode.getPlannedFrom());
+            String artist = episode.getShow().getName().replaceAll("-", ", ");
+
+            Date start = new Date();
+            start.setTime(episode.getPlannedFrom());
+
+            String title = "[" + MM_DD.format(start) + " - " + Days.values()[start.getDay()].getHungarian() + " " + HH_MM.format(start) + "]";
             if (episode.getText() != null) {
                 title += " " + episode.getText().getTitle();
             } else {
