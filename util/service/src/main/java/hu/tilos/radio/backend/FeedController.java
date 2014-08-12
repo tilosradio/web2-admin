@@ -26,7 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Path("/feed2")
+/**
+ * Generate atom feed for the shows.
+ */
+@Path("/feed")
 public class FeedController {
 
     private static final SimpleDateFormat YYYY_DOT_MM_DOT_DD = new SimpleDateFormat("yyyy'.'MM'.'dd");
