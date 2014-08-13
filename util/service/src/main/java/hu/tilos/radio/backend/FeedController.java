@@ -1,13 +1,18 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
-import hu.radio.tilos.model.Show;
 import hu.tilos.radio.backend.data.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
+import hu.tilos.radio.jooqmodel.tables.daos.RadioshowDao;
+import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
 import org.jboss.resteasy.plugins.providers.atom.*;
+import org.jooq.Configuration;
+import org.jooq.SQLDialect;
+import org.jooq.conf.Settings;
+import org.jooq.impl.DefaultConfiguration;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -18,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,11 +43,20 @@ public class FeedController {
 
     private static final SimpleDateFormat HHMMSS = new SimpleDateFormat("HHmmss");
 
-    private EntityManager entityManager;
-
     private EpisodeUtil episodeUtil;
 
     private String serverUrl;
+
+    private final RadioshowDao showDao;
+
+    public FeedController(DataSource dataSource) {
+        Settings settings = new Settings();
+        settings.withRenderSchema(false);
+
+        Configuration configuration = new DefaultConfiguration().set(dataSource).set(SQLDialect.MYSQL).set(settings);
+
+        showDao = new RadioshowDao(configuration);
+    }
 
     @GET
     @Path("/show/{alias}")
@@ -50,12 +65,11 @@ public class FeedController {
     public Response feed(@PathParam("alias") String alias) {
         Feed feed = new Feed();
         try {
-            Show show = null;
-            try {
-                show = (Show) entityManager.createQuery("SELECT s from Show s where s.alias = :alias").setParameter("alias", alias).getSingleResult();
-            } catch (NoResultException ex) {
+            List<Radioshow> result = showDao.fetchByAlias(alias);
+            if (result.size() < 1) {
                 return Response.status(Response.Status.NOT_FOUND).entity("Show is missing: " + alias).build();
             }
+            Radioshow show = result.get(0);
 
             feed.setTitle(show.getName() + " [Tilos Rádió podcast]");
             feed.setUpdated(new Date());
@@ -86,7 +100,7 @@ public class FeedController {
                     Entry e = new Entry();
                     if (episode.getText() != null) {
                         e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + episode.getText().getTitle());
-                        e.setSummary(new Summary("html",episode.getText().getContent()));
+                        e.setSummary(new Summary("html", episode.getText().getContent()));
                     } else {
                         e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + "adásnapló");
                         e.setSummary(new Summary("adás archívum"));
@@ -145,14 +159,6 @@ public class FeedController {
 
     protected Date getNow() {
         return new Date();
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
     }
 
     public EpisodeUtil getEpisodeUtil() {

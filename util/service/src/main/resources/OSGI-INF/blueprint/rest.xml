@@ -11,6 +11,9 @@
   http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
 
+    <reference id="dataSource" interface="javax.sql.DataSource" filter="(datasource.name=tilos)"></reference>
+
+
     <cm:property-placeholder persistent-id="hu.tilos.radio">
         <cm:default-properties>
             <cm:property name="environment" value="local"/>
@@ -60,11 +63,13 @@
             <bean class="hu.tilos.radio.backend.ShowController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
             </bean>
+
             <bean class="hu.tilos.radio.backend.FeedController">
+                <argument index="0" ref="dataSource"></argument>
                 <property name="episodeUtil" ref="episodeUtil"></property>
-                <jpa:context unitname="tilos" property="entityManager"/>
                 <property name="serverUrl" value="${server.url}"></property>
             </bean>
+
             <bean class="hu.tilos.radio.backend.M3uController">
                 <property name="episodeUtil" ref="episodeUtil"></property>
                 <jpa:context unitname="tilos" property="entityManager"/>

@@ -7,10 +7,14 @@ import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.jms.ConnectionFactory;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,10 +23,13 @@ import static org.junit.Assert.*;
 
 public class FeedControllerTest {
 
+    private static DataSource dataSource;
+
     private static EntityManagerFactory emf;
 
     @BeforeClass
     public static void setup() {
+        dataSource = TestUtil.initDatasource();
         emf = TestUtil.initPersistence();
         TestUtil.inidTestData();
 
@@ -31,7 +38,7 @@ public class FeedControllerTest {
     @Test
     public void testFeed() throws Exception {
         //given
-        FeedController c = new FeedController() {
+        FeedController c = new FeedController(dataSource) {
             @Override
             protected Date getNow() {
                 try {
@@ -51,7 +58,7 @@ public class FeedControllerTest {
         u.setPersistentProvider(pp);
         u.setScheduledProvider(sp);
         c.setEpisodeUtil(u);
-        c.setEntityManager(emf.createEntityManager());
+
 
         //when
         Feed feed = (Feed) c.feed("3utas").getEntity();
