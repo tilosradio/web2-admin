@@ -4,10 +4,7 @@ import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import com.sun.xml.bind.api.ClassResolver;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
-import org.jboss.resteasy.plugins.providers.atom.Content;
-import org.jboss.resteasy.plugins.providers.atom.Feed;
-import org.jboss.resteasy.plugins.providers.atom.Link;
-import org.jboss.resteasy.plugins.providers.atom.Person;
+import org.jboss.resteasy.plugins.providers.atom.*;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
@@ -118,6 +115,11 @@ public class ModelTest
       link.setRel("edit");
       feed.getLinks().add(link);
       feed.getAuthors().add(new Person("Bill Burke"));
+
+       Entry e = new Entry();
+       e.setTitle("title");
+       e.setSummary(new Summary("asd"));
+       feed.getEntries().add(e);
 
       JAXBContext ctx = JAXBContext.newInstance(Feed.class);
 

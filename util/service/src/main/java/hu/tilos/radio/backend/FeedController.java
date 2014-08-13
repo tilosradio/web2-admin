@@ -4,10 +4,7 @@ import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.Show;
 import hu.tilos.radio.backend.data.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
-import org.jboss.resteasy.plugins.providers.atom.Entry;
-import org.jboss.resteasy.plugins.providers.atom.Feed;
-import org.jboss.resteasy.plugins.providers.atom.Link;
-import org.jboss.resteasy.plugins.providers.atom.Person;
+import org.jboss.resteasy.plugins.providers.atom.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -64,18 +61,19 @@ public class FeedController {
             feed.setUpdated(new Date());
 
 
-            Link showLink = new Link();
-            showLink.setRel("self");
-            showLink.setType(new MediaType("application", "atom+xml"));
-            showLink.setHref(new URI(serverUrl + "/feed2/show/" + show.getAlias()));
+            Link feedLink = new Link();
+            feedLink.setRel("self");
+            feedLink.setType(new MediaType("application", "atom+xml"));
+            feedLink.setHref(new URI(serverUrl + "/feed/show/" + show.getAlias()));
 
-            feed.getLinks().add(showLink);
-            feed.setId(new URI("tilos:show/" + show.getAlias()));
+            feed.getLinks().add(feedLink);
+            feed.setId(new URI("http://tilos.hu/show/" + show.getAlias()));
 
 
             Date end = getNow();
             Date start = new Date();
-            start.setTime(end.getTime() - (long) 60 * 24 * 30 * 60 * 1000);
+            //three monthes
+            start.setTime(end.getTime() - (long) 60 * 24 * 30 * 3 * 60 * 1000);
 
             Person p = new Person();
             p.setEmail("info@tilos.hu");
@@ -88,10 +86,10 @@ public class FeedController {
                     Entry e = new Entry();
                     if (episode.getText() != null) {
                         e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + episode.getText().getTitle());
-                        e.setSummary(episode.getText().getContent());
+                        e.setSummary(new Summary("html",episode.getText().getContent()));
                     } else {
                         e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + "adásnapló");
-                        e.setSummary("adás archívum");
+                        e.setSummary(new Summary("adás archívum"));
                     }
 
 

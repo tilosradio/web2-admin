@@ -112,7 +112,7 @@ public class Entry extends CommonAttributes {
 
     private Source source;
 
-    private String summary;
+    private Summary summary;
 
     private Element anyOtherElement;
 
@@ -210,11 +210,11 @@ public class Entry extends CommonAttributes {
     }
 
     @XmlElement
-    public String getSummary() {
+    public Summary getSummary() {
         return summary;
     }
 
-    public void setSummary(String summary) {
+    public void setSummary(Summary summary) {
         this.summary = summary;
     }
 
