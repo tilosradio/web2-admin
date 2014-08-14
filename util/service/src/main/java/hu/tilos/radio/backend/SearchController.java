@@ -1,9 +1,16 @@
 package hu.tilos.radio.backend;
 
 
-import hu.radio.tilos.model.*;
+import hu.radio.tilos.model.Role;
+import hu.radio.tilos.model.TextContent;
 import hu.tilos.radio.backend.data.SearchResponse;
 import hu.tilos.radio.backend.data.SearchResponseElement;
+import hu.tilos.radio.jooqmodel.Tables;
+import hu.tilos.radio.jooqmodel.tables.daos.TextcontentDao;
+import hu.tilos.radio.jooqmodel.tables.pojos.Author;
+import hu.tilos.radio.jooqmodel.tables.pojos.Episode;
+import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
+import hu.tilos.radio.jooqmodel.tables.pojos.Textcontent;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
@@ -14,6 +21,7 @@ import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.util.StopwordAnalyzerBase;
 import org.apache.lucene.document.*;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -26,12 +34,19 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
+import org.jooq.*;
+import org.jooq.conf.Settings;
+import org.jooq.impl.DSL;
+import org.jooq.impl.DefaultConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.directory.SearchResult;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,44 +55,50 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import static hu.tilos.radio.jooqmodel.Tables.*;
 import static org.apache.lucene.util.Version.*;
 import static org.apache.lucene.util.Version.LUCENE_48;
 
 @Path("api/v1/search")
 public class SearchController {
 
-    private EntityManagerFactory emf;
-
+    private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
     private Directory index;
 
+    private DataSource dataSource;
 
-    private Directory getIndex() {
+    public SearchController(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    private Directory getIndex(DSLContext context) throws IOException {
         if (index == null) {
             index = new RAMDirectory();
-            index();
+            index(context);
         }
         return index;
+    }
+
+    private void index(DSLContext context) throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(LUCENE_48, createAnalyzer());
+
+        IndexWriter w = new IndexWriter(getIndex(context), config);
+        addAuthors(context, w);
+        addShows(context, w);
+        addPages(context, w);
+        addEpisodes(context, w);
+        w.close();
+
     }
 
     @GET
     @Path("index")
     public String index() {
         try {
-
-            EntityManager manager = emf.createEntityManager();
-
-
-            IndexWriterConfig config = new IndexWriterConfig(LUCENE_48, createAnalyzer());
-
-            IndexWriter w = new IndexWriter(getIndex(), config);
-            addAuthors(w);
-            addShows(w);
-            addPages(w);
-            addEpisodes(w);
-            w.close();
-
+            index(createDslContext());
             return "Indexing is finished";
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -116,7 +137,7 @@ public class SearchController {
     @Produces("application/json")
     @Security(role = Role.GUEST)
     public SearchResponse search(@QueryParam("q") String search) throws IOException, ParseException {
-
+        DSLContext context = createDslContext();
 
         MultiFieldQueryParser queryParser = new MultiFieldQueryParser(
                 LUCENE_48,
@@ -126,7 +147,7 @@ public class SearchController {
 
         org.apache.lucene.search.Query q = queryParser.parse(search);
 
-        IndexReader reader = IndexReader.open(getIndex());
+        IndexReader reader = IndexReader.open(getIndex(context));
         IndexSearcher searcher = new IndexSearcher(reader);
         TopScoreDocCollector collector = TopScoreDocCollector.create(10, true);
         searcher.search(q, collector);
@@ -138,6 +159,7 @@ public class SearchController {
             int docId = hits[i].doc;
             Document d = searcher.doc(docId);
             e.setScore(hits[i].score);
+            e.setAlias(d.getField("alias").stringValue());
             e.setUri(d.getField("uri").stringValue());
             e.setTitle(d.getField("name").stringValue());
             e.setDescription(d.getField("description").stringValue());
@@ -146,11 +168,8 @@ public class SearchController {
         return r;
     }
 
-    private void addAuthors(IndexWriter w) throws IOException {
-        EntityManager manager = emf.createEntityManager();
-        TypedQuery<Author> q = manager.createQuery("SELECT e FROM Author e", Author.class);
-        List<Author> result = q.getResultList();
-        for (Author a : result) {
+    private void addAuthors(DSLContext context, IndexWriter w) throws IOException {
+        for (Author a : context.selectFrom(AUTHOR).fetchInto(Author.class)) {
             Document doc = new Document();
             doc.add(new TextField("name", a.getName(), Field.Store.YES));
             if (a.getAlias() != null) {
@@ -167,7 +186,6 @@ public class SearchController {
             doc.add(new TextField("uri", "/author/" + a.getAlias(), Field.Store.YES));
             w.addDocument(doc);
         }
-        manager.close();
 
     }
 
@@ -179,11 +197,8 @@ public class SearchController {
         }
     }
 
-    private void addShows(IndexWriter w) throws IOException {
-        EntityManager manager = emf.createEntityManager();
-        TypedQuery<Show> q = manager.createQuery("SELECT e FROM Show e", Show.class);
-        List<Show> result = q.getResultList();
-        for (Show show : result) {
+    private void addShows(DSLContext context, IndexWriter w) throws IOException {
+        for (Radioshow show : context.selectFrom(RADIOSHOW).fetchInto(Radioshow.class)) {
             Document doc = new Document();
             doc.add(new TextField("name", show.getName(), Field.Store.YES));
             if (show.getAlias() != null) {
@@ -202,18 +217,16 @@ public class SearchController {
 
             w.addDocument(doc);
         }
-        manager.close();
 
     }
 
-    private void addPages(IndexWriter w) throws IOException {
-        EntityManager manager = emf.createEntityManager();
-        TypedQuery<TextContent> q = manager.createQuery("SELECT e FROM TextContent e where e.type = 'page'", TextContent.class);
-        List<TextContent> result = q.getResultList();
-        for (TextContent page : result) {
+    private void addPages(DSLContext context, IndexWriter w) throws IOException {
+        TextcontentDao dao = new TextcontentDao(context.configuration());
+        for (Textcontent page : dao.fetchByType("page")) {
             Document doc = new Document();
+
             doc.add(new TextField("content", safe(page.getContent()), Field.Store.NO));
-            //doc.add(new TextField("alias", safe(page.getAlias()), Field.Store.NO));
+            doc.add(new TextField("alias", safe(page.getAlias()), Field.Store.YES));
             doc.add(new TextField("name", safe(page.getTitle()), Field.Store.YES));
             doc.add(new TextField("description", shorten(safe(page.getContent()), 100), Field.Store.YES));
             doc.add(new TextField("content", safe(page.getContent()), Field.Store.NO));
@@ -225,28 +238,33 @@ public class SearchController {
             }
             w.addDocument(doc);
         }
-        manager.close();
 
     }
 
-    private void addEpisodes(IndexWriter w) throws IOException {
-        EntityManager manager = emf.createEntityManager();
-        TypedQuery<Episode> q = manager.createQuery("SELECT e FROM Episode e where e.text is not null", Episode.class);
-        List<Episode> result = q.getResultList();
-        for (Episode episode : result) {
-            TextContent text = episode.getText();
-            Document doc = new Document();
-            doc.add(new TextField("content", safe(text.getContent()), Field.Store.NO));
-            //doc.add(new TextField("alias", safe(page.getAlias()), Field.Store.NO));
-            doc.add(new TextField("name", safe(text.getTitle()), Field.Store.YES));
-            doc.add(new TextField("description", shorten(safe(text.getContent()), 100), Field.Store.YES));
-            doc.add(new TextField("content", safe(text.getContent()), Field.Store.NO));
-            doc.add(new TextField("type", "page", Field.Store.YES));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            doc.add(new TextField("uri", "/episode/" + episode.getShow().getAlias() + "/" + dateFormat.format(episode.getPlannedFrom()), Field.Store.YES));
-            w.addDocument(doc);
-        }
-        manager.close();
+    private void addEpisodes(DSLContext context, final IndexWriter w) throws IOException {
+        context.selectFrom(EPISODE.join(TEXTCONTENT).onKey().join(RADIOSHOW).onKey()).fetchInto(new RecordHandler<Record>() {
+            @Override
+            public void next(Record record) {
+                Episode episode = record.into(Episode.class);
+                Textcontent text = record.into(Textcontent.class);
+
+
+                Document doc = new Document();
+                doc.add(new TextField("content", safe(text.getContent()), Field.Store.NO));
+                //doc.add(new TextField("alias", safe(page.getAlias()), Field.Store.NO));
+                doc.add(new TextField("name", safe(text.getTitle()), Field.Store.YES));
+                doc.add(new TextField("description", shorten(safe(text.getContent()), 100), Field.Store.YES));
+                doc.add(new TextField("content", safe(text.getContent()), Field.Store.NO));
+                doc.add(new TextField("type", "page", Field.Store.YES));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                doc.add(new TextField("uri", "/episode/" + record.getValue(RADIOSHOW.ALIAS) + "/" + dateFormat.format(new Date(episode.getPlannedfrom().getTime())), Field.Store.YES));
+                try {
+                    w.addDocument(doc);
+                } catch (IOException e) {
+                    LOG.error("Can't index episode record", e);
+                }
+            }
+        });
 
     }
 
@@ -259,7 +277,8 @@ public class SearchController {
     }
 
 
-    public void setEntityManagerFactory(EntityManagerFactory emf) {
-        this.emf = emf;
+    private DSLContext createDslContext() {
+        return DSL.using(dataSource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));
     }
+
 }

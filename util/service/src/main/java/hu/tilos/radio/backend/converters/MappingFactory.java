@@ -3,6 +3,7 @@ package hu.tilos.radio.backend.converters;
 import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
+import org.jooq.DSLContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,8 +20,22 @@ public class MappingFactory {
         return mapper;
     }
 
+    public static DozerBeanMapper createDozer(DSLContext jooq) {
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        Map<String, CustomConverter> customConvertersWithId = new HashMap<>();
+        //customConvertersWithId.put(ChildEntityFieldConverter.ID, new ChildEntityFieldConverter(em));
+        mapper.setCustomConvertersWithId(customConvertersWithId);
+        return mapper;
+    }
+
     public static DozerBeanMapper createDozer(EntityManager em, BeanMappingBuilder builder) {
         DozerBeanMapper mapper = createDozer(em);
+        mapper.addMapping(builder);
+        return mapper;
+    }
+
+    public static DozerBeanMapper createDozer(DSLContext jooq, BeanMappingBuilder builder) {
+        DozerBeanMapper mapper = createDozer(jooq);
         mapper.addMapping(builder);
         return mapper;
     }

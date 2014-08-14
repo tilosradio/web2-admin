@@ -41,11 +41,11 @@
     </bean>
 
     <bean id="scheduledEpisodes" class="hu.tilos.radio.backend.episode.ScheduledEpisodeProvider">
-        <jpa:context unitname="tilos" property="entityManager"/>
+        <argument index="0" ref="dataSource"></argument>
     </bean>
 
     <bean id="persistentEpisodes" class="hu.tilos.radio.backend.episode.PersistentEpisodeProvider">
-        <jpa:context unitname="tilos" property="entityManager"/>
+        <argument index="0" ref="dataSource"></argument>
     </bean>
 
     <bean id="episodeUtil" class="hu.tilos.radio.backend.episode.EpisodeUtil">
@@ -56,10 +56,13 @@
     <jaxrs:server address="http://localhost:9090" id="smoketest">
         <jaxrs:serviceBeans>
             <bean class="hu.tilos.radio.backend.Smoketest"></bean>
+
             <bean class="hu.tilos.radio.backend.SearchController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
             </bean>
+
             <ref component-id="mixController"></ref>
+
             <bean class="hu.tilos.radio.backend.ShowController">
                 <property name="entityManagerFactory" ref="entityManagerFactory"></property>
             </bean>
@@ -72,17 +75,18 @@
 
             <bean class="hu.tilos.radio.backend.M3uController">
                 <property name="episodeUtil" ref="episodeUtil"></property>
-                <jpa:context unitname="tilos" property="entityManager"/>
             </bean>
+
         </jaxrs:serviceBeans>
+
         <jaxrs:providers>
             <ref component-id="GsonWriter"></ref>
             <ref component-id="GsonReader"></ref>
             <bean class="hu.tilos.radio.backend.AuthenticationFilter">
                 <property name="serverUrl" value="${server.url}"></property>
             </bean>
-
         </jaxrs:providers>
+
         <jaxrs:invoker>
             <bean class="hu.tilos.radio.backend.AuthorizationInvoker"></bean>
         </jaxrs:invoker>

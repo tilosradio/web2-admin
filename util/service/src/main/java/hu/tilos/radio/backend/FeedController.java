@@ -47,15 +47,14 @@ public class FeedController {
 
     private String serverUrl;
 
-    private final RadioshowDao showDao;
+    private final DataSource dataSource;
 
     public FeedController(DataSource dataSource) {
-        Settings settings = new Settings();
-        settings.withRenderSchema(false);
+        this.dataSource = dataSource;
+    }
 
-        Configuration configuration = new DefaultConfiguration().set(dataSource).set(SQLDialect.MYSQL).set(settings);
-
-        showDao = new RadioshowDao(configuration);
+    private Configuration createConfiguration() {
+        return new DefaultConfiguration().set(dataSource).set(SQLDialect.MYSQL).set(new Settings().withRenderSchema(false));
     }
 
     @GET
@@ -65,7 +64,7 @@ public class FeedController {
     public Response feed(@PathParam("alias") String alias) {
         Feed feed = new Feed();
         try {
-            List<Radioshow> result = showDao.fetchByAlias(alias);
+            List<Radioshow> result = new RadioshowDao(createConfiguration()).fetchByAlias(alias);
             if (result.size() < 1) {
                 return Response.status(Response.Status.NOT_FOUND).entity("Show is missing: " + alias).build();
             }

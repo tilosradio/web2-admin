@@ -19,29 +19,23 @@ import static org.junit.Assert.*;
 
 public class SearchControllerTest {
 
-    //@BeforeClass
+    @BeforeClass
     public static void testDataInit() throws Exception {
-        JdbcDatabaseTester tester = new JdbcDatabaseTester("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/tilos_test", "root", "");
-        tester.setDataSet(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
-        tester.onSetup();
+        TestUtil.inidTestData();
     }
 
     @Test
-    @Ignore
     public void test() throws IOException, ParseException {
         //given
-        SearchController controller = new SearchController();
-        controller.setEntityManagerFactory(Persistence.createEntityManagerFactory("tilos-test"));
+        SearchController controller = new SearchController(TestUtil.initDatasource());
 
         //when
         SearchResponse respo = controller.search("tamogatas");
 
         //then
         Assert.assertEquals(1, respo.getElements().size());
-        for (SearchResponseElement element : respo.getElements()) {
-            System.out.println(element.getAlias());
-            System.out.println(element.getTitle());
-        }
+        SearchResponseElement searchResponseElement = respo.getElements().get(0);
+        Assert.assertEquals("asd", searchResponseElement.getAlias());
     }
 
 }

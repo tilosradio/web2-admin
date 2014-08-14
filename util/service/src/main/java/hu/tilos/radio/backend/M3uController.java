@@ -23,8 +23,6 @@ import java.util.List;
 @Path("/api/v1/m3u")
 public class M3uController {
 
-    private EntityManager entityManager;
-
     private EpisodeUtil episodeUtil;
 
     private static final SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy'.'MM'.'dd");
@@ -80,14 +78,6 @@ public class M3uController {
             result.append(FeedController.createDownloadURI(episode) + "\n");
         }
         return Response.ok(result.toString()).build();
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
     }
 
     public EpisodeUtil getEpisodeUtil() {

@@ -51,10 +51,9 @@ public class FeedControllerTest {
         c.setServerUrl("http://tilos.hu");
 
         EpisodeUtil u = new EpisodeUtil();
-        ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider();
-        sp.setEntityManager(emf.createEntityManager());
-        PersistentEpisodeProvider pp = new PersistentEpisodeProvider();
-        pp.setEntityManager(emf.createEntityManager());
+        ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider(dataSource);
+        PersistentEpisodeProvider pp = new PersistentEpisodeProvider(dataSource);
+
         u.setPersistentProvider(pp);
         u.setScheduledProvider(sp);
         c.setEpisodeUtil(u);

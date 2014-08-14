@@ -85,7 +85,6 @@ public class MixController {
         Query q = entityManager.createQuery("SELECT m from Mix m", Mix.class);
         List<Mix> mixes = q.getResultList();
 
-
         DozerBeanMapper mapper = new DozerBeanMapper();
         mapper.addMapping(retrieveBuilder);
 
