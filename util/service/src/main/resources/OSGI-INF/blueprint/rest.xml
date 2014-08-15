@@ -56,7 +56,7 @@
             <bean class="hu.tilos.radio.backend.Smoketest"></bean>
 
             <bean class="hu.tilos.radio.backend.SearchController">
-                <property name="entityManagerFactory" ref="entityManagerFactory"></property>
+                <argument index="0" ref="dataSource"></argument>
             </bean>
 
             <ref component-id="mixController"></ref>
