@@ -159,7 +159,11 @@ public class SearchController {
             int docId = hits[i].doc;
             Document d = searcher.doc(docId);
             e.setScore(hits[i].score);
-            e.setAlias(d.getField("alias").stringValue());
+            if (d.getField("alias") != null) {
+                e.setAlias(d.getField("alias").stringValue());
+            } else {
+                e.setAlias("");
+            }
             e.setUri(d.getField("uri").stringValue());
             e.setTitle(d.getField("name").stringValue());
             e.setDescription(d.getField("description").stringValue());
@@ -226,7 +230,7 @@ public class SearchController {
             Document doc = new Document();
 
             doc.add(new TextField("content", safe(page.getContent()), Field.Store.NO));
-            doc.add(new TextField("alias", safe(page.getAlias()), Field.Store.YES));
+            doc.add(new TextField("alias", safe(page.getAlias() != null ? page.getAlias() : ""), Field.Store.YES));
             doc.add(new TextField("name", safe(page.getTitle()), Field.Store.YES));
             doc.add(new TextField("description", shorten(safe(page.getContent()), 100), Field.Store.YES));
             doc.add(new TextField("content", safe(page.getContent()), Field.Store.NO));
