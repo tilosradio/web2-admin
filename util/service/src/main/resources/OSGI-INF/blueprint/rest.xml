@@ -9,8 +9,6 @@
   http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
   http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
   http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
-
-
     <reference id="dataSource" interface="javax.sql.DataSource" filter="(datasource.name=tilos)"></reference>
 
 
@@ -53,7 +51,7 @@
         <property name="scheduledProvider" ref="scheduledEpisodes"></property>
     </bean>
 
-    <jaxrs:server address="http://localhost:9090" id="smoketest">
+    <jaxrs:server address="http://localhost:${rest.port}" id="smoketest">
         <jaxrs:serviceBeans>
             <bean class="hu.tilos.radio.backend.Smoketest"></bean>
 
