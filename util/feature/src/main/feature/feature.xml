@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
     <feature name='tilos-lucene' description='Lucene artifacts' version='${project.version}'>
 
@@ -17,6 +16,17 @@
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queries/4.8.1_1</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queryparser/4.8.1_1</bundle>
         <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-sandbox/4.8.1_1</bundle>
+
+        <bundle>mvn:org.jolokia/jolokia-osgi-bundle/1.2.2</bundle>
+        <bundle>mvn:org.apache.geronimo.specs/geronimo-servlet_3.0_spec/1.0</bundle>
+        <bundle>mvn:org.jooq/jooq/3.4.2</bundle>
+
+        <bundle>mvn:hu.tilos.radio/resteasy-atom-provider/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:hu.tilos.radio/streamer/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:hu.tilos.radio/jooq-model/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:hu.tilos.radio/model/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:hu.tilos.radio/service/1.0-SNAPSHOT</bundle>
+
 
     </feature>
 
