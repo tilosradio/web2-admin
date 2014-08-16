@@ -34,6 +34,11 @@ public class Tables {
 	public static final hu.tilos.radio.jooqmodel.tables.AuthorUrl AUTHOR_URL = hu.tilos.radio.jooqmodel.tables.AuthorUrl.AUTHOR_URL;
 
 	/**
+	 * The table tilos2.bookmark
+	 */
+	public static final hu.tilos.radio.jooqmodel.tables.Bookmark BOOKMARK = hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK;
+
+	/**
 	 * The table tilos2.change_password
 	 */
 	public static final hu.tilos.radio.jooqmodel.tables.ChangePassword CHANGE_PASSWORD = hu.tilos.radio.jooqmodel.tables.ChangePassword.CHANGE_PASSWORD;

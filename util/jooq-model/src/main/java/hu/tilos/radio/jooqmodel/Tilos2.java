@@ -11,7 +11,7 @@ package hu.tilos.radio.jooqmodel;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tilos2 extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = -1428212359;
+	private static final long serialVersionUID = -2101313076;
 
 	/**
 	 * The singleton instance of <code>tilos2</code>
@@ -38,6 +38,7 @@ public class Tilos2 extends org.jooq.impl.SchemaImpl {
 			hu.tilos.radio.jooqmodel.tables.Audit.AUDIT,
 			hu.tilos.radio.jooqmodel.tables.Author.AUTHOR,
 			hu.tilos.radio.jooqmodel.tables.AuthorUrl.AUTHOR_URL,
+			hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK,
 			hu.tilos.radio.jooqmodel.tables.ChangePassword.CHANGE_PASSWORD,
 			hu.tilos.radio.jooqmodel.tables.Contribution.CONTRIBUTION,
 			hu.tilos.radio.jooqmodel.tables.Episode.EPISODE,
