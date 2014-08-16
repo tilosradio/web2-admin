@@ -45,6 +45,8 @@ public class LocalBackend implements Backend {
             while ((r = is.read(b)) != -1) {
                 out.write(b, 0, r);
             }
+            out.flush();
+            out.close();
         } catch (Exception ex) {
             if (!ex.getClass().getName().contains("EofException")) {
                 throw new RuntimeException(ex.getMessage(), ex);
@@ -52,8 +54,8 @@ public class LocalBackend implements Backend {
         } finally {
             is.close();
         }
-        out.flush();
-        out.close();
+
+
     }
 
     @Override
