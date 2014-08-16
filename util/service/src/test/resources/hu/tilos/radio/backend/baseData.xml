@@ -13,7 +13,8 @@
 
     <radioshow id="1" name="3. utas" alias="3utas" description="a potyoutasok műsora" type="0" status="1"></radioshow>
     <radioshow id="2" name="Haza és Haladás" alias="hazaeshaladas" description="h%h" type="0" status="1"></radioshow>
-    <radioshow id="3" name="Vendéglő a világ végén" alias="vendeglo" description="mindenkiboldog" type="0" status="1"></radioshow>
+    <radioshow id="3" name="Vendéglő a világ végén" alias="vendeglo" description="mindenkiboldog" type="0"
+               status="1"></radioshow>
     <show_url radioshow_id="1" url_id="2"></show_url>
 
     <episode id="2"
@@ -28,7 +29,6 @@
     <episode id="1" radioshow_id="1" plannedFrom="2014-04-04 08:00:00" plannedTo="2014-04-04 10:00:00"
              realTo="2014-04-04 10:00:00" realFrom="2014-04-04 08:00:00"></episode>
 
-
     <scheduling id="1" validFrom="2014-04-15 10:00:00" validTo="2014-06-10 10:00:00" hourFrom="8" minFrom="0"
                 duration="120"
                 weekType="1" base="2014-04-15 10:00:00" weekDay="5" radioshow_id="1"></scheduling>
@@ -39,6 +39,9 @@
                 base="2014-04-15 10:00:00"
                 weekDay="5"
                 radioshow_id="3"></scheduling>
+
+    <bookmark id="1" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00" title="Jo kis beszelgetes 1" content="x" episode_id="1"></bookmark>
+    <!--<bookmark id="2" from="2014-04-04 08:13:00" to="2014-04-04 10:13:00" modified="2014-04-04 08:13:00" title="Jo kis beszelgetes 2" content="x" episode_id="2"></bookmark>-->
 
     <contribution id="1" nick="szab" author_id="1" radioshow_id="1"></contribution>
 

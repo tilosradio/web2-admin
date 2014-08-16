@@ -2,6 +2,7 @@
     api_audit*,
     author*,
     author_url*,
+    bookmark*,
     change_password*,
     contribution*,
     episode*,
@@ -43,6 +44,19 @@
 <!ATTLIST author_url
     author_id CDATA #REQUIRED
     url_id CDATA #REQUIRED
+>
+
+<!ELEMENT bookmark EMPTY>
+<!ATTLIST bookmark
+    id CDATA #REQUIRED
+    radioshow_id CDATA #IMPLIED
+    episode_id CDATA #IMPLIED
+    user_id CDATA #IMPLIED
+    modified CDATA #REQUIRED
+    title CDATA #REQUIRED
+    content CDATA #REQUIRED
+    start CDATA #REQUIRED
+    end CDATA #REQUIRED
 >
 
 <!ELEMENT change_password EMPTY>

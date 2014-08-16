@@ -11,7 +11,7 @@ package hu.tilos.radio.jooqmodel.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark extends org.jooq.impl.TableImpl<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord> {
 
-	private static final long serialVersionUID = 2131697771;
+	private static final long serialVersionUID = -44839615;
 
 	/**
 	 * The singleton instance of <code>tilos2.bookmark</code>
@@ -47,16 +47,6 @@ public class Bookmark extends org.jooq.impl.TableImpl<hu.tilos.radio.jooqmodel.t
 	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.lang.Integer> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
-	 * The column <code>tilos2.bookmark.from</code>.
-	 */
-	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.sql.Timestamp> FROM = createField("from", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
-
-	/**
-	 * The column <code>tilos2.bookmark.to</code>.
-	 */
-	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.sql.Timestamp> TO = createField("to", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
-
-	/**
 	 * The column <code>tilos2.bookmark.modified</code>.
 	 */
 	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.sql.Timestamp> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
@@ -70,6 +60,16 @@ public class Bookmark extends org.jooq.impl.TableImpl<hu.tilos.radio.jooqmodel.t
 	 * The column <code>tilos2.bookmark.content</code>.
 	 */
 	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.lang.String> CONTENT = createField("content", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+
+	/**
+	 * The column <code>tilos2.bookmark.start</code>.
+	 */
+	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.sql.Timestamp> START = createField("start", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+
+	/**
+	 * The column <code>tilos2.bookmark.end</code>.
+	 */
+	public final org.jooq.TableField<hu.tilos.radio.jooqmodel.tables.records.BookmarkRecord, java.sql.Timestamp> END = createField("end", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
 	/**
 	 * Create a <code>tilos2.bookmark</code> table reference

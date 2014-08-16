@@ -20,11 +20,11 @@ class Bookmark
     /**
      * @ORM\Column(type="datetime")
      * */
-    protected $from;
+    protected $start;
     /**
      * @ORM\Column(type="datetime")
      * */
-    protected $to;
+    protected $end;
     /**
      * @ORM\ManyToOne(targetEntity = "Show")
      * @ORM\JoinColumn(name = "radioshow_id", referencedColumnName = "id")
@@ -102,21 +102,6 @@ class Bookmark
         $this->episode = $episode;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFrom()
-    {
-        return $this->from;
-    }
-
-    /**
-     * @param mixed $from
-     */
-    public function setFrom($from)
-    {
-        $this->from = $from;
-    }
 
     /**
      * @return mixed
@@ -185,17 +170,33 @@ class Bookmark
     /**
      * @return mixed
      */
-    public function getTo()
+    public function getEnd()
     {
-        return $this->to;
+        return $this->end;
     }
 
     /**
-     * @param mixed $to
+     * @param mixed $end
      */
-    public function setTo($to)
+    public function setEnd($end)
     {
-        $this->to = $to;
+        $this->end = $end;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @param mixed $start
+     */
+    public function setStart($start)
+    {
+        $this->start = $start;
     }
 
 

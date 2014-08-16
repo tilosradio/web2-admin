@@ -69,20 +69,6 @@ public class BookmarkDao extends org.jooq.impl.DAOImpl<hu.tilos.radio.jooqmodel.
 	}
 
 	/**
-	 * Fetch records that have <code>from IN (values)</code>
-	 */
-	public java.util.List<hu.tilos.radio.jooqmodel.tables.pojos.Bookmark> fetchByFrom(java.sql.Timestamp... values) {
-		return fetch(hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK.FROM, values);
-	}
-
-	/**
-	 * Fetch records that have <code>to IN (values)</code>
-	 */
-	public java.util.List<hu.tilos.radio.jooqmodel.tables.pojos.Bookmark> fetchByTo(java.sql.Timestamp... values) {
-		return fetch(hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK.TO, values);
-	}
-
-	/**
 	 * Fetch records that have <code>modified IN (values)</code>
 	 */
 	public java.util.List<hu.tilos.radio.jooqmodel.tables.pojos.Bookmark> fetchByModified(java.sql.Timestamp... values) {
@@ -101,5 +87,19 @@ public class BookmarkDao extends org.jooq.impl.DAOImpl<hu.tilos.radio.jooqmodel.
 	 */
 	public java.util.List<hu.tilos.radio.jooqmodel.tables.pojos.Bookmark> fetchByContent(java.lang.String... values) {
 		return fetch(hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK.CONTENT, values);
+	}
+
+	/**
+	 * Fetch records that have <code>start IN (values)</code>
+	 */
+	public java.util.List<hu.tilos.radio.jooqmodel.tables.pojos.Bookmark> fetchByStart(java.sql.Timestamp... values) {
+		return fetch(hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK.START, values);
+	}
+
+	/**
+	 * Fetch records that have <code>end IN (values)</code>
+	 */
+	public java.util.List<hu.tilos.radio.jooqmodel.tables.pojos.Bookmark> fetchByEnd(java.sql.Timestamp... values) {
+		return fetch(hu.tilos.radio.jooqmodel.tables.Bookmark.BOOKMARK.END, values);
 	}
 }

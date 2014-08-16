@@ -11,17 +11,17 @@ package hu.tilos.radio.jooqmodel.tables.pojos;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark implements java.io.Serializable {
 
-	private static final long serialVersionUID = -1027552049;
+	private static final long serialVersionUID = -1730657921;
 
 	private java.lang.Integer  id;
 	private java.lang.Integer  radioshowId;
 	private java.lang.Integer  episodeId;
 	private java.lang.Integer  userId;
-	private java.sql.Timestamp from;
-	private java.sql.Timestamp to;
 	private java.sql.Timestamp modified;
 	private java.lang.String   title;
 	private java.lang.String   content;
+	private java.sql.Timestamp start;
+	private java.sql.Timestamp end;
 
 	public Bookmark() {}
 
@@ -30,21 +30,21 @@ public class Bookmark implements java.io.Serializable {
 		java.lang.Integer  radioshowId,
 		java.lang.Integer  episodeId,
 		java.lang.Integer  userId,
-		java.sql.Timestamp from,
-		java.sql.Timestamp to,
 		java.sql.Timestamp modified,
 		java.lang.String   title,
-		java.lang.String   content
+		java.lang.String   content,
+		java.sql.Timestamp start,
+		java.sql.Timestamp end
 	) {
 		this.id = id;
 		this.radioshowId = radioshowId;
 		this.episodeId = episodeId;
 		this.userId = userId;
-		this.from = from;
-		this.to = to;
 		this.modified = modified;
 		this.title = title;
 		this.content = content;
+		this.start = start;
+		this.end = end;
 	}
 
 	public java.lang.Integer getId() {
@@ -79,22 +79,6 @@ public class Bookmark implements java.io.Serializable {
 		this.userId = userId;
 	}
 
-	public java.sql.Timestamp getFrom() {
-		return this.from;
-	}
-
-	public void setFrom(java.sql.Timestamp from) {
-		this.from = from;
-	}
-
-	public java.sql.Timestamp getTo() {
-		return this.to;
-	}
-
-	public void setTo(java.sql.Timestamp to) {
-		this.to = to;
-	}
-
 	public java.sql.Timestamp getModified() {
 		return this.modified;
 	}
@@ -117,5 +101,21 @@ public class Bookmark implements java.io.Serializable {
 
 	public void setContent(java.lang.String content) {
 		this.content = content;
+	}
+
+	public java.sql.Timestamp getStart() {
+		return this.start;
+	}
+
+	public void setStart(java.sql.Timestamp start) {
+		this.start = start;
+	}
+
+	public java.sql.Timestamp getEnd() {
+		return this.end;
+	}
+
+	public void setEnd(java.sql.Timestamp end) {
+		this.end = end;
 	}
 }
