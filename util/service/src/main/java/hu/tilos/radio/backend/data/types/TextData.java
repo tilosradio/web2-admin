@@ -1,4 +1,4 @@
-package hu.tilos.radio.backend.data;
+package hu.tilos.radio.backend.data.types;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

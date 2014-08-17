@@ -1,7 +1,7 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
-import hu.tilos.radio.backend.data.EpisodeData;
+import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import hu.tilos.radio.jooqmodel.tables.daos.RadioshowDao;
 import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;

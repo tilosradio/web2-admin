@@ -75,7 +75,7 @@
             <artifactId>lucene-analyzers-common</artifactId>
             <version>4.8.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -85,6 +85,18 @@
             <groupId>net.sf.dozer</groupId>
             <artifactId>dozer</artifactId>
             <version>5.5.1</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper.extensions</groupId>
+            <artifactId>modelmapper-jooq</artifactId>
+            <version>0.7.2</version>
         </dependency>
 
 

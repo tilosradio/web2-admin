@@ -2,7 +2,7 @@ package hu.tilos.radio.backend.episode;
 
 import ch.qos.logback.classic.Level;
 import hu.tilos.radio.backend.TestUtil;
-import hu.tilos.radio.backend.data.EpisodeData;
+import hu.tilos.radio.backend.data.types.EpisodeData;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class PersistentEpisodeProviderTest {
         Assert.assertEquals(2, episodes.size());
         Assert.assertNotNull(episodes.get(0).getShow());
         Assert.assertNotNull(episodes.get(0).getText());
-        Assert.assertEquals("Jo kis beszelgetes 1",episodes.get(0).getText().getTitle());
+        Assert.assertEquals("Jo kis beszelgetes 1", episodes.get(0).getText().getTitle());
         Assert.assertNotNull(episodes.get(1).getText());
         Assert.assertEquals("Jo musor",episodes.get(1).getText().getTitle());
 

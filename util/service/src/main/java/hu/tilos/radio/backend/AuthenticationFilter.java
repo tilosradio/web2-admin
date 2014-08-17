@@ -1,8 +1,6 @@
 package hu.tilos.radio.backend;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import hu.tilos.radio.backend.data.RoleData;
 import hu.tilos.radio.backend.data.UserResponse;
 import org.apache.cxf.jaxrs.ext.RequestHandler;
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;

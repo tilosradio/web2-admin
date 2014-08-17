@@ -1,4 +1,7 @@
-package hu.tilos.radio.backend.data;
+package hu.tilos.radio.backend.data.types;
+
+import hu.tilos.radio.backend.data.types.ShowSimple;
+import hu.tilos.radio.backend.data.types.TextData;
 
 /**
  * Json transfer object for episodes;

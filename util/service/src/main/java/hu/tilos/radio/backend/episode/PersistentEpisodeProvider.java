@@ -1,35 +1,29 @@
 package hu.tilos.radio.backend.episode;
 
 
-import hu.radio.tilos.model.Show;
-import hu.radio.tilos.model.TextContent;
 import hu.tilos.radio.backend.converters.MappingFactory;
-import hu.tilos.radio.backend.data.EpisodeData;
+import hu.tilos.radio.backend.data.types.EpisodeData;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.sql.DataSource;
-import javax.xml.soap.Text;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import hu.tilos.radio.backend.data.ShowSimple;
-import hu.tilos.radio.backend.data.TextData;
+import hu.tilos.radio.backend.data.types.ShowSimple;
+import hu.tilos.radio.backend.data.types.TextData;
+
 import hu.tilos.radio.jooqmodel.Tables;
 import hu.tilos.radio.jooqmodel.tables.pojos.Bookmark;
 import hu.tilos.radio.jooqmodel.tables.pojos.Episode;
 import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
 import hu.tilos.radio.jooqmodel.tables.pojos.Textcontent;
-import hu.tilos.radio.jooqmodel.tables.records.EpisodeRecord;
+import hu.tilos.radio.jooqmodel.tables.records.TextcontentRecord;
 import org.dozer.DozerBeanMapper;
-import org.dozer.loader.api.BeanMappingBuilder;
 import org.jooq.*;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
-import org.jooq.impl.DefaultConfiguration;
 
 import static hu.tilos.radio.jooqmodel.Tables.*;
 
@@ -78,7 +72,6 @@ public class PersistentEpisodeProvider {
             Result<Record> epiRecords = episodes.get(key);
             System.out.println(epiRecords);
             Episode e = epiRecords.get(0).into(Episode.class);
-
             EpisodeData ed = mapper.map(e, EpisodeData.class);
             TextData td = new TextData();
 

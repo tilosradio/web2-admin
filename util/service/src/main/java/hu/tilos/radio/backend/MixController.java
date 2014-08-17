@@ -1,21 +1,17 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
-import hu.radio.tilos.model.MixType;
 import hu.radio.tilos.model.Role;
-import hu.radio.tilos.model.Show;
 import hu.tilos.radio.backend.converters.*;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.MixRequest;
 import hu.tilos.radio.backend.data.MixResponse;
-import hu.tilos.radio.backend.data.ShowDetailed;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.DozerBuilder;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOption;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.ws.rs.*;
 

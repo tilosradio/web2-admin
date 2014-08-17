@@ -62,7 +62,7 @@
             <ref component-id="mixController"></ref>
 
             <bean class="hu.tilos.radio.backend.ShowController">
-                <property name="entityManagerFactory" ref="entityManagerFactory"></property>
+                <argument index="0" ref="dataSource"></argument>
             </bean>
 
             <bean class="hu.tilos.radio.backend.FeedController">

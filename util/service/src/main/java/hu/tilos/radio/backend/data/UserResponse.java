@@ -1,6 +1,8 @@
 package hu.tilos.radio.backend.data;
 
 
+import hu.tilos.radio.backend.data.types.RoleData;
+
 public class UserResponse {
     private int id;
     private String username;

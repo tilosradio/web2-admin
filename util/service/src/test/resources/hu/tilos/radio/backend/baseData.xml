@@ -1,6 +1,7 @@
 <!DOCTYPE dataset SYSTEM "src/test/resources/schema.dtd">
 <dataset>
     <author id="1" name="AUTHOR1" photo="asd" avatar="asd" introduction="nothing"></author>
+    <author id="2" name="AUTHOR2" photo="asd" avatar="asd" introduction="nothing"></author>
     <url id="1" url="http://szabi.hu"></url>
     <url id="2" url="http://show1.com"></url>
     <author_url author_id="1" url_id="1"></author_url>
@@ -16,6 +17,9 @@
     <radioshow id="3" name="Vendéglő a világ végén" alias="vendeglo" description="mindenkiboldog" type="0"
                status="1"></radioshow>
     <show_url radioshow_id="1" url_id="2"></show_url>
+
+    <contribution id="1" nick="bela" author_id="1" radioshow_id="1"></contribution>
+    <contribution id="2" nick="bela" author_id="2" radioshow_id="1"></contribution>
 
     <episode id="2"
              radioshow_id="1"
@@ -40,11 +44,12 @@
                 weekDay="5"
                 radioshow_id="3"></scheduling>
 
-    <bookmark id="1" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00" title="Jo kis beszelgetes 1" content="x1" episode_id="1"></bookmark>
-    <bookmark id="2" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00" title="Jo kis beszelgetes 2" content="x2" episode_id="1"></bookmark>
-
-    <contribution id="1" nick="szab" author_id="1" radioshow_id="1"></contribution>
+    <bookmark id="1" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00"
+              title="Jo kis beszelgetes 1" content="x1" episode_id="1"></bookmark>
+    <bookmark id="2" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00"
+              title="Jo kis beszelgetes 2" content="x2" episode_id="1"></bookmark>
 
     <mix id="1" type="1" author="asd" title="good mix" file="asd.mp3" date="2013-04-05" show_id="1"></mix>
+    <mix id="3" type="1" author="asd" title="good mix2" file="asd2.mp3" date="2013-04-05" show_id="1"></mix>
     <mix id="2" type="1" author="asd" title="good mix2" file="asd2.mp3"></mix>
 </dataset>

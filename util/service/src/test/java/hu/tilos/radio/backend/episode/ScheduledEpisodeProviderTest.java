@@ -1,7 +1,7 @@
 package hu.tilos.radio.backend.episode;
 
 import hu.tilos.radio.backend.TestUtil;
-import hu.tilos.radio.backend.data.EpisodeData;
+import hu.tilos.radio.backend.data.types.EpisodeData;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

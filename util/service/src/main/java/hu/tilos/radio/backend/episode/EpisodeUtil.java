@@ -1,6 +1,6 @@
 package hu.tilos.radio.backend.episode;
 
-import hu.tilos.radio.backend.data.EpisodeData;
+import hu.tilos.radio.backend.data.types.EpisodeData;
 
 import java.util.Date;
 import java.util.List;

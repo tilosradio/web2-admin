@@ -1,25 +1,16 @@
 package hu.tilos.radio.backend.episode;
 
-import hu.radio.tilos.model.Episode;
-
 import hu.tilos.radio.backend.converters.MappingFactory;
-import hu.tilos.radio.backend.data.EpisodeData;
-import hu.tilos.radio.backend.data.ShowSimple;
-import hu.tilos.radio.backend.data.TextData;
-import hu.tilos.radio.jooqmodel.Tables;
+import hu.tilos.radio.backend.data.types.EpisodeData;
+import hu.tilos.radio.backend.data.types.ShowSimple;
 import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
 import hu.tilos.radio.jooqmodel.tables.pojos.Scheduling;
-import hu.tilos.radio.jooqmodel.tables.pojos.Textcontent;
 import org.dozer.DozerBeanMapper;
 import org.jooq.*;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.sql.DataSource;
-import java.sql.*;
-import java.text.DateFormat;
 import java.util.*;
 import java.util.Date;
 

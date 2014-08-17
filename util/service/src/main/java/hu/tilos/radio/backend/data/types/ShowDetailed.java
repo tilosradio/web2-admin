@@ -1,8 +1,7 @@
-package hu.tilos.radio.backend.data;
+package hu.tilos.radio.backend.data.types;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowDetailed {
 
@@ -23,6 +22,34 @@ public class ShowDetailed {
     private int status;
 
     private String statusTxt;
+
+    private List<MixSimple> mixes = new ArrayList<>();
+
+    private List<Contributor> contributors = new ArrayList<>();
+
+    public List<Contributor> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(List<Contributor> contributors) {
+        this.contributors = contributors;
+    }
+
+    public String getStatusTxt() {
+        return statusTxt;
+    }
+
+    public void setStatusTxt(String statusTxt) {
+        this.statusTxt = statusTxt;
+    }
+
+    public List<MixSimple> getMixes() {
+        return mixes;
+    }
+
+    public void setMixes(List<MixSimple> mixes) {
+        this.mixes = mixes;
+    }
 
     public String getAlias() {
         return alias;
