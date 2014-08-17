@@ -16,7 +16,7 @@ import java.util.Properties;
 public class DbHelper {
 
     @Test
-    @Ignore
+    //@Ignore
     public void testSchemaCreation() throws Exception {
         Properties p = TestUtil.loadProperties();
 
