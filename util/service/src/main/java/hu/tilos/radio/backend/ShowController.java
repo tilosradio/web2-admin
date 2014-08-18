@@ -1,5 +1,6 @@
 package hu.tilos.radio.backend;
 
+import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.data.types.AuthorSimple;
 import hu.tilos.radio.backend.data.types.Contributor;
 import hu.tilos.radio.backend.data.types.MixSimple;
@@ -36,25 +37,31 @@ public class ShowController {
 
     @Produces("application/json")
     @Path("/{alias}")
+    @Security(role = Role.GUEST)
     @GET
     public ShowDetailed get(@PathParam("alias") String alias) {
         DSLContext context = DSL.using(datasource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));
 
 
-        Result<Record> result = context.selectFrom(
+        SelectConditionStep<Record> query = context.selectFrom(
                 RADIOSHOW.
-                        join(MIX).on(MIX.SHOW_ID.eq(RADIOSHOW.ID)).
-                        join(CONTRIBUTION).on(CONTRIBUTION.RADIOSHOW_ID.eq(RADIOSHOW.ID)).
-                        join(AUTHOR).on(AUTHOR.ID.eq(CONTRIBUTION.AUTHOR_ID))).
-                where(RADIOSHOW.ALIAS.eq(alias)).fetch();
+                        join(MIX, JoinType.LEFT_OUTER_JOIN).on(MIX.SHOW_ID.eq(RADIOSHOW.ID)).
+                        join(CONTRIBUTION, JoinType.LEFT_OUTER_JOIN).on(CONTRIBUTION.RADIOSHOW_ID.eq(RADIOSHOW.ID)).
+                        join(AUTHOR, JoinType.LEFT_OUTER_JOIN).on(AUTHOR.ID.eq(CONTRIBUTION.AUTHOR_ID))).
+                where(RADIOSHOW.ALIAS.eq(alias));
+
+        System.out.println(query.getSQL());
+        Result<Record> result = query.fetch();
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().addValueReader(new RecordValueReader());
 
         ShowDetailed detailed = modelMapper.map(result.get(0), ShowDetailed.class);
 
-        for (Result<Record> r : result.intoGroups(MIX.SHOW_ID).get(detailed.getId()).intoGroups(MIX.ID).values()) {
-            detailed.getMixes().add(modelMapper.map(r.get(0), MixSimple.class));
+        if (result.get(0).getValue(MIX.ID) != null) {
+            for (Result<Record> r : result.intoGroups(MIX.SHOW_ID).get(detailed.getId()).intoGroups(MIX.ID).values()) {
+                detailed.getMixes().add(modelMapper.map(r.get(0), MixSimple.class));
+            }
         }
 
         for (Result<Record> r : result.intoGroups(CONTRIBUTION.RADIOSHOW_ID).get(detailed.getId()).intoGroups(CONTRIBUTION.ID).values()) {
