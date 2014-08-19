@@ -10,6 +10,7 @@ import org.jooq.*;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.*;
 import java.util.Date;
@@ -21,11 +22,8 @@ import static hu.tilos.radio.jooqmodel.Tables.*;
  */
 public class ScheduledEpisodeProvider {
 
-    private final DataSource dataSource;
-
-    public ScheduledEpisodeProvider(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    @Resource
+    private DataSource dataSource;
 
     public List<EpisodeData> listEpisode(int showId, final Date from, final Date to) {
         final DSLContext context = DSL.using(dataSource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));
@@ -141,4 +139,11 @@ public class ScheduledEpisodeProvider {
         return null;
     }
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

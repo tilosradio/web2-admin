@@ -27,7 +27,9 @@ public class SearchControllerTest {
     @Test
     public void test() throws IOException, ParseException {
         //given
-        SearchController controller = new SearchController(TestUtil.initDatasource());
+        //TODO
+        SearchController controller = new SearchController();
+        controller.setDataSource(TestUtil.initDatasource());
 
         //when
         SearchResponse respo = controller.search("tamogatas");

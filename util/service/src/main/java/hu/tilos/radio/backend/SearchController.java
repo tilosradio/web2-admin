@@ -41,6 +41,7 @@ import org.jooq.impl.DefaultConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.naming.directory.SearchResult;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -68,11 +69,8 @@ public class SearchController {
     private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
     private Directory index;
 
+    @Resource
     private DataSource dataSource;
-
-    public SearchController(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     private Directory getIndex(DSLContext context) throws IOException {
         if (index == null) {
@@ -280,6 +278,13 @@ public class SearchController {
         return content;
     }
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     private DSLContext createDslContext() {
         return DSL.using(dataSource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));

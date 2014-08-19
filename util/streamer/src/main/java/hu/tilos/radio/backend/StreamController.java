@@ -2,10 +2,13 @@ package hu.tilos.radio.backend;
 
 import hu.tilos.radio.backend.streamer.Backend;
 import hu.tilos.radio.backend.streamer.LocalBackend;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,18 +21,22 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@WebServlet(urlPatterns = "/")
 public class StreamController extends HttpServlet {
 
     private static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMddHHmmss");
 
     private static SimpleDateFormat FILE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd-HHmm");
 
-    Backend backend = new LocalBackend();
-
     private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
 
     private static final Logger LOG = LoggerFactory.getLogger(StreamController.class);
 
+    @Inject
+    Backend backend;
+
+    @Inject
+    @ConfigProperty(name = "server.url")
     private String serverUrl;
 
     @Override
@@ -252,4 +259,7 @@ public class StreamController extends HttpServlet {
         this.serverUrl = url;
     }
 
+    public Backend getBackend() {
+        return backend;
+    }
 }

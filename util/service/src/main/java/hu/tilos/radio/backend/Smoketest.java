@@ -6,11 +6,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 
+@Path("api/v1")
 public class Smoketest {
 
     @GET
-    @Path("api/v1/ping")
-    @Security(role = Role.GUEST)
+    @Path("ping")
+//    @Security(role = Role.GUEST)
     public String ping() {
         return "pong";
     }

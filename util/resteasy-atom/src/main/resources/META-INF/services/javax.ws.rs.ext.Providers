@@ -1,2 +1,2 @@
-org.jboss.resteasy.plugins.providers.atom.AtomFeedProvider
-org.jboss.resteasy.plugins.providers.atom.AtomEntryProvider
+net.anzix.jaxrs.atom.AtomFeedProvider
+net.anzix.jaxrs.atom.AtomEntryProvider

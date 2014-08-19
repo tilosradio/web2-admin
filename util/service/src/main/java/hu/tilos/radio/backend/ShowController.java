@@ -12,7 +12,10 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.jooq.RecordValueReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,11 +28,10 @@ import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 @Path("/api/v1/show")
 public class ShowController {
 
+    @Resource
     private DataSource datasource;
 
-    public ShowController(DataSource datasource) {
-        this.datasource = datasource;
-    }
+    private static Logger LOG = LoggerFactory.getLogger(ShowController.class);
 
     private Configuration createConfiguration() {
         return new DefaultConfiguration().set(datasource).set(SQLDialect.MYSQL).set(new Settings().withRenderSchema(false));
@@ -41,7 +43,8 @@ public class ShowController {
     @GET
     public ShowDetailed get(@PathParam("alias") String alias) {
         DSLContext context = DSL.using(datasource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));
-
+        LOG.info("Started");
+        LOG.info("Datasource: " + datasource);
 
         SelectConditionStep<Record> query = context.selectFrom(
                 RADIOSHOW.
@@ -64,11 +67,11 @@ public class ShowController {
             }
         }
 
-        for (Result<Record> r : result.intoGroups(CONTRIBUTION.RADIOSHOW_ID).get(detailed.getId()).intoGroups(CONTRIBUTION.ID).values()) {
-            Contributor c = modelMapper.map(r, Contributor.class);
-            c.setAuthor(modelMapper.map(r, AuthorSimple.class));
-            detailed.getContributors().add(c);
-        }
+//        for (Result<Record> r : result.intoGroups(CONTRIBUTION.RADIOSHOW_ID).get(detailed.getId()).intoGroups(CONTRIBUTION.ID).values()) {
+//            Contributor c = modelMapper.map(r, Contributor.class);
+//            c.setAuthor(modelMapper.map(r, AuthorSimple.class));
+//            detailed.getContributors().add(c);
+//        }
 
 
         return detailed;
@@ -90,5 +93,11 @@ public class ShowController {
 
     }
 
+    public DataSource getDatasource() {
+        return datasource;
+    }
 
+    public void setDatasource(DataSource datasource) {
+        this.datasource = datasource;
+    }
 }

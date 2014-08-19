@@ -5,6 +5,7 @@ import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import hu.tilos.radio.backend.util.Days;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,6 +24,7 @@ import java.util.List;
 @Path("/api/v1/m3u")
 public class M3uController {
 
+    @Inject
     private EpisodeUtil episodeUtil;
 
     private static final SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy'.'MM'.'dd");

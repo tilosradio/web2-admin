@@ -28,7 +28,8 @@ public class PersistentEpisodeProviderTest {
     @Test
     public void testListEpisode() throws Exception {
         //given
-        PersistentEpisodeProvider p = new PersistentEpisodeProvider(TestUtil.initDatasource());
+        PersistentEpisodeProvider p = new PersistentEpisodeProvider();
+        p.setDataSource(TestUtil.initDatasource());
 
 
         //when

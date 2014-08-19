@@ -3,23 +3,18 @@ package hu.tilos.radio.backend;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import hu.tilos.radio.backend.episode.PersistentEpisodeProvider;
 import hu.tilos.radio.backend.episode.ScheduledEpisodeProvider;
-import org.jboss.resteasy.plugins.providers.atom.Feed;
+import net.anzix.jaxrs.atom.Feed;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.jms.ConnectionFactory;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class FeedControllerTest {
 
@@ -38,7 +33,8 @@ public class FeedControllerTest {
     @Test
     public void testFeed() throws Exception {
         //given
-        FeedController c = new FeedController(dataSource) {
+        //TODO
+        FeedController c = new FeedController() {
             @Override
             protected Date getNow() {
                 try {
@@ -51,8 +47,10 @@ public class FeedControllerTest {
         c.setServerUrl("http://tilos.hu");
 
         EpisodeUtil u = new EpisodeUtil();
-        ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider(dataSource);
-        PersistentEpisodeProvider pp = new PersistentEpisodeProvider(dataSource);
+        ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider();
+        sp.setDataSource(dataSource);
+        PersistentEpisodeProvider pp = new PersistentEpisodeProvider();
+        pp.setDataSource(dataSource);
 
         u.setPersistentProvider(pp);
         u.setScheduledProvider(sp);

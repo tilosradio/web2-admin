@@ -62,7 +62,7 @@ public class MixControllerTest {
         List<MixResponse> responses = controller.list();
 
         //then
-        Assert.assertEquals(2, responses.size());
+        Assert.assertEquals(3, responses.size());
     }
 
 

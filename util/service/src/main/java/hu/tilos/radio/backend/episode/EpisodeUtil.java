@@ -2,15 +2,22 @@ package hu.tilos.radio.backend.episode;
 
 import hu.tilos.radio.backend.data.types.EpisodeData;
 
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Date;
 import java.util.List;
 
+@Named
 public class EpisodeUtil {
 
-    private PersistentEpisodeProvider persistentProvider;
+    @Inject
+    protected PersistentEpisodeProvider persistentProvider;
 
+    @Inject
     private ScheduledEpisodeProvider scheduledProvider;
 
+    @Inject
     private Merger merger = new Merger();
 
     public List<EpisodeData> getEpisodeData(int showId, Date from, Date to) {

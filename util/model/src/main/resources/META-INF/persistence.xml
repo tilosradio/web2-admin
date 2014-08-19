@@ -3,7 +3,8 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="tilos" transaction-type="JTA">
-        <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/tilos)</jta-data-source>
+        <!--<jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/tilos)</jta-data-source>-->
+        <jta-data-source>java:/jdbc/tilos</jta-data-source>
         <class>hu.radio.tilos.model.ListenerStat</class>
         <class>hu.radio.tilos.model.Author</class>
         <class>hu.radio.tilos.model.Show</class>

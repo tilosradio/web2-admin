@@ -12,6 +12,7 @@ import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOption;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.*;
 
@@ -23,6 +24,7 @@ import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 @Path("/api/v1/mix")
 public class MixController {
 
+    @PersistenceContext
     private EntityManager entityManager;
 
     BeanMappingBuilder retrieveBuilder = new BeanMappingBuilder() {

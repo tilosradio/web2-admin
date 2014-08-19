@@ -1,7 +1,10 @@
 package hu.tilos.radio.backend.streamer;
 
 import hu.tilos.radio.backend.StreamController;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -9,13 +12,18 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+@Named
 public class LocalBackend implements Backend {
 
-    private String root = "/home/elek/projects/tilos/archive-files/online";
+    @Inject
+    @ConfigProperty(name = "archive.root")
+    private String root;
 
     /**
      * Limit in Kbyte/sec.
      */
+    @Inject
+    @ConfigProperty(name = "throttle.limit")
     private int throttleLimit = 0;
 
     public LocalBackend(String root) {
@@ -78,6 +86,14 @@ public class LocalBackend implements Backend {
 
     public void setRoot(String root) {
         this.root = root;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public int getThrottleLimit() {
+        return throttleLimit;
     }
 
     public void setThrottleLimit(int throttleLimit) {

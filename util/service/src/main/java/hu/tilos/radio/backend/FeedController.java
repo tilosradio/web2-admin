@@ -5,13 +5,15 @@ import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import hu.tilos.radio.jooqmodel.tables.daos.RadioshowDao;
 import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
-import org.jboss.resteasy.plugins.providers.atom.*;
+import net.anzix.jaxrs.atom.*;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.jooq.Configuration;
 import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DefaultConfiguration;
 
-import javax.persistence.NoResultException;
+import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,15 +44,15 @@ public class FeedController {
 
     private static final SimpleDateFormat HHMMSS = new SimpleDateFormat("HHmmss");
 
+    @Inject
     private EpisodeUtil episodeUtil;
 
+    @Inject
+    @ConfigProperty(name = "server.url")
     private String serverUrl;
 
-    private final DataSource dataSource;
-
-    public FeedController(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    @Resource
+    private DataSource dataSource;
 
     private Configuration createConfiguration() {
         return new DefaultConfiguration().set(dataSource).set(SQLDialect.MYSQL).set(new Settings().withRenderSchema(false));

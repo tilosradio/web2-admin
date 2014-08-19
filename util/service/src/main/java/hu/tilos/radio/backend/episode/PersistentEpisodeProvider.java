@@ -4,6 +4,8 @@ package hu.tilos.radio.backend.episode;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 
+import javax.annotation.Resource;
+import javax.inject.Named;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,11 +34,8 @@ import static hu.tilos.radio.jooqmodel.Tables.*;
  */
 public class PersistentEpisodeProvider {
 
+    @Resource
     private DataSource dataSource;
-
-    public PersistentEpisodeProvider(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     public List<EpisodeData> listEpisode(int showId, Date from, Date to) {
 
@@ -122,5 +121,11 @@ public class PersistentEpisodeProvider {
         return b;
     }
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
