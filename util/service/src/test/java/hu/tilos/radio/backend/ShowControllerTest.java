@@ -6,15 +6,17 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 public class ShowControllerTest {
 
-    private static DataSource dataSource;
+    private static EntityManagerFactory emf;
 
     @BeforeClass
     public static void init() {
-        dataSource = TestUtil.initDatasource();
+        emf = TestUtil.initPersistence();
         TestUtil.inidTestData();
     }
 
@@ -23,7 +25,7 @@ public class ShowControllerTest {
         //given
 
         ShowController controller = new ShowController();
-        controller.setDatasource(dataSource);
+        controller.setEntityManager(emf.createEntityManager());
 
         //when
         ShowDetailed show = controller.get("3utas");
@@ -35,6 +37,8 @@ public class ShowControllerTest {
         Assert.assertEquals(2, show.getMixes().size());
         Assert.assertEquals("asd.mp3", show.getMixes().get(0).getFile());
 
-       // Assert.assertEquals(2, show.getContributors().size());
+        Assert.assertEquals(2, show.getContributors().size());
+
+        Assert.assertEquals("AUTHOR1", show.getContributors().get(0).getAuthor().getName());
     }
 }

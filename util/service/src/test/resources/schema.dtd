@@ -98,11 +98,12 @@
 <!ATTLIST mix
     id CDATA #REQUIRED
     show_id CDATA #IMPLIED
-    author CDATA #IMPLIED
+    author CDATA #REQUIRED
     title CDATA #REQUIRED
     file CDATA #REQUIRED
     date CDATA #IMPLIED
     type CDATA #REQUIRED
+    category CDATA #REQUIRED
 >
 
 <!ELEMENT radioshow EMPTY>

@@ -59,10 +59,24 @@ public class MixControllerTest {
         controller.setEntityManager(factory.createEntityManager());
 
         //when
-        List<MixResponse> responses = controller.list();
+        List<MixResponse> responses = controller.list(null);
 
         //then
         Assert.assertEquals(3, responses.size());
+    }
+
+    @Test
+    public void testListWithShowId() {
+
+        //given
+        MixController controller = new MixController();
+        controller.setEntityManager(factory.createEntityManager());
+
+        //when
+        List<MixResponse> responses = controller.list("3utas");
+
+        //then
+        Assert.assertEquals(2, responses.size());
     }
 
 

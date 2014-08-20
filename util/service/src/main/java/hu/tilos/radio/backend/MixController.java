@@ -77,10 +77,16 @@ public class MixController {
     @Produces("application/json")
     @Security(role = Role.GUEST)
     @GET
-    public List<MixResponse> list() {
+    public List<MixResponse> list(@QueryParam("show") String show) {
 
-
-        Query q = entityManager.createQuery("SELECT m from Mix m", Mix.class);
+        String query = "SELECT m from Mix m";
+        if (show != null) {
+            query += " LEFT JOIN m.show s WHERE s.alias = :alias";
+        }
+        Query q = entityManager.createQuery(query, Mix.class);
+        if (show != null) {
+            q.setParameter("alias", show);
+        }
         List<Mix> mixes = q.getResultList();
 
         DozerBeanMapper mapper = new DozerBeanMapper();

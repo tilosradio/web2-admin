@@ -1,20 +1,13 @@
 package hu.tilos.radio.backend.data.types;
 
-public class Contributor {
 
-    private AuthorSimple author;
+public class ShowContribution {
 
     private String nick;
 
     private Integer id;
 
-    public AuthorSimple getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(AuthorSimple author) {
-        this.author = author;
-    }
+    private AuthorSimple author;
 
     public String getNick() {
         return nick;
@@ -30,5 +23,13 @@ public class Contributor {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public AuthorSimple getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AuthorSimple author) {
+        this.author = author;
     }
 }

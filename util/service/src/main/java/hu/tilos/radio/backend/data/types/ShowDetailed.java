@@ -25,13 +25,13 @@ public class ShowDetailed {
 
     private List<MixSimple> mixes = new ArrayList<>();
 
-    private List<Contributor> contributors = new ArrayList<>();
+    private List<ShowContribution> contributors = new ArrayList<>();
 
-    public List<Contributor> getContributors() {
+    public List<ShowContribution> getContributors() {
         return contributors;
     }
 
-    public void setContributors(List<Contributor> contributors) {
+    public void setContributors(List<ShowContribution> contributors) {
         this.contributors = contributors;
     }
 
