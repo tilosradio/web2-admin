@@ -13,12 +13,12 @@ public class Mix {
 
 
     @Basic
-    @Column
+    @Column(length = 40)
     private String author;
 
 
     @Basic
-    @Column
+    @Column(length = 160)
     private String title;
 
 
@@ -36,6 +36,20 @@ public class Mix {
 
     @Column
     private MixType type;
+
+    @Column
+    MixCategory category;
+
+    public int getTypeCode(){
+        return type.ordinal();
+    }
+    public MixCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MixCategory category) {
+        this.category = category;
+    }
 
     public int getId() {
         return id;
