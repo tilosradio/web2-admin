@@ -19,12 +19,12 @@ class Mix
     private $id;
 
     /**
-     * @ORM\Column(type="string",length=40, nullable=true)
+     * @ORM\Column(type="string",length=160)
      */
     private $author;
 
     /**
-     * @ORM\Column(type="string",length=40)
+     * @ORM\Column(type="string",length=160, nullable=false)
      */
     private $title;
 
@@ -47,6 +47,11 @@ class Mix
      * @ORM\Column(type="integer")
      * */
     protected $type = 0;
+
+    /**
+         * @ORM\Column(type="integer")
+         * */
+        protected $category = 0;
 
     /**
      * @return mixed
