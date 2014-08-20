@@ -1,17 +1,64 @@
 'use strict';
+
+angular.module('tilosApp').config(function ($routeProvider) {
+    $routeProvider.when('/show/:id', {
+        templateUrl: 'partials/show.html',
+        controller: 'ShowCtrl'
+    }).when('/show/:id/intro', {
+        templateUrl: 'partials/show-intro.html',
+        controller: 'ShowIntroCtrl'
+    }).when('/show/:id/mixes', {
+        templateUrl: 'partials/show-mixes.html',
+        controller: 'ShowMixesCtrl'
+    }).when('/show/:id/bookmarks', {
+        templateUrl: 'partials/show-bookmarks.html',
+        controller: 'ShowBookmarksCtrl'
+    });
+});
+
+angular.module('tilosApp')
+    .controller('ShowIntroCtrl', function ($scope, $routeParams, API_SERVER_ENDPOINT, $http) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
+            $scope.show = data;
+        });
+    });
+
+angular.module('tilosApp')
+    .controller('ShowMixesCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
+            $scope.show = data;
+        });
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/mix?show=' + $routeParams.id, {cache: true}).success(function (data) {
+            $scope.mixes = data;
+        });
+    });
+
+angular.module('tilosApp')
+    .controller('ShowBookmarksCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
+            $scope.show = data;
+        });
+    });
+
 angular.module('tilosApp')
     .controller('ShowCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + $routeParams.id, {cache: true}).success(function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
             $scope.server = API_SERVER_ENDPOINT;
             Meta.setTitle(data.name);
             Meta.setDescription(data.definition);
 
             $scope.show.sharecount = 0;
-
             $scope.likeURL = validateUrl.getValidUrl('http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F' + tilosHost + '%2Fshow%2F' + $scope.show.alias + '&width&layout=standard&action=like&show_faces=true&share=true');
 
             $scope.currentShowPage = 0;
+
+
+            var to = new Date().getTime() / 1000;
+            var from = to - ( 6 * 30 * 24 * 3600);
+            $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + "&to=" + to).success(function (data) {
+                $scope.show.episodes = data;
+            });
 
             $scope.play = Player.play;
 

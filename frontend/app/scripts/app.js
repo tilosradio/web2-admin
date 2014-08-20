@@ -39,9 +39,6 @@ tilos.config(function($routeProvider) {
   $routeProvider.when('/archive', {
     templateUrl: 'partials/program.html',
     controller: 'ProgramCtrl'
-  }).when('/show/:id', {
-    templateUrl: 'partials/show.html',
-    controller: 'ShowCtrl'
   }).when('/author/:id', {
     templateUrl: 'partials/author.html',
     controller: 'AuthorCtrl'
