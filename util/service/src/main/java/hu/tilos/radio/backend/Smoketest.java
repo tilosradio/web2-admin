@@ -10,10 +10,17 @@ import javax.ws.rs.Path;
 public class Smoketest {
 
     @GET
-    @Path("ping")
-//    @Security(role = Role.GUEST)
+    @Path("test/ping")
+    @Security(role = Role.GUEST)
     public String ping() {
         return "pong";
+    }
+
+    @GET
+    @Path("test/auth")
+    @Security(role = Role.ADMIN)
+    public String authTest() {
+        return "OK";
     }
 
 }

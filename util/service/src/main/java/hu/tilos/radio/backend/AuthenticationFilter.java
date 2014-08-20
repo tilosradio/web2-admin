@@ -1,46 +1,66 @@
 package hu.tilos.radio.backend;
 
 import com.google.gson.Gson;
+import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.data.UserResponse;
-import org.apache.cxf.jaxrs.ext.RequestHandler;
-import org.apache.cxf.jaxrs.model.ClassResourceInfo;
-import org.apache.cxf.message.Message;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 
+import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
 
-public class AuthenticationFilter implements RequestHandler {
+/**
+ * Workaround to syncrhoize PHP and java based authorization.
+ */
+@Provider
+public class AuthenticationFilter implements ContainerRequestFilter {
 
+    @Context
+    ResourceInfo resource;
+
+    @Context
+    HttpServletRequest servletRequest;
+
+    @Inject
+    @ConfigProperty(name = "auth.url")
     private String serverUrl;
 
-    @Override
-    public Response handleRequest(Message m, ClassResourceInfo resourceClass) {
-        UserResponse user = null;
-        //String cookie = m.get(M)
-        HttpServletRequest request = (HttpServletRequest) m.get("HTTP.REQUEST");
+    private String getAuthUrl() {
+        return serverUrl;
+    }
+
+    public String getPhpSessionId(HttpServletRequest request) {
         //TODO: not an admin site
-        if (!request.getServerName().contains("admin") && !request.getServerName().contains("tilosa")) {
+        if (!getAuthUrl().contains("admin") && !getAuthUrl().contains("tilosa")) {
             return null;
         }
         for (Cookie cookie : request.getCookies()) {
             if (cookie.getName().equals("PHPSESSID")) {
-                user = getResponse(cookie.getValue());
+                return cookie.getValue();
             }
         }
-        m.put("hu.tilos.radio.user", user);
         return null;
     }
 
-    private UserResponse getResponse(String value) {
+    private UserResponse getCurrentUser(String value) {
         try {
-
-            URL myUrl = new URL(serverUrl + "/api/v0/user/me");
+            if (value == null) {
+                return null;
+            }
+            URL myUrl = new URL(getAuthUrl() + "/api/v0/user/me");
             URLConnection connection = myUrl.openConnection();
             connection.setRequestProperty("Cookie", "PHPSESSID=" + value);
             connection.connect();
@@ -58,11 +78,25 @@ public class AuthenticationFilter implements RequestHandler {
         return null;
     }
 
-    public String getServerUrl() {
-        return serverUrl;
+
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+
+
+        Method m = resource.getResourceMethod();
+        if (m.isAnnotationPresent(Security.class)) {
+            Security s = m.getAnnotation(Security.class);
+            if (s.role() != Role.GUEST) {
+                String session = getPhpSessionId((HttpServletRequest) servletRequest);
+                UserResponse user = getCurrentUser(session);
+                if (user == null || (s.role().ordinal() > user.getRole().getId())) {
+                    requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+                    return;
+                }
+            }
+        } else {
+            requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+        }
     }
 
-    public void setServerUrl(String serverUrl) {
-        this.serverUrl = serverUrl;
-    }
 }
