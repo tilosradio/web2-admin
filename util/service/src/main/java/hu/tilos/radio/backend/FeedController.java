@@ -1,19 +1,18 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
+import hu.radio.tilos.model.Show;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
-import hu.tilos.radio.jooqmodel.tables.daos.RadioshowDao;
-import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
 import net.anzix.jaxrs.atom.*;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
-import org.jooq.Configuration;
-import org.jooq.SQLDialect;
-import org.jooq.conf.Settings;
-import org.jooq.impl.DefaultConfiguration;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContexts;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -51,11 +50,20 @@ public class FeedController {
     @ConfigProperty(name = "server.url")
     private String serverUrl;
 
-    @Resource
-    private DataSource dataSource;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private Configuration createConfiguration() {
-        return new DefaultConfiguration().set(dataSource).set(SQLDialect.MYSQL).set(new Settings().withRenderSchema(false));
+    public static String createDownloadURI(EpisodeData episode) {
+        return "http://tilos.hu/mp3/tilos-" +
+                YYYYMMDD.format(dateFromEpoch(episode.getRealFrom())) + "-" +
+                HHMMSS.format(dateFromEpoch(episode.getRealFrom())) + "-" +
+                HHMMSS.format(dateFromEpoch(episode.getRealTo())) + ".mp3";
+    }
+
+    private static Date dateFromEpoch(long realTo) {
+        Date d = new Date();
+        d.setTime(realTo);
+        return d;
     }
 
     @GET
@@ -65,12 +73,9 @@ public class FeedController {
     public Response feed(@PathParam("alias") String alias) {
         Feed feed = new Feed();
         try {
-            List<Radioshow> result = new RadioshowDao(createConfiguration()).fetchByAlias(alias);
-            if (result.size() < 1) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Show is missing: " + alias).build();
-            }
-            Radioshow show = result.get(0);
-
+            Query q = entityManager.createQuery("SELECT s FROM Show s WHERE s.alias = :alias");
+            q.setParameter("alias", alias);
+            Show show = (Show) q.getSingleResult();
             feed.setTitle(show.getName() + " [Tilos Rádió podcast]");
             feed.setUpdated(new Date());
 
@@ -144,19 +149,6 @@ public class FeedController {
         return Response.ok().entity(feed).build();
     }
 
-    public static String createDownloadURI(EpisodeData episode) {
-        return "http://tilos.hu/mp3/tilos-" +
-                YYYYMMDD.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                HHMMSS.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                HHMMSS.format(dateFromEpoch(episode.getRealTo())) + ".mp3";
-    }
-
-    private static Date dateFromEpoch(long realTo) {
-        Date d = new Date();
-        d.setTime(realTo);
-        return d;
-    }
-
     protected Date getNow() {
         return new Date();
     }
@@ -175,5 +167,9 @@ public class FeedController {
 
     public void setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 }

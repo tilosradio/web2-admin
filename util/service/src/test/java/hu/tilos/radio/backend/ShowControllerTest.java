@@ -40,5 +40,9 @@ public class ShowControllerTest {
         Assert.assertEquals(2, show.getContributors().size());
 
         Assert.assertEquals("AUTHOR1", show.getContributors().get(0).getAuthor().getName());
+
+        Assert.assertEquals(1, show.getSchedulings().size());
+
+        Assert.assertEquals("minden szombat 8:00-10:00",show.getSchedulings().get(0).getText());
     }
 }

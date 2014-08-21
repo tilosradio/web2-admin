@@ -11,7 +11,8 @@
         <class>hu.radio.tilos.model.Episode</class>
         <class>hu.radio.tilos.model.TextContent</class>
         <class>hu.radio.tilos.model.Mix</class>
-
+        <class>hu.radio.tilos.model.Contribution</class>
+        <class>hu.radio.tilos.model.Scheduling</class>
 
     </persistence-unit>
 

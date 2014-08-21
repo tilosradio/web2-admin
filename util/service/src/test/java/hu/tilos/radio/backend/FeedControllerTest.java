@@ -33,7 +33,6 @@ public class FeedControllerTest {
     @Test
     public void testFeed() throws Exception {
         //given
-        //TODO
         FeedController c = new FeedController() {
             @Override
             protected Date getNow() {
@@ -44,6 +43,8 @@ public class FeedControllerTest {
                 }
             }
         };
+        c.setEntityManager(emf.createEntityManager());
+
         c.setServerUrl("http://tilos.hu");
 
         EpisodeUtil u = new EpisodeUtil();

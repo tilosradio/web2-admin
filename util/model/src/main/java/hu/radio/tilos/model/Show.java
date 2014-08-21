@@ -35,6 +35,9 @@ public class Show {
     @OneToMany(mappedBy = "show")
     private Set<Contribution> contributors = new HashSet();
 
+    @OneToMany(mappedBy = "show")
+    private Set<Scheduling> schedulings = new HashSet();
+
     @Basic
     @Column
     private int type;
@@ -114,5 +117,13 @@ public class Show {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Set<Scheduling> getSchedulings() {
+        return schedulings;
+    }
+
+    public void setSchedulings(Set<Scheduling> schedulings) {
+        this.schedulings = schedulings;
     }
 }

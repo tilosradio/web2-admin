@@ -3,7 +3,6 @@ package hu.tilos.radio.backend;
 import hu.tilos.radio.backend.data.SearchResponse;
 import hu.tilos.radio.backend.data.SearchResponseElement;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.openjpa.persistence.jdbc.Index;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;

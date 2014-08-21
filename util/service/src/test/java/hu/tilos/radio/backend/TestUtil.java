@@ -53,10 +53,10 @@ public class TestUtil {
     public static EntityManagerFactory initPersistence() {
         try {
             Properties properties = loadProperties();
-            properties.setProperty("openjpa.ConnectionURL", properties.getProperty("jdbc.url"));
-            properties.setProperty("openjpa.ConnectionDriverName", properties.getProperty("jdbc.driver"));
-            properties.setProperty("openjpa.ConnectionUserName", properties.getProperty("jdbc.user"));
-            properties.setProperty("openjpa.ConnectionPassword", properties.getProperty("jdbc.password"));
+            properties.setProperty("javax.persistence.jdbc.url", properties.getProperty("jdbc.url"));
+            properties.setProperty("javax.persistence.jdbc.driver", properties.getProperty("jdbc.driver"));
+            properties.setProperty("javax.persistence.jdbc.user", properties.getProperty("jdbc.user"));
+            properties.setProperty("javax.persistence.jdbc.password", properties.getProperty("jdbc.password"));
 
             return Persistence.createEntityManagerFactory("tilos-test", properties);
         } catch (Exception ex) {

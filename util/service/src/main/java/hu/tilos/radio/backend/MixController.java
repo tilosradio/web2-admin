@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
+import hu.radio.tilos.model.MixCategory;
 import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.converters.*;
 import hu.tilos.radio.backend.data.CreateResponse;
@@ -109,6 +110,8 @@ public class MixController {
         DozerBeanMapper mapper = MappingFactory.createDozer(entityManager, updateBuilder);
 
         Mix mix = mapper.map(newMix, Mix.class);
+        //TODO
+        mix.setCategory(MixCategory.DJ);
 
         entityManager.persist(mix);
 

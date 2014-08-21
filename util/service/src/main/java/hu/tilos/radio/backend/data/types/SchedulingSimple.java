@@ -1,46 +1,27 @@
-package hu.radio.tilos.model;
+package hu.tilos.radio.backend.data.types;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
-@Entity
-@Table(name = "scheduling")
-public class Scheduling {
+public class SchedulingSimple {
 
-    @Id
-    private int id;
-
-    @Basic
     int weekDay;
 
-    @Basic
     int hourFrom;
 
-    @Basic
     int minFrom;
 
-    @Basic
     int duration;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    private Date validFrom;
+    private long validFrom;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    private Date validTo;
+    private long validTo;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    private Date base;
+    private long base;
 
-    @Basic
     private int weekType;
 
-    @ManyToOne()
-    @JoinColumn(name = "radioshow_id", referencedColumnName = "id")
-    private Show show;
+    private String text;
 
     public int getWeekDay() {
         return weekDay;
@@ -74,27 +55,27 @@ public class Scheduling {
         this.duration = duration;
     }
 
-    public Date getValidFrom() {
+    public long getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(Date validFrom) {
+    public void setValidFrom(long validFrom) {
         this.validFrom = validFrom;
     }
 
-    public Date getValidTo() {
+    public long getValidTo() {
         return validTo;
     }
 
-    public void setValidTo(Date validTo) {
+    public void setValidTo(long validTo) {
         this.validTo = validTo;
     }
 
-    public Date getBase() {
+    public long getBase() {
         return base;
     }
 
-    public void setBase(Date base) {
+    public void setBase(long base) {
         this.base = base;
     }
 
@@ -106,19 +87,11 @@ public class Scheduling {
         this.weekType = weekType;
     }
 
-    public int getId() {
-        return id;
+    public String getText() {
+        return text;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Show getShow() {
-        return show;
-    }
-
-    public void setShow(Show show) {
-        this.show = show;
+    public void setText(String text) {
+        this.text = text;
     }
 }

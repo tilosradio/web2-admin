@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.data.types;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ShowDetailed {
@@ -27,8 +28,18 @@ public class ShowDetailed {
 
     private List<ShowContribution> contributors = new ArrayList<>();
 
+    private List<SchedulingSimple> schedulings = new ArrayList<>();
+
     public List<ShowContribution> getContributors() {
         return contributors;
+    }
+
+    public List<SchedulingSimple> getSchedulings() {
+        return schedulings;
+    }
+
+    public void setSchedulings(List<SchedulingSimple> schedulings) {
+        this.schedulings = schedulings;
     }
 
     public void setContributors(List<ShowContribution> contributors) {
@@ -114,4 +125,6 @@ public class ShowDetailed {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 }
