@@ -1,6 +1,6 @@
 <!DOCTYPE dataset SYSTEM "src/test/resources/schema.dtd">
 <dataset>
-    <author id="1" name="AUTHOR1" photo="asd" avatar="asd" introduction="nothing"></author>
+    <author id="1" name="AUTHOR1" photo="asd" avatar="avatar/asd.jpg" introduction="nothing"></author>
     <author id="2" name="AUTHOR2" photo="asd" avatar="asd" introduction="nothing"></author>
     <url id="1" url="http://szabi.hu"></url>
     <url id="2" url="http://show1.com"></url>

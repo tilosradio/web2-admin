@@ -4,6 +4,7 @@ import hu.radio.tilos.model.*;
 import hu.tilos.radio.backend.converters.SchedulingTextUtil;
 import hu.tilos.radio.backend.data.MixResponse;
 import hu.tilos.radio.backend.data.types.*;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.jooq.RecordValueReader;
@@ -56,6 +57,18 @@ public class ShowController {
                 map().setType(source.getTypeCode());
             }
         });
+        modelMapper.addMappings(new PropertyMap<Author, AuthorSimple>() {
+            @Override
+            protected void configure() {
+                using(new AbstractConverter<String, String>() {
+
+                    @Override
+                    protected String convert(String source) {
+                        return "http://tilos.hu/upload/" + source;
+                    }
+                }).map().setAvatar(source.getAvatar());
+            }
+        });
 
 
         Show show = query.getSingleResult();
@@ -77,7 +90,7 @@ public class ShowController {
             }
         });
 
-        for (SchedulingSimple ss : detailed.getSchedulings()){
+        for (SchedulingSimple ss : detailed.getSchedulings()) {
             ss.setText(schedulingTextUtil.create(ss));
         }
         return detailed;

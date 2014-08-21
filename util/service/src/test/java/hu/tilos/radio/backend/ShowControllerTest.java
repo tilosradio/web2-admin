@@ -40,6 +40,7 @@ public class ShowControllerTest {
         Assert.assertEquals(2, show.getContributors().size());
 
         Assert.assertEquals("AUTHOR1", show.getContributors().get(0).getAuthor().getName());
+        Assert.assertEquals("http://tilos.hu/upload/avatar/asd.jpg", show.getContributors().get(0).getAuthor().getAvatar());
 
         Assert.assertEquals(1, show.getSchedulings().size());
 
