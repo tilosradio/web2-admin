@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.sql.DataSource;
 import javax.ws.rs.GET;
@@ -35,6 +36,9 @@ public class ShowController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Inject
+    private ModelMapper modelMapper;
+
     @Produces("application/json")
     @Path("/{alias}")
     @Security(role = Role.GUEST)
@@ -49,30 +53,9 @@ public class ShowController {
                 "WHERE s.alias=:alias", Show.class);
         query.setParameter("alias", alias);
 
-
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<Mix, MixSimple>() {
-            @Override
-            protected void configure() {
-                map().setType(source.getTypeCode());
-            }
-        });
-        modelMapper.addMappings(new PropertyMap<Author, AuthorSimple>() {
-            @Override
-            protected void configure() {
-                using(new AbstractConverter<String, String>() {
-
-                    @Override
-                    protected String convert(String source) {
-                        return "http://tilos.hu/upload/" + source;
-                    }
-                }).map().setAvatar(source.getAvatar());
-            }
-        });
-
-
         Show show = query.getSingleResult();
         ShowDetailed detailed = modelMapper.map(show, ShowDetailed.class);
+       
 
         Collections.sort(detailed.getMixes(), new Comparator<MixSimple>() {
 
@@ -99,5 +82,9 @@ public class ShowController {
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 }

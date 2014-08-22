@@ -1,5 +1,6 @@
 package hu.tilos.radio.backend;
 
+import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.types.ShowDetailed;
 
 import org.junit.Assert;
@@ -26,6 +27,7 @@ public class ShowControllerTest {
 
         ShowController controller = new ShowController();
         controller.setEntityManager(emf.createEntityManager());
+        controller.setModelMapper(new MappingFactory().createModelMapper());
 
         //when
         ShowDetailed show = controller.get("3utas");
@@ -35,7 +37,7 @@ public class ShowControllerTest {
         Assert.assertEquals("3. utas", show.getName());
 
         Assert.assertEquals(2, show.getMixes().size());
-        Assert.assertEquals("asd.mp3", show.getMixes().get(0).getFile());
+        Assert.assertEquals("http://archive.tilos.hu/asd.mp3", show.getMixes().get(0).getFile());
 
         Assert.assertEquals(2, show.getContributors().size());
 

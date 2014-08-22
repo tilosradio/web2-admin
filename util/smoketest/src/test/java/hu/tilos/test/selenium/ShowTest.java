@@ -27,7 +27,7 @@ public class ShowTest extends BaseTest{
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    //@Test
+    @Test
     public void testA() throws Exception {
         driver.get(baseUrl + "/shows");
         for (int second = 0; ; second++) {

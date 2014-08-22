@@ -1,16 +1,30 @@
 package hu.tilos.radio.backend.converters;
 
+import hu.radio.tilos.model.Author;
+import hu.radio.tilos.model.Mix;
+import hu.tilos.radio.backend.data.types.AuthorSimple;
+import hu.tilos.radio.backend.data.types.MixSimple;
 import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.jooq.DSLContext;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.Produces;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Factory to create mappers.
+ */
 public class MappingFactory {
+
+    private String uploadUrl = "http://tilos.hu/upload/";
 
     public static DozerBeanMapper createDozer(EntityManager em) {
         DozerBeanMapper mapper = new DozerBeanMapper();
@@ -38,5 +52,33 @@ public class MappingFactory {
         DozerBeanMapper mapper = createDozer(jooq);
         mapper.addMapping(builder);
         return mapper;
+    }
+
+    @Produces
+    public ModelMapper createModelMapper() {
+        final Converter<String, String> uploadUrlConverter = new PrefixingConverter(uploadUrl);
+        final Converter<String, String> archiveUrlConverter = new PrefixingConverter("http://archive.tilos.hu/");
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addMappings(new PropertyMap<Mix, MixSimple>() {
+            @Override
+            protected void configure() {
+                map().setType(source.getTypeCode());
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<Author, AuthorSimple>() {
+            @Override
+            protected void configure() {
+                using(uploadUrlConverter).map().setAvatar(source.getAvatar());
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<Mix, MixSimple>() {
+            @Override
+            protected void configure() {
+                using(archiveUrlConverter).map().setFile(source.getFile());
+            }
+        });
+        return modelMapper;
+
     }
 }
