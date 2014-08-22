@@ -13,15 +13,18 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Produces;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.Produces;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Factory to create mappers.
  */
+@Named
 public class MappingFactory {
 
     private String uploadUrl = "http://tilos.hu/upload/";
@@ -55,6 +58,7 @@ public class MappingFactory {
     }
 
     @Produces
+    @Default
     public ModelMapper createModelMapper() {
         final Converter<String, String> uploadUrlConverter = new PrefixingConverter(uploadUrl);
         final Converter<String, String> archiveUrlConverter = new PrefixingConverter("http://archive.tilos.hu/");

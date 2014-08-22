@@ -55,7 +55,7 @@ public class ShowController {
 
         Show show = query.getSingleResult();
         ShowDetailed detailed = modelMapper.map(show, ShowDetailed.class);
-       
+
 
         Collections.sort(detailed.getMixes(), new Comparator<MixSimple>() {
 
