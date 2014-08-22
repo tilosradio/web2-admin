@@ -38,7 +38,7 @@ public class PrefixingConverter extends AbstractConverter<String, String> {
 
     @Override
     protected String convert(String source) {
-        if (source.startsWith(nonStart)) {
+        if (source == null || (nonStart!=null && source.startsWith(nonStart))) {
             return source;
         } else {
             return prefix + source;

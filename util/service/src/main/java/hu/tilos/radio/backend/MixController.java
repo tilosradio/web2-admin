@@ -30,22 +30,11 @@ public class MixController {
 
     @Inject
     ModelMapper modelMapper;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
     BeanMappingBuilder retrieveBuilder = new BeanMappingBuilder() {
 
         @Override
         protected void configure() {
             mapping(Mix.class, MixResponse.class)
-                    .fields("type", "typeText", new FieldsMappingOption() {
-                        @Override
-                        public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
-                            fieldMappingBuilder.customConverter(EntityTextConverter.class);
-                            fieldMappingBuilder.customConverterParam("Beszélgetés,Zene");
-                        }
-                    })
                     .fields("type", "type")
                     .fields("date", "date", new FieldsMappingOption() {
                         @Override
@@ -56,7 +45,6 @@ public class MixController {
                     });
         }
     };
-
     BeanMappingBuilder updateBuilder = new BeanMappingBuilder() {
 
         @Override
@@ -80,6 +68,8 @@ public class MixController {
 
         }
     };
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Produces("application/json")
     @Security(role = Role.GUEST)

@@ -44,7 +44,7 @@ public class ShowControllerTest {
         Assert.assertEquals("3. utas", show.getName());
 
         Assert.assertEquals(2, show.getMixes().size());
-        Assert.assertEquals("http://archive.tilos.hu/asd.mp3", show.getMixes().get(0).getFile());
+        Assert.assertEquals("http://archive.tilos.hu/sounds/asd.mp3", show.getMixes().get(0).getLink());
 
         Assert.assertEquals(2, show.getContributors().size());
 

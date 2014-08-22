@@ -7,6 +7,7 @@ import hu.tilos.radio.backend.data.EntitySelector;
 import hu.tilos.radio.backend.data.MixRequest;
 import hu.tilos.radio.backend.data.MixResponse;
 
+import hu.tilos.radio.backend.data.types.MixSimple;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dozer.CustomFieldMapper;
@@ -56,7 +57,6 @@ public class MixControllerTest {
         Assert.assertEquals("good mix", r.getTitle());
         Assert.assertNotNull(r.getShow());
         Assert.assertEquals(1, r.getType());
-        Assert.assertEquals("Zene", r.getTypeText());
         Assert.assertEquals("3. utas", r.getShow().getName());
     }
 
@@ -68,7 +68,7 @@ public class MixControllerTest {
         controller.setEntityManager(factory.createEntityManager());
 
         //when
-        List<MixResponse> responses = controller.list(null);
+        List<MixSimple> responses = controller.list(null);
 
         //then
         Assert.assertEquals(3, responses.size());
@@ -78,11 +78,10 @@ public class MixControllerTest {
     public void testListWithShowId() {
 
         //given
-        MixController controller = new MixController();
         controller.setEntityManager(factory.createEntityManager());
 
         //when
-        List<MixResponse> responses = controller.list("3utas");
+        List<MixSimple> responses = controller.list("3utas");
 
         //then
         Assert.assertEquals(2, responses.size());
@@ -93,7 +92,6 @@ public class MixControllerTest {
     public void testCreate() {
 
         //given
-        MixController controller = new MixController();
         EntityManager em = factory.createEntityManager();
 
         controller.setEntityManager(em);
@@ -122,7 +120,6 @@ public class MixControllerTest {
     public void testUpdate() {
 
         //given
-        MixController controller = new MixController();
         EntityManager em = factory.createEntityManager();
         controller.setEntityManager(em);
         MixResponse r = controller.get(1);
