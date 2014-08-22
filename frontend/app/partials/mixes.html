@@ -10,24 +10,22 @@
 </div>
 
 
-<h1>Feltöltött mixek <a class="btn btn-danger" role="btn" ng-href="/new/mix">Új mix</a></h1>
+<h1>Feltöltött mixek</h1>
 <table class="table">
     <thead>
     <tr>
         <th>Dátum</th>
-        <th>Szerző</th>
-        <th>Mix neve</th>
-        <th>Meghallgat</th>
+        <th>Mix</th>
         <th>Típus</th>
+        <th>Meghallgat</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="mix in mixes | filter: quicksearch">
         <td>{{mix.date}}</td>
-        <td>{{mix.author}}</td>
-        <td><a ng-href="/mix/{{mix.id}}">{{mix.title}}</a></td>
-        <td><a class="label label-episode episode" ng-href="{{mix.fileLink}}">Meghallgat</a></td>
-        <td>{{mix.typeText}}</td>
+        <td><b>{{mix.author}}</b>: {{mix.title}}</td>
+        <td>{{mixType[mix.type]}}</td>
+        <td><a class="label label-episode episode" ng-href="{{mix.link}}">Meghallgat</a></td>
     </tr>
     </tbody>
 </table>

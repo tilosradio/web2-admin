@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
+import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.EntitySelector;
 import hu.tilos.radio.backend.data.MixRequest;
@@ -13,18 +14,28 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.classmap.ClassMap;
 import org.dozer.fieldmap.FieldMap;
 import org.dozer.loader.api.BeanMappingBuilder;
+import org.jglue.cdiunit.AdditionalClasses;
+import org.jglue.cdiunit.CdiRunner;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 import java.util.Properties;
 
+@RunWith(CdiRunner.class)
+@AdditionalClasses(MappingFactory.class)
 public class MixControllerTest {
+
     private static EntityManagerFactory factory;
+
+    @Inject
+    MixController controller;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -36,7 +47,6 @@ public class MixControllerTest {
     public void testGet() {
 
         //given
-        MixController controller = new MixController();
         controller.setEntityManager(factory.createEntityManager());
 
         //when
@@ -55,7 +65,6 @@ public class MixControllerTest {
     public void testList() {
 
         //given
-        MixController controller = new MixController();
         controller.setEntityManager(factory.createEntityManager());
 
         //when

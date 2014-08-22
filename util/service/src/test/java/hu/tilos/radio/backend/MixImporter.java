@@ -1,8 +1,8 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
-import hu.radio.tilos.model.MixCategory;
-import hu.radio.tilos.model.MixType;
+import hu.radio.tilos.model.type.MixCategory;
+import hu.radio.tilos.model.type.MixType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

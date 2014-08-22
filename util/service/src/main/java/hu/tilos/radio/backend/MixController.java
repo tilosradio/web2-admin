@@ -1,17 +1,20 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
-import hu.radio.tilos.model.MixCategory;
+import hu.radio.tilos.model.type.MixCategory;
 import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.converters.*;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.MixRequest;
 import hu.tilos.radio.backend.data.MixResponse;
+import hu.tilos.radio.backend.data.types.MixSimple;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.DozerBuilder;
 import org.dozer.loader.api.BeanMappingBuilder;
 import org.dozer.loader.api.FieldsMappingOption;
+import org.modelmapper.ModelMapper;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -24,6 +27,9 @@ import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 
 @Path("/api/v1/mix")
 public class MixController {
+
+    @Inject
+    ModelMapper modelMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -78,7 +84,7 @@ public class MixController {
     @Produces("application/json")
     @Security(role = Role.GUEST)
     @GET
-    public List<MixResponse> list(@QueryParam("show") String show) {
+    public List<MixSimple> list(@QueryParam("show") String show) {
 
         String query = "SELECT m from Mix m";
         if (show != null) {
@@ -90,12 +96,10 @@ public class MixController {
         }
         List<Mix> mixes = q.getResultList();
 
-        DozerBeanMapper mapper = new DozerBeanMapper();
-        mapper.addMapping(retrieveBuilder);
 
-        List<MixResponse> response = new ArrayList<>();
+        List<MixSimple> response = new ArrayList<>();
         for (Mix mix : mixes) {
-            response.add(mapper.map(mix, MixResponse.class));
+            response.add(modelMapper.map(mix, MixSimple.class));
         }
 
         return response;

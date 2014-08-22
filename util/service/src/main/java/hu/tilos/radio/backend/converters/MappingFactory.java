@@ -61,7 +61,7 @@ public class MappingFactory {
     @Default
     public ModelMapper createModelMapper() {
         final Converter<String, String> uploadUrlConverter = new PrefixingConverter(uploadUrl);
-        final Converter<String, String> archiveUrlConverter = new PrefixingConverter("http://archive.tilos.hu/");
+        final Converter<String, String> sounds = new PrefixingConverter("http://archive.tilos.hu/sounds/", "http");
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(new PropertyMap<Mix, MixSimple>() {
@@ -79,7 +79,7 @@ public class MappingFactory {
         modelMapper.addMappings(new PropertyMap<Mix, MixSimple>() {
             @Override
             protected void configure() {
-                using(archiveUrlConverter).map().setFile(source.getFile());
+                using(sounds).map().setLink(source.getFile());
             }
         });
         return modelMapper;

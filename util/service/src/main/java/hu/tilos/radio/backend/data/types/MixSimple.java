@@ -8,7 +8,7 @@ public class MixSimple {
 
     private String title;
 
-    private String file;
+    private String link;
 
     private int type;
 
@@ -38,12 +38,12 @@ public class MixSimple {
         this.title = title;
     }
 
-    public String getFile() {
-        return file;
+    public String getLink() {
+        return link;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public int getType() {

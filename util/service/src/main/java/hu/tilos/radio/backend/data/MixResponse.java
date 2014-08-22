@@ -12,15 +12,21 @@ public class MixResponse {
 
     private String file;
 
+    private String link;
+
     private ShowSimple show;
 
     private int type;
 
-    private String typeText;
-
     private String date;
 
+    public String getLink() {
+        return link;
+    }
 
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public int getId() {
         return id;
@@ -68,14 +74,6 @@ public class MixResponse {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public String getTypeText() {
-        return typeText;
-    }
-
-    public void setTypeText(String typeText) {
-        this.typeText = typeText;
     }
 
     public String getDate() {

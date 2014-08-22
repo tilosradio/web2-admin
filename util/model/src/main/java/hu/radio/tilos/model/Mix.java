@@ -1,5 +1,8 @@
 package hu.radio.tilos.model;
 
+import hu.radio.tilos.model.type.MixCategory;
+import hu.radio.tilos.model.type.MixType;
+
 import javax.persistence.*;
 import java.util.Date;
 
