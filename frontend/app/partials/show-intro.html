@@ -1,11 +1,7 @@
 <section class="col-md-9 main" role="main">
     <h1 class="ubuntu">{{show.name}}</h1>
-    <ul class="nav nav-tabs" role="tablist">
-        <li><a href="/show/{{show.alias}}">Archívum</a></li>
-        <li class="active"><a href="/show/{{show.alias}}/intro">Bemutatkozás</a></li>
-        <li><a href="/show/{{show.alias}}/mixes">Mixek</a></li>
-        <li><a href="/show/{{show.alias}}/bookmarks">Könyvjelzők</a></li>
-    </ul>
+
+    <div ng-include src="'/partials/show-tabs.html'"></div>
 
     <p><i>{{show.definition}}</i></p>
     <span ng-bind-html="show.description"></span></br>

@@ -1,11 +1,6 @@
 <section class="col-md-9 main" role="main">
     <h1 class="ubuntu">{{show.name}}</h1>
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="/show/{{show.alias}}">Archívum</a></li>
-        <li><a href="/show/{{show.alias}}/intro">Bemutatkozás</a></li>
-        <li><a href="/show/{{show.alias}}/mixes">Mixek</a></li>
-        <li><a href="/show/{{show.alias}}/bookmarks">Könyvjelzők</a></li>
-    </ul>
+    <div ng-include src="'/partials/show-tabs.html'"></div>
     <div class="episode-tab">
         <div class="panel panel-default episode-box" ng-repeat="episode in show.episodes">
             <div class="panel-heading">

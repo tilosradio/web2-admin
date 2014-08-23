@@ -3,28 +3,34 @@
 angular.module('tilosApp').config(function ($routeProvider) {
     $routeProvider.when('/show/:id', {
         templateUrl: 'partials/show.html',
-        controller: 'ShowCtrl'
+        controller: 'ShowCtrl',
+        tab: 'archive'
     }).when('/show/:id/intro', {
         templateUrl: 'partials/show-intro.html',
-        controller: 'ShowIntroCtrl'
+        controller: 'ShowIntroCtrl',
+        tab: 'intro'
     }).when('/show/:id/mixes', {
         templateUrl: 'partials/show-mixes.html',
-        controller: 'ShowMixesCtrl'
+        controller: 'ShowMixesCtrl',
+        tab: 'mixes'
     }).when('/show/:id/bookmarks', {
         templateUrl: 'partials/show-bookmarks.html',
-        controller: 'ShowBookmarksCtrl'
+        controller: 'ShowBookmarksCtrl',
+        tab: 'bookmarks'
     });
 });
 
 angular.module('tilosApp')
-    .controller('ShowIntroCtrl', function ($scope, $routeParams, API_SERVER_ENDPOINT, $http) {
+    .controller('ShowIntroCtrl', function ($scope, $routeParams, API_SERVER_ENDPOINT, $http, $route) {
+        $scope.tab = $route.current.tab;
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
     });
 
 angular.module('tilosApp')
-    .controller('ShowMixesCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
+    .controller('ShowMixesCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+        $scope.tab = $route.current.tab;
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
@@ -34,14 +40,16 @@ angular.module('tilosApp')
     });
 
 angular.module('tilosApp')
-    .controller('ShowBookmarksCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
+    .controller('ShowBookmarksCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+        $scope.tab = $route.current.tab;
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
     });
 
 angular.module('tilosApp')
-    .controller('ShowCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
+    .controller('ShowCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+        $scope.tab = $route.current.tab;
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
             $scope.server = API_SERVER_ENDPOINT;
