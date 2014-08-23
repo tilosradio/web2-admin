@@ -48,7 +48,7 @@ public class MixImporter {
         em.getTransaction().begin();
         em.createQuery("DELETE FROM Mix").executeUpdate();
         importFile(new File("/home/elek/projects/tilos/hangtar.html"), MixCategory.DJ, em);
-        importFile(new File("/home/elek/projects/tilos/guest.html"), MixCategory.GUEST_DJ, em);
+        importFile(new File("/home/elek/projects/tilos/guest.html"), MixCategory.GUESTDJ, em);
         importFile(new File("/home/elek/projects/tilos/hangtar-musorok.html"), MixCategory.SHOW, em);
 
         em.getTransaction().commit();

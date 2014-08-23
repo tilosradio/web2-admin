@@ -16,7 +16,6 @@ public class MixRequest {
 
     private String date;
 
-
     public int getId() {
         return id;
     }

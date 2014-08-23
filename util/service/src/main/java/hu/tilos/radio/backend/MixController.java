@@ -74,15 +74,21 @@ public class MixController {
     @Produces("application/json")
     @Security(role = Role.GUEST)
     @GET
-    public List<MixSimple> list(@QueryParam("show") String show) {
+    public List<MixSimple> list(@QueryParam("show") String show, @QueryParam("category") String category) {
 
         String query = "SELECT m from Mix m";
         if (show != null) {
             query += " LEFT JOIN m.show s WHERE s.alias = :alias";
         }
+        if (category != null) {
+            query += " WHERE m.category = :category";
+        }
         Query q = entityManager.createQuery(query, Mix.class);
         if (show != null) {
             q.setParameter("alias", show);
+        }
+        if (category != null) {
+            q.setParameter("category", MixCategory.valueOf(category));
         }
         List<Mix> mixes = q.getResultList();
 

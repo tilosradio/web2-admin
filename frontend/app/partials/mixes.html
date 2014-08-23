@@ -9,14 +9,20 @@
     </div>
 </div>
 
-
-<h1>Feltöltött mixek</h1>
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li ng-class="{active: tab == 'dj'}"><a ng-href="/mixes/dj">Tilos DJ Mix</a></li>
+        <li ng-class="{active: tab == 'show'}"><a href="/mixes/show">Műsorok</a></li>
+        <li ng-class="{active: tab == 'guestdj'}"><a ng-href="/mixes/guestdj">Guest DJ Mix</a></li>
+        <li ng-class="{active: tab == 'party'}"><a href="/mixes/party">Tilos Party</a></li>
+        <li ng-class="{active: tab == 'tale'}"><a href="/mixes/tale">Tilos Mese</a></li>
+    </ul>
+</div>
 <table class="table">
     <thead>
     <tr>
         <th>Dátum</th>
         <th>Mix</th>
-        <th>Típus</th>
         <th>Meghallgat</th>
     </tr>
     </thead>
@@ -24,7 +30,6 @@
     <tr ng-repeat="mix in mixes | filter: quicksearch">
         <td>{{mix.date}}</td>
         <td><b>{{mix.author}}</b>: {{mix.title}}</td>
-        <td>{{mixType[mix.type]}}</td>
         <td><a class="label label-episode episode" ng-href="{{mix.link}}">Meghallgat</a></td>
     </tr>
     </tbody>

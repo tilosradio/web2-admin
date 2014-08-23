@@ -2,7 +2,7 @@ package hu.radio.tilos.model.type;
 
 public enum MixCategory implements DescriptiveType {
     DJ("Tilos DJ"),
-    GUEST_DJ("Vendég DJ"),
+    GUESTDJ("Vendég DJ"),
     SHOW("Beszélgetős műsor"),
     PARTY("Tilos party"),
     TALE("Tilos mese");
