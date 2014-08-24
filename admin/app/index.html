@@ -46,7 +46,7 @@
                 <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/authors">Szerzők</a></li>
                 <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/shows">Műsorok</a></li>
                 <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/pages">Oldalak</a></li>
-                <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/pages">Mixek</a></li>
+                <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/mixes">Mixek</a></li>
                 <li ng-show="user" active-link="active"><a ng-href="/user/me">Felhasználó: <b>{{user.username}}</b></a></li>
                 <li ng-show="user" active-link="active"><a ng-href="/author/{{user.author.id}}">Műsorkészítő profil: <b>{{user.author.name}}</b></a></li>
                 <li active-link="active"><a ng-click="logout()">Logout</a></li>
