@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.data.UserResponse;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.net.ssl.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +31,29 @@ import java.util.Scanner;
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
 
+    private static Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
     @Context
     ResourceInfo resource;
-
     @Context
     HttpServletRequest servletRequest;
-
     @Inject
     @ConfigProperty(name = "auth.url")
     private String serverUrl;
+
+    public AuthenticationFilter() {
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, new TrustManager[]{new TrustAllX509TrustManager()}, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                public boolean verify(String string, SSLSession ssls) {
+                    return true;
+                }
+            });
+        } catch (Exception ex) {
+            LOG.error("Can't turn off SSL checking", ex);
+        }
+    }
 
     private String getAuthUrl() {
         return serverUrl;
