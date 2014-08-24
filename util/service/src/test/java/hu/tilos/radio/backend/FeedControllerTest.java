@@ -51,7 +51,7 @@ public class FeedControllerTest {
         ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider();
         sp.setDataSource(dataSource);
         PersistentEpisodeProvider pp = new PersistentEpisodeProvider();
-        pp.setDataSource(dataSource);
+        pp.setEntityManager(TestUtil.initPersistence().createEntityManager());
 
         u.setPersistentProvider(pp);
         u.setScheduledProvider(sp);

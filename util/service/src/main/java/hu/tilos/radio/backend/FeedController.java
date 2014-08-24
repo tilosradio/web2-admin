@@ -25,9 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Generate atom feed for the shows.
@@ -91,8 +89,8 @@ public class FeedController {
 
             Date end = getNow();
             Date start = new Date();
-            //three monthes
-            start.setTime(end.getTime() - (long) 60 * 24 * 30 * 3 * 60 * 1000);
+            //six monthes
+            start.setTime(end.getTime() - (long) 60 * 24 * 30 * 6 * 60 * 1000);
 
             Person p = new Person();
             p.setEmail("info@tilos.hu");
@@ -100,7 +98,14 @@ public class FeedController {
             List<Person> authors = new ArrayList();
             authors.add(p);
 
-            for (EpisodeData episode : episodeUtil.getEpisodeData(show.getId(), start, end)) {
+            List<EpisodeData> episodeData = episodeUtil.getEpisodeData(show.getId(), start, end);
+            Collections.sort(episodeData, new Comparator<EpisodeData>() {
+                @Override
+                public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
+                    return Long.compare(episodeData2.getPlannedFrom(),episodeData.getPlannedFrom());
+                }
+            });
+            for (EpisodeData episode : episodeData) {
                 try {
                     Entry e = new Entry();
                     if (episode.getText() != null) {
