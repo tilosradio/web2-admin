@@ -19,7 +19,7 @@
         <th>Mix neve</th>
         <th>File</th>
         <th>Típus</th>
-        <th>Műsor</th>
+        <th>Kategória</th>
     </tr>
     </thead>
     <tbody>
@@ -27,9 +27,9 @@
         <td>{{mix.date}}</td>
         <td>{{mix.author}}</td>
         <td><a ng-href="/mix/{{mix.id}}">{{mix.title}}</a></td>
-        <td><a ng-href="{{mix.fileLink}}">{{mix.file}}</a></td>
-        <td>{{mix.typeText}}</td>
-        <td>{{mix.show.name}}</td>
+        <td><a ng-href="{{mix.link}}">{{mix.file}}</a></td>
+        <td>{{mix.type}}</td>
+        <td>{{mix.categotry}}</td>
     </tr>
     </tbody>
 </table>

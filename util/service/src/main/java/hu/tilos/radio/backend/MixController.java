@@ -5,7 +5,7 @@ import hu.radio.tilos.model.type.MixCategory;
 import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.converters.*;
 import hu.tilos.radio.backend.data.CreateResponse;
-import hu.tilos.radio.backend.data.MixRequest;
+import hu.tilos.radio.backend.data.types.MixData;
 import hu.tilos.radio.backend.data.MixResponse;
 import hu.tilos.radio.backend.data.types.MixSimple;
 import org.dozer.DozerBeanMapper;
@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class MixController {
 
         @Override
         protected void configure() {
-            mapping(MixRequest.class, Mix.class)
+            mapping(MixData.class, Mix.class)
                     .fields("show", "show", new FieldsMappingOption() {
                         @Override
                         public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
@@ -105,13 +106,10 @@ public class MixController {
     @Produces("application/json")
     @Security(role = Role.ADMIN)
     @POST
-    public CreateResponse create(MixRequest newMix) {
+    @Transactional
+    public CreateResponse create(MixData newMix) {
 
-        DozerBeanMapper mapper = MappingFactory.createDozer(entityManager, updateBuilder);
-
-        Mix mix = mapper.map(newMix, Mix.class);
-        //TODO
-        mix.setCategory(MixCategory.DJ);
+        Mix mix = modelMapper.map(newMix, Mix.class);
 
         entityManager.persist(mix);
 
@@ -121,15 +119,14 @@ public class MixController {
 
     @Produces("application/json")
     @Security(role = Role.ADMIN)
+    @Transactional
     @PUT
     @Path("/{id}")
-    public CreateResponse update(@PathParam("id") int id, MixRequest newMix) {
+    public CreateResponse update(@PathParam("id") int id, MixData newMix) {
 
         Mix mix = entityManager.find(Mix.class, id);
 
-        DozerBeanMapper mapper = MappingFactory.createDozer(entityManager, updateBuilder);
-
-        mapper.map(newMix, mix);
+        modelMapper.map(newMix, mix);
 
         return new CreateResponse(mix.getId());
     }
@@ -139,12 +136,8 @@ public class MixController {
     @Path("/{id}")
     @Security(role = Role.GUEST)
     @Produces("application/json")
-    public MixResponse get(@PathParam("id") int i) {
-
-        DozerBeanMapper mapper = new DozerBeanMapper();
-        mapper.addMapping(retrieveBuilder);
-        MixResponse r = mapper.map(entityManager.find(Mix.class, i), MixResponse.class);
-
+    public MixData get(@PathParam("id") int i) {
+        MixData r = modelMapper.map(entityManager.find(Mix.class, i), MixData.class);
         return r;
     }
 

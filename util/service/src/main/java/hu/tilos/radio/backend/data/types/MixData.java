@@ -1,6 +1,10 @@
-package hu.tilos.radio.backend.data;
+package hu.tilos.radio.backend.data.types;
 
-public class MixRequest {
+import hu.radio.tilos.model.type.MixCategory;
+import hu.radio.tilos.model.type.MixType;
+import hu.tilos.radio.backend.data.EntitySelector;
+
+public class MixData {
 
     private int id;
 
@@ -10,11 +14,23 @@ public class MixRequest {
 
     private String file;
 
-    private EntitySelector show;
+    private String link;
 
-    private int type;
+    private ShowSimple show;
+
+    private MixType type;
+
+    private MixCategory category;
 
     private String date;
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public int getId() {
         return id;
@@ -48,20 +64,28 @@ public class MixRequest {
         this.file = file;
     }
 
-    public EntitySelector getShow() {
+    public ShowSimple getShow() {
         return show;
     }
 
-    public void setShow(EntitySelector show) {
+    public void setShow(ShowSimple show) {
         this.show = show;
     }
 
-    public int getType() {
+    public MixType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(MixType type) {
         this.type = type;
+    }
+
+    public MixCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MixCategory category) {
+        this.category = category;
     }
 
     public String getDate() {

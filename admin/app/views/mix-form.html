@@ -43,18 +43,18 @@
 
             <div class="controls">
                 <select id="Type" name="Type" type="text" class="input-xlarge" ng-model="mix.type"
-                        ng-options="c.id as c.name for c in types"></select>
+                        ng-options="k as v for (k,v) in mixType"></select>
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label" for="Show">Kapcsolódó műsor</label>
+        <!--<div class="control-group">-->
+            <!--<label class="control-label" for="Show">Kapcsolódó műsor</label>-->
 
-            <div class="controls">
-                <select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id"
-                        ng-options="s.id as s.name for s in shows"></select>
-            </div>
-        </div>
+            <!--<div class="controls">-->
+                <!--<select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id"-->
+                        <!--ng-options="s.id as s.name for s in shows"></select>-->
+            <!--</div>-->
+        <!--</div>-->
 
     </fieldset>
 

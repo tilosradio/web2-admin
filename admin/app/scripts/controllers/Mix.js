@@ -41,22 +41,19 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin')
-    .controller('MixEditCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes, $cacheFactory, data) {
+    .controller('MixEditCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes, $cacheFactory, data, enumMixType) {
         $scope.mix = data;
-        $scope.types = [
-            {id: 0, 'name': "Beszélgetős"},
-            {id: 1, 'name': "Zenés"}
-        ];
+        $scope.mixType = enumMixType;
         //if (!$scope.mix.show.length == 0) {
-        $scope.mix.$promise.then(function (a) {
-            if (a.show.length == 0) {
-                $scope.mix.show = {};
-            }
-        });
-        //}
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
-            $scope.shows = data;
-        });
+//        $scope.mix.$promise.then(function (a) {
+//            if (a.show.length == 0) {
+//                $scope.mix.show = {};
+//            }
+//        });
+//        //}
+//        $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
+//            $scope.shows = data;
+//        });
         $scope.save = function () {
             $http.put(API_SERVER_ENDPOINT + '/api/v1/mix/' + $scope.mix.id, $scope.mix).success(function (data) {
                 var httpCache = $cacheFactory.get('$http');

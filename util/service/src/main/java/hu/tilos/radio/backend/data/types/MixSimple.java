@@ -1,5 +1,8 @@
 package hu.tilos.radio.backend.data.types;
 
+import hu.radio.tilos.model.type.MixCategory;
+import hu.radio.tilos.model.type.MixType;
+
 public class MixSimple {
 
     private int id;
@@ -10,7 +13,9 @@ public class MixSimple {
 
     private String link;
 
-    private int type;
+    private MixCategory category;
+
+    private MixType type;
 
     private String date;
 
@@ -46,11 +51,19 @@ public class MixSimple {
         this.link = link;
     }
 
-    public int getType() {
+    public MixCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MixCategory category) {
+        this.category = category;
+    }
+
+    public MixType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(MixType type) {
         this.type = type;
     }
 

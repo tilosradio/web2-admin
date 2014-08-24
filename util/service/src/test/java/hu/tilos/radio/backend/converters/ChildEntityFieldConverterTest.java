@@ -1,12 +1,9 @@
 package hu.tilos.radio.backend.converters;
 
 import hu.radio.tilos.model.Mix;
-import hu.tilos.radio.backend.SearchControllerTest;
 import hu.tilos.radio.backend.TestUtil;
 import hu.tilos.radio.backend.data.EntitySelector;
-import hu.tilos.radio.backend.data.MixRequest;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
+import hu.tilos.radio.backend.data.types.MixData;
 import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.DozerBuilder;
@@ -18,7 +15,6 @@ import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +35,7 @@ public class ChildEntityFieldConverterTest {
 
             @Override
             protected void configure() {
-                mapping(MixRequest.class, Mix.class).fields("show", "show", new FieldsMappingOption() {
+                mapping(MixData.class, Mix.class).fields("show", "show", new FieldsMappingOption() {
                     @Override
                     public void apply(DozerBuilder.FieldMappingBuilder fieldMappingBuilder) {
                         fieldMappingBuilder.customConverterId("childEntity");
@@ -57,8 +53,8 @@ public class ChildEntityFieldConverterTest {
         mapper.setCustomConvertersWithId(customConvertersWithId);
 
 
-        MixRequest r = new MixRequest();
-        r.setShow(new EntitySelector(2));
+        MixData r = new MixData();
+        //r.setShow(new EntitySelector(2));
 
         EntityManager em = factory.createEntityManager();
         Mix mix = em.find(Mix.class, 1);

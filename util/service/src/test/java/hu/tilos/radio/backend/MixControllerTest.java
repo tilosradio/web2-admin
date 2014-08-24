@@ -1,20 +1,15 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Mix;
+import hu.radio.tilos.model.type.MixCategory;
+import hu.radio.tilos.model.type.MixType;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.EntitySelector;
-import hu.tilos.radio.backend.data.MixRequest;
+import hu.tilos.radio.backend.data.types.MixData;
 import hu.tilos.radio.backend.data.MixResponse;
 
 import hu.tilos.radio.backend.data.types.MixSimple;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dozer.CustomFieldMapper;
-import org.dozer.DozerBeanMapper;
-import org.dozer.classmap.ClassMap;
-import org.dozer.fieldmap.FieldMap;
-import org.dozer.loader.api.BeanMappingBuilder;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Assert;
@@ -25,9 +20,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
-import java.util.Properties;
 
 @RunWith(CdiRunner.class)
 @AdditionalClasses(MappingFactory.class)
@@ -51,12 +44,13 @@ public class MixControllerTest {
         controller.setEntityManager(factory.createEntityManager());
 
         //when
-        MixResponse r = controller.get(1);
+        MixData r = controller.get(1);
 
         //then
         Assert.assertEquals("good mix", r.getTitle());
         Assert.assertNotNull(r.getShow());
-        Assert.assertEquals(1, r.getType());
+        Assert.assertEquals(MixType.MUSIC.SPEECH, r.getType());
+        Assert.assertEquals(MixCategory.PARTY, r.getCategory());
         Assert.assertEquals("3. utas", r.getShow().getName());
     }
 
@@ -68,7 +62,7 @@ public class MixControllerTest {
         controller.setEntityManager(factory.createEntityManager());
 
         //when
-        List<MixSimple> responses = controller.list(null);
+        List<MixSimple> responses = controller.list(null, null);
 
         //then
         Assert.assertEquals(3, responses.size());
@@ -81,7 +75,7 @@ public class MixControllerTest {
         controller.setEntityManager(factory.createEntityManager());
 
         //when
-        List<MixSimple> responses = controller.list("3utas");
+        List<MixSimple> responses = controller.list("3utas", null);
 
         //then
         Assert.assertEquals(2, responses.size());
@@ -96,10 +90,12 @@ public class MixControllerTest {
 
         controller.setEntityManager(em);
 
-        MixRequest r = new MixRequest();
+        MixData r = new MixData();
         r.setAuthor("lajos");
         r.setTitle("new mix");
         r.setFile("lajos.mp3");
+        r.setType(MixType.SPEECH);
+        r.setCategory(MixCategory.DJ);
 
         //when
         em.getTransaction().begin();
@@ -122,15 +118,13 @@ public class MixControllerTest {
         //given
         EntityManager em = factory.createEntityManager();
         controller.setEntityManager(em);
-        MixResponse r = controller.get(1);
+        MixData req = controller.get(1);
 
-        MixRequest req = new MixRequest();
-        req.setAuthor(r.getAuthor());
-        req.setFile(r.getFile());
-        req.setId(r.getId());
         req.setTitle("this Is the title");
         req.setDate("2014-10-23");
-        req.setShow(new EntitySelector(2));
+        Assert.assertEquals(MixType.SPEECH,req.getType());
+        req.setType(MixType.MUSIC);
+        //req.setShow(new EntitySelector(2));
 
         //when
         em.getTransaction().begin();
@@ -140,11 +134,11 @@ public class MixControllerTest {
         //then
         Assert.assertTrue(response.isSuccess());
 
-
         Mix mix = em.find(Mix.class, 1);
         Assert.assertEquals("this Is the title", mix.getTitle());
         Assert.assertEquals(9, mix.getDate().getMonth());
         Assert.assertEquals(23, mix.getDate().getDate());
+        Assert.assertEquals(MixType.MUSIC, mix.getType());
         em.close();
     }
 
