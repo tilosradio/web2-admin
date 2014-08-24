@@ -41,9 +41,10 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin')
-    .controller('MixEditCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes, $cacheFactory, data, enumMixType) {
+    .controller('MixEditCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes, $cacheFactory, data, enumMixType, enumMixCategory) {
         $scope.mix = data;
         $scope.mixType = enumMixType;
+        $scope.mixCategory = enumMixCategory;
         //if (!$scope.mix.show.length == 0) {
 //        $scope.mix.$promise.then(function (a) {
 //            if (a.show.length == 0) {
@@ -65,8 +66,11 @@ angular.module('tilosAdmin')
     }
 );
 
+
 angular.module('tilosAdmin')
-    .controller('MixNewCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes) {
+    .controller('MixNewCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Mixes, enumMixType, enumMixCategory) {
+        $scope.mixType = enumMixType;
+        $scope.mixCategory = enumMixCategory;
         $scope.mix = {};
         $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
             $scope.shows = data;
