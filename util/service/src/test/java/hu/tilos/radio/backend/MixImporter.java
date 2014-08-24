@@ -22,6 +22,9 @@ import java.util.regex.Pattern;
  * Temporary utility class to import mixes to the database.
  */
 public class MixImporter {
+
+    private static int idCounter = 0;
+
     Pattern date3 = Pattern.compile(".*(\\d{2})(\\d{2})(\\d{2}).*");
 
     public static void main(String[] args) throws Exception {
@@ -38,24 +41,25 @@ public class MixImporter {
 
     private void run() throws Exception {
         Properties properties = new Properties();
-        properties.setProperty("openjpa.ConnectionURL", "jdbc:mysql://localhost:3306/tilos2");
-        properties.setProperty("openjpa.ConnectionDriverName", "com.mysql.jdbc.Driver");
-        properties.setProperty("openjpa.ConnectionUserName", "root");
-        properties.setProperty("openjpa.ConnectionPassword", "");
+        properties.setProperty("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/tilos2");
+        properties.setProperty("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
+        properties.setProperty("javax.persistence.jdbc.user", "root");
+        properties.setProperty("javax.persistence.jdbc.password", "");
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("tilos-test", properties);
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
         em.createQuery("DELETE FROM Mix").executeUpdate();
-        importFile(new File("/home/elek/projects/tilos/hangtar.html"), MixCategory.DJ, em);
-        importFile(new File("/home/elek/projects/tilos/guest.html"), MixCategory.GUESTDJ, em);
-        importFile(new File("/home/elek/projects/tilos/hangtar-musorok.html"), MixCategory.SHOW, em);
+        importFile(new File("/home/elek/projects/hangtar.html"), MixCategory.DJ, MixType.MUSIC, em);
+        importFile(new File("/home/elek/projects/guest.html"), MixCategory.GUESTDJ, MixType.MUSIC, em);
+        importFile(new File("/home/elek/projects/hangtar-musorok.html"), MixCategory.SHOW, MixType.SPEECH, em);
+        importFile(new File("/home/elek/projects/mese.html"), MixCategory.TALE, MixType.SPEECH, em);
 
         em.getTransaction().commit();
         em.close();
     }
 
-    private void importFile(File f, MixCategory c, EntityManager em) throws IOException {
+    private void importFile(File f, MixCategory c, MixType type, EntityManager em) throws IOException {
         Document document = Jsoup.parse(f, "UTF-8");
         Element select = document.select("#mainIndex").get(0);
         Elements links = select.select("a");
@@ -65,7 +69,6 @@ public class MixImporter {
                 if (link.endsWith(".mp3")) {
 
                     Mix mix = new Mix();
-
                     link = link.replace("http://archive.tilos.hu/sounds/", "");
 
                     Matcher m = date3.matcher(link);
@@ -87,7 +90,7 @@ public class MixImporter {
                     }
 
                     mix.setFile(link);
-                    mix.setType(MixType.MUSIC);
+                    mix.setType(type);
                     mix.setCategory(c);
                     em.persist(mix);
                 }
