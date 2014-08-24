@@ -93,6 +93,9 @@ public class MappingFactory {
 
                     @Override
                     protected Date convert(String source) {
+                        if (source == null) {
+                            return null;
+                        }
                         try {
                             return new SimpleDateFormat("yyyy-MM-dd").parse(source);
                         } catch (ParseException e) {
