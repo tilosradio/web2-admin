@@ -75,6 +75,11 @@ public class LocalBackend implements Backend {
         return size;
     }
 
+    @Override
+    public File getLocalFile(StreamController.Mp3File mp3File) {
+        return new File(root, mp3File.getName());
+    }
+
 
     public long size(StreamController.Mp3File file) {
         long size = new File(root + file.getName()).length();
@@ -84,12 +89,12 @@ public class LocalBackend implements Backend {
         return size - file.getStartOffset();
     }
 
-    public void setRoot(String root) {
-        this.root = root;
-    }
-
     public String getRoot() {
         return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
     }
 
     public int getThrottleLimit() {

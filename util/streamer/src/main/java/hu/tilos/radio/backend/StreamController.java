@@ -2,6 +2,7 @@ package hu.tilos.radio.backend;
 
 import hu.tilos.radio.backend.streamer.Backend;
 import hu.tilos.radio.backend.streamer.LocalBackend;
+import hu.tilos.radio.backend.streamer.util.Mp3Joiner;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +25,12 @@ import java.util.regex.Pattern;
 @WebServlet(urlPatterns = "/")
 public class StreamController extends HttpServlet {
 
-    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMddHHmmss");
-
-    private static SimpleDateFormat FILE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd-HHmm");
-
-    private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
+    Mp3Joiner joiner = new Mp3Joiner();
 
     private static final Logger LOG = LoggerFactory.getLogger(StreamController.class);
-
+    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMddHHmmss");
+    private static SimpleDateFormat FILE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd-HHmm");
+    private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
     @Inject
     Backend backend;
 
@@ -59,7 +58,9 @@ public class StreamController extends HttpServlet {
         }
         try {
             ResourceCollection collection = getMp3Links(segment.start, segment.duration);
+            detectJoins(collection);
             int size = backend.getSize(collection);
+
 
             if (req.getRequestURI().endsWith("m3u")) {
                 generateM3u(req, resp, segment, size);
@@ -107,6 +108,17 @@ public class StreamController extends HttpServlet {
         }
     }
 
+    private void detectJoins(ResourceCollection collection) {
+        List<Mp3File> mp3Files = collection.getCollection();
+        for (int i = 0; i < mp3Files.size() - 1; i++) {
+            Mp3Joiner.OffsetDouble joinPositions = joiner.findJoinPositions(backend.getLocalFile(mp3Files.get(i)), backend.getLocalFile(mp3Files.get(i + 1)));
+            if (joinPositions != null) {
+                mp3Files.get(i).setEndOffset(joinPositions.firstEndOffset);
+                mp3Files.get(i + 1).setStartOffset(joinPositions.secondStartOffset);
+            }
+        }
+    }
+
     private void generateM3u(HttpServletRequest req, HttpServletResponse resp, Segment segment, int size) throws IOException {
         String filename = "tilos-" + FILE_NAME_FORMAT.format(segment.start) + "-" + segment.duration;
         resp.setHeader("Content-Type", "audio/x-mpegurl; charset=utf-8");
@@ -119,7 +131,6 @@ public class StreamController extends HttpServlet {
 
     protected Segment parse(String requestURI) throws ParseException {
         Segment s = new Segment();
-        //mp3/20140505/120300/140400.mp3
 
         Matcher m = Pattern.compile("^/mp3/tilos-(\\d+)-(\\d+)-(\\d+).*$").matcher(requestURI);
         if (m.matches()) {
@@ -190,6 +201,14 @@ public class StreamController extends HttpServlet {
         return collection;
     }
 
+    public void setServerUrl(String url) {
+        this.serverUrl = url;
+    }
+
+    public Backend getBackend() {
+        return backend;
+    }
+
     public void setBackend(Backend backend) {
         this.backend = backend;
     }
@@ -253,13 +272,5 @@ public class StreamController extends HttpServlet {
     public static class Segment {
         Date start;
         int duration;
-    }
-
-    public void setServerUrl(String url) {
-        this.serverUrl = url;
-    }
-
-    public Backend getBackend() {
-        return backend;
     }
 }

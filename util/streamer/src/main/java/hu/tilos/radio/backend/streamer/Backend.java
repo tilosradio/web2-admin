@@ -2,6 +2,7 @@ package hu.tilos.radio.backend.streamer;
 
 import hu.tilos.radio.backend.StreamController;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 
@@ -11,4 +12,5 @@ public interface Backend {
 
     public int getSize(StreamController.ResourceCollection collection);
 
+    File getLocalFile(StreamController.Mp3File mp3File);
 }
