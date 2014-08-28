@@ -41,7 +41,18 @@ public class Mix {
     private MixType type;
 
     @Column
+    private String content;
+
+    @Column
     MixCategory category;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public int getTypeCode(){
         return type.ordinal();

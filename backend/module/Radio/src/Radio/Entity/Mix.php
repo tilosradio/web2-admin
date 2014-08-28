@@ -49,10 +49,14 @@ class Mix
     protected $type = 0;
 
     /**
-         * @ORM\Column(type="integer")
-         * */
-        protected $category = 0;
+     * @ORM\Column(type="integer")
+     * */
+    protected $category = 0;
 
+    /**
+     * @ORM\Column(type="text")
+     * */
+    protected $content;
     /**
      * @return mixed
      */
@@ -163,6 +167,38 @@ class Mix
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 
 

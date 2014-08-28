@@ -24,6 +24,16 @@ public class MixData {
 
     private String date;
 
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getLink() {
         return link;
     }
