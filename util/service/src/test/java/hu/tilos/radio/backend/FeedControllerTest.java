@@ -59,7 +59,7 @@ public class FeedControllerTest {
 
 
         //when
-        Feed feed = (Feed) c.feed("3utas").getEntity();
+        Feed feed = (Feed) c.feed("3utas", null).getEntity();
 
         //then
         JAXBContext jaxbc = JAXBContext.newInstance(Feed.class);
