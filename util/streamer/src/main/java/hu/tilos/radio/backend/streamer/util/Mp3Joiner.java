@@ -18,7 +18,6 @@ public class Mp3Joiner {
         File f1 = new File(root, "tilosradio-20140604-1100.mp3");
         File f2 = new File(root, "tilosradio-20140604-1130.mp3");
         OffsetDouble joinPositions = new Mp3Joiner().findJoinPositions(f1, f2);
-        System.out.println(joinPositions);
         LimitedInputStream li1 = new LimitedInputStream(new FileInputStream(f1), 0, (int) joinPositions.firstEndOffset);
         ByteArrayInputStream is = new ByteArrayInputStream(new byte[]{50, 50, 50, 50});
         LimitedInputStream li2 = new LimitedInputStream(new FileInputStream(f2), (int) joinPositions.secondStartOffset, Integer.MAX_VALUE);
@@ -53,14 +52,12 @@ public class Mp3Joiner {
         }
         try (InputStream is = new FileInputStream(secondFile)) {
             RingBufferWithPosition last = findFirstFrame(is);
-            System.out.println(last);
             if (last == null) {
                 return null;
             }
             RingBuffer b = new RingBuffer(BUFFER_SIZE);
             int start = 56000000;
             try (InputStream prev = new FileInputStream(firstFile)) {
-                System.out.println("Skipped " + prev.skip(start) + " bytes");
                 int position = start;
                 int ch;
                 while ((ch = prev.read()) != -1) {

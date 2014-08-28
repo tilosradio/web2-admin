@@ -56,9 +56,8 @@ public class LocalBackend implements Backend {
             out.flush();
             out.close();
         } catch (Exception ex) {
-            if (!ex.getClass().getName().contains("EofException")) {
-                throw new RuntimeException(ex.getMessage(), ex);
-            }
+            //these exceptions about the stream is closing.
+            //TODO: FIlter out the real excetptions...
         } finally {
             is.close();
         }
