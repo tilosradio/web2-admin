@@ -25,6 +25,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.IndexSearcher;
@@ -157,17 +158,21 @@ public class SearchController {
             int docId = hits[i].doc;
             Document d = searcher.doc(docId);
             e.setScore(hits[i].score);
-            if (d.getField("alias") != null) {
-                e.setAlias(d.getField("alias").stringValue());
-            } else {
-                e.setAlias("");
-            }
-            e.setUri(d.getField("uri").stringValue());
-            e.setTitle(d.getField("name").stringValue());
-            e.setDescription(d.getField("description").stringValue());
+            e.setAlias(safe(d.getField("alias")));
+            e.setType(safe(d.getField("type")));
+            e.setUri(safe(d.getField("uri")));
+            e.setTitle(safe(d.getField("name")));
+            e.setDescription(safe(d.getField("description")));
             r.addElement(e);
         }
         return r;
+    }
+
+    private String safe(IndexableField type) {
+        if (type == null) {
+            return null;
+        }
+        return type.stringValue();
     }
 
     private void addAuthors(DSLContext context, IndexWriter w) throws IOException {
@@ -257,7 +262,7 @@ public class SearchController {
                 doc.add(new TextField("name", safe(text.getTitle()), Field.Store.YES));
                 doc.add(new TextField("description", shorten(safe(text.getContent()), 100), Field.Store.YES));
                 doc.add(new TextField("content", safe(text.getContent()), Field.Store.NO));
-                doc.add(new TextField("type", "page", Field.Store.YES));
+                doc.add(new TextField("type", "episode", Field.Store.YES));
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 doc.add(new TextField("uri", "/episode/" + record.getValue(RADIOSHOW.ALIAS) + "/" + dateFormat.format(new Date(episode.getPlannedfrom().getTime())), Field.Store.YES));
                 try {

@@ -8,6 +8,7 @@ angular.module('tilosApp').config(function ($routeProvider) {
 });
 angular.module('tilosApp')
     .controller('SearchCtrl', function ($scope, $rootScope, $routeParams, API_SERVER_ENDPOINT, $http) {
+        $scope.types = {'page': 'Oldal', 'episode': 'Adásnapló', 'author': 'Műsorkészítő', 'show': 'Műsor', 'mix': 'Mix'};
         $http.get(API_SERVER_ENDPOINT + '/api/v1/search/query?q=' + $routeParams.id, {cache: true}).success(function (data) {
             $scope.result = data;
         });
