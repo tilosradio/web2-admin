@@ -65,10 +65,12 @@ public class FeedController {
     }
 
     @GET
-    @Path("/show/{alias}")
+    @Path("/show/{alias}{year:(/.*)?}")
     @Security(role = Role.GUEST)
     @Produces("application/atom+xml")
-    public Response feed(@PathParam("alias") String alias) {
+    public Response feed(@PathParam("alias") String alias, @PathParam("year") String year) {
+        //{year: (/.*)?
+        //,
         Feed feed = new Feed();
         try {
             Query q = entityManager.createQuery("SELECT s FROM Show s WHERE s.alias = :alias");
@@ -87,10 +89,18 @@ public class FeedController {
             feed.setId(new URI("http://tilos.hu/show/" + show.getAlias()));
 
 
-            Date end = getNow();
-            Date start = new Date();
-            //six monthes
-            start.setTime(end.getTime() - (long) 60 * 24 * 30 * 6 * 60 * 1000);
+            Date end;
+            Date start;
+            if (year == null || "".equals(year)) {
+                end = getNow();
+                //six monthes
+                start = new Date();
+                start.setTime(end.getTime() - (long) 60 * 24 * 30 * 6 * 60 * 1000);
+            } else {
+                int yearInt = Integer.parseInt(year.substring(1));
+                start = new Date(yearInt - 1900, 0, 1);
+                end = new Date(yearInt - 1900 + 1, 0, 1);
+            }
 
             Person p = new Person();
             p.setEmail("info@tilos.hu");
@@ -102,7 +112,7 @@ public class FeedController {
             Collections.sort(episodeData, new Comparator<EpisodeData>() {
                 @Override
                 public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
-                    return Long.compare(episodeData2.getPlannedFrom(),episodeData.getPlannedFrom());
+                    return Long.compare(episodeData2.getPlannedFrom(), episodeData.getPlannedFrom());
                 }
             });
             for (EpisodeData episode : episodeData) {
