@@ -71,6 +71,12 @@ public class FeedController {
     public Response feed(@PathParam("alias") String alias, @PathParam("year") String year) {
         //{year: (/.*)?
         //,
+        if (year == null) {
+            year = "";
+        } else if (year.startsWith("/")) {
+            year = year.substring(1);
+        }
+
         Feed feed = new Feed();
         try {
             Query q = entityManager.createQuery("SELECT s FROM Show s WHERE s.alias = :alias");
@@ -79,25 +85,26 @@ public class FeedController {
             feed.setTitle(show.getName() + " [Tilos Rádió podcast]");
             feed.setUpdated(new Date());
 
+            String yearPostfix = ("".equals(year) ? "" : "/" + year);
 
             Link feedLink = new Link();
             feedLink.setRel("self");
             feedLink.setType(new MediaType("application", "atom+xml"));
-            feedLink.setHref(new URI(serverUrl + "/feed/show/" + show.getAlias()));
+            feedLink.setHref(new URI(serverUrl + "/feed/show/" + show.getAlias() + yearPostfix));
 
             feed.getLinks().add(feedLink);
-            feed.setId(new URI("http://tilos.hu/show/" + show.getAlias()));
+            feed.setId(new URI("http://tilos.hu/show/" + show.getAlias() + yearPostfix));
 
 
             Date end;
             Date start;
-            if (year == null || "".equals(year)) {
+            if ("".equals(year)) {
                 end = getNow();
                 //six monthes
                 start = new Date();
                 start.setTime(end.getTime() - (long) 60 * 24 * 30 * 6 * 60 * 1000);
             } else {
-                int yearInt = Integer.parseInt(year.substring(1));
+                int yearInt = Integer.parseInt(year);
                 start = new Date(yearInt - 1900, 0, 1);
                 end = new Date(yearInt - 1900 + 1, 0, 1);
             }
