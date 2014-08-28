@@ -5,6 +5,7 @@ var sass =    require('gulp-ruby-sass');
 var concat =  require('gulp-concat');
 var jshint  = require('gulp-jshint');
 var connect  = require('gulp-connect');
+var exec = require('child_process');
 
 gulp.task('views', function() {
   gulp.src('app/*')
@@ -97,6 +98,15 @@ gulp.task('sass', function() {
     //.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
     .pipe(gulp.dest(distDir + '/www/styles'))
 });
+
+
+gulp.task('zip', function (cb) {
+  exec.exec('zip -q -r frontend.zip dist', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+})
 
 gulp.task('watch', function(){
    gulp.watch([distDir + "/www/**/*"], function(event) {
