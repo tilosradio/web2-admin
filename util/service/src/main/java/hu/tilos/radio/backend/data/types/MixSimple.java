@@ -19,6 +19,16 @@ public class MixSimple {
 
     private String date;
 
+    private boolean withContent;
+
+    public boolean isWithContent() {
+        return withContent;
+    }
+
+    public void setWithContent(boolean withContent) {
+        this.withContent = withContent;
+    }
+
     public int getId() {
         return id;
     }

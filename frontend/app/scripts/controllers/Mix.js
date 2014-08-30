@@ -5,8 +5,11 @@ angular.module('tilosApp').config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'partials/mixes.html',
         controller: 'MixListCtrl'
     });
+    $routeProvider.when('/mix/:id', {
+        templateUrl: 'partials/mix.html',
+        controller: 'MixCtrl'
+    });
 }]);
-
 
 angular.module('tilosApp')
     .controller('MixListCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $scope, enumMixType) {
@@ -19,6 +22,19 @@ angular.module('tilosApp')
 
     }
 );
+
+angular.module('tilosApp')
+    .controller('MixCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $scope, enumMixType) {
+        $scope.tab = $routeParams.category;
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/mix/' + $routeParams.id).success(function (data) {
+            $scope.mix = data;
+        });
+        $scope.mixType = enumMixType;
+
+    }
+);
+
+
 
 
 

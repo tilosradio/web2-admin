@@ -78,6 +78,15 @@ public class MappingFactory {
             @Override
             protected void configure() {
                 using(sounds).map().setLink(source.getFile());
+                using(new AbstractConverter<String, Boolean>() {
+                    @Override
+                    protected Boolean convert(String source) {
+                        if (source == null) {
+                            return false;
+                        }
+                        return source.length() > 10;
+                    }
+                }).map(source.getContent()).setWithContent(false);
             }
         });
         modelMapper.addMappings(new PropertyMap<Mix, MixData>() {

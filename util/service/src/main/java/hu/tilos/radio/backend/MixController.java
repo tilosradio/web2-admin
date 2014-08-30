@@ -93,7 +93,6 @@ public class MixController {
         }
         List<Mix> mixes = q.getResultList();
 
-
         List<MixSimple> response = new ArrayList<>();
         for (Mix mix : mixes) {
             response.add(modelMapper.map(mix, MixSimple.class));

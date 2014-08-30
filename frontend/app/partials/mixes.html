@@ -30,7 +30,10 @@
     <tr ng-repeat="mix in mixes | filter: quicksearch">
         <td>{{mix.date}}</td>
         <td><b>{{mix.author}}</b>: {{mix.title}}</td>
-        <td><a class="label label-episode episode" ng-href="{{mix.link}}">Meghallgat</a></td>
+        <td class="pull-right">
+            <a ng-show="{{mix.withContent}}" class="label label-info label-episode" ng-href="/mix/{{mix.id}}">Tracklista</a>
+            <a class="label label-episode episode" ng-href="{{mix.link}}">Meghallgat</a>
+        </td>
     </tr>
     </tbody>
 </table>
