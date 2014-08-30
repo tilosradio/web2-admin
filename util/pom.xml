@@ -7,7 +7,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>integration</module>
-        <module>mp3processor</module>
         <module>prerender</module>
         <module>model</module>
         <module>jooq-model</module>
