@@ -14,18 +14,16 @@ public class Bookmark {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Basic
     @Column(length = 160)
     private String title;
 
-
     @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Column(name="start")
     private Date realFrom;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Column(name="end")
     private Date realTo;
 
     @ManyToOne()

@@ -6,10 +6,13 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSetWriter;
 
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
+import javax.ws.rs.ext.Provider;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -37,7 +40,6 @@ public class TestUtil {
             throw new RuntimeException(ex);
         }
     }
-
 
     public static Connection initConnection() {
         try {
@@ -79,5 +81,11 @@ public class TestUtil {
             throw new RuntimeException(ex);
         }
 
+    }
+
+    @Produces
+    @PersistenceContext
+    public EntityManager getEntityManager() {
+        return TestUtil.initPersistence().createEntityManager();
     }
 }

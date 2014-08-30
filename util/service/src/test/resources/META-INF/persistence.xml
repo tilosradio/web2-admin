@@ -10,6 +10,7 @@
         <class>hu.radio.tilos.model.Mix</class>
         <class>hu.radio.tilos.model.Scheduling</class>
         <class>hu.radio.tilos.model.Contribution</class>
+        <class>hu.radio.tilos.model.Bookmark</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"></property>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
