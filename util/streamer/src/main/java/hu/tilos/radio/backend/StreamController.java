@@ -4,9 +4,12 @@ import hu.tilos.radio.backend.streamer.Backend;
 import hu.tilos.radio.backend.streamer.LocalBackend;
 import hu.tilos.radio.backend.streamer.util.Mp3Joiner;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.apache.deltaspike.core.api.jmx.JmxManaged;
+import org.apache.deltaspike.core.api.jmx.MBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,20 +22,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/")
+
 public class StreamController extends HttpServlet {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StreamController.class);
+
+    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMddHHmmss");
+
+    private static SimpleDateFormat FILE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd-HHmm");
+
+    private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
 
     Mp3Joiner joiner = new Mp3Joiner();
 
-    private static final Logger LOG = LoggerFactory.getLogger(StreamController.class);
-    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMddHHmmss");
-    private static SimpleDateFormat FILE_NAME_FORMAT = new SimpleDateFormat("yyyyMMdd-HHmm");
-    private static Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)?");
     @Inject
     Backend backend;
+
+
+    @Inject
+    StreamerMonitor monitor;
 
     @Inject
     @ConfigProperty(name = "server.url")
@@ -82,7 +95,12 @@ public class StreamController extends HttpServlet {
                     resp.setHeader("Accept-Ranges", "bytes");
                     resp.setHeader("Content-Length", "" + (to - start)); // The size of the range
                     resp.setHeader("Content-Range", "bytes=" + start + "-" + (to - 1) + "/" + size); // The size of the range
-                    backend.stream(collection, start, size, output);
+                    try {
+                        monitor.increment();
+                        backend.stream(collection, start, size, output);
+                    } finally {
+                        monitor.decrement();
+                    }
                 } else {
                     throw new RuntimeException("Unknown range request");
                 }
@@ -94,7 +112,12 @@ public class StreamController extends HttpServlet {
                 resp.setHeader("Content-Disposition", "inline; filename=\"" + filename + ".mp3\"");
 
                 resp.setHeader("Accept-Ranges", "bytes");
-                backend.stream(collection, 0, size, output);
+                try {
+                    monitor.increment();
+                    backend.stream(collection, 0, size, output);
+                } finally {
+                    monitor.decrement();
+                }
             }
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -212,6 +235,7 @@ public class StreamController extends HttpServlet {
     public void setBackend(Backend backend) {
         this.backend = backend;
     }
+
 
     public static class ResourceCollection {
 

@@ -2,15 +2,19 @@ package hu.tilos.radio.backend.streamer.util;
 
 import hu.tilos.radio.backend.streamer.CombinedInputStream;
 import hu.tilos.radio.backend.streamer.LimitedInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Mp3Joiner {
 
     private static final int BUFFER_SIZE = 500;
-
+    private static final Logger LOG = LoggerFactory.getLogger(Mp3Joiner.class);
     private Map<String, OffsetDouble> cache = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws Exception {
@@ -56,10 +60,14 @@ public class Mp3Joiner {
                 return null;
             }
             RingBuffer b = new RingBuffer(BUFFER_SIZE);
-            int start = 56000000;
+            int start = (int) Files.size(Paths.get(secondFile.getAbsolutePath())) - 3000;
+            if (start<0){
+                return null;
+            }
             try (InputStream prev = new FileInputStream(firstFile)) {
                 int position = start;
                 int ch;
+                prev.skip(start);
                 while ((ch = prev.read()) != -1) {
                     b.add(ch);
                     if (isFrameStart(b)) {
@@ -69,14 +77,11 @@ public class Mp3Joiner {
                             return result;
                         }
                     }
-//                    if (position % 1000000 == 0) {
-//                        System.out.println(position);
-//                    }
                     position++;
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Error on joining  files " + firstFile + " and " + secondFile, e);
         }
         return null;
     }
