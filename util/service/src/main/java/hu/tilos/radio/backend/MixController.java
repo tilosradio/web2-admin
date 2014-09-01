@@ -130,6 +130,20 @@ public class MixController {
         return new CreateResponse(mix.getId());
     }
 
+    @Produces("application/json")
+    @Security(role = Role.ADMIN)
+    @Transactional
+    @DELETE
+    @Path("/{id}")
+    public boolean delete(@PathParam("id") int id) {
+
+        Mix mix = entityManager.find(Mix.class, id);
+
+        entityManager.remove(entityManager.find(Mix.class, id));
+
+        return true;
+    }
+
 
     @GET
     @Path("/{id}")

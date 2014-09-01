@@ -82,17 +82,21 @@ angular.module('tilosAdmin')
         $scope.save = function () {
             $http.post(API_SERVER_ENDPOINT + '/api/v1/mix', $scope.mix).success(function (data) {
                 $location.path('/mix/' + data.id);
-                httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/mixes');
             });
         }
     }
 );
-;
+
 
 angular.module('tilosAdmin')
-    .controller('MixesCtrl', function ($scope, data) {
+    .controller('MixesCtrl', function ($scope, data, $http, API_SERVER_ENDPOINT, $location) {
         $scope.mix = data;
-
+        $scope.delete = function() {
+            var id = $scope.mix.id;
+            $http.delete(API_SERVER_ENDPOINT + '/api/v1/mix/' + id).success(function (data) {
+                $location.path('/mixes');
+            });
+        }
 
     });
 
