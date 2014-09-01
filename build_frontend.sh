@@ -4,6 +4,6 @@ mkdir -p $DIR/build
 cd $DIR/frontend
 gulp build
 cd $DIR/frontend/dist
-rm $DIR/frontend.zip
+rm $DIR/build/frontend.zip
 zip -r $DIR/build/frontend.zip *
 cd $DIR
