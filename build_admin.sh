@@ -2,6 +2,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir -p $DIR/build
 cd $DIR/admin
+bower install
 gulp build
 cd dist
 rm $DIR/build/admin.zip
