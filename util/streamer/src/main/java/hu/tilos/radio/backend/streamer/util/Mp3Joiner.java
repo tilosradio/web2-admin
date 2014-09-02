@@ -60,8 +60,9 @@ public class Mp3Joiner {
                 return null;
             }
             RingBuffer b = new RingBuffer(BUFFER_SIZE);
-            int start = (int) Files.size(Paths.get(secondFile.getAbsolutePath())) - 3000;
-            if (start<0){
+            //400000: maximim 12.4 second overlapping could be detected
+            int start = (int) Files.size(Paths.get(secondFile.getAbsolutePath())) - 400000;
+            if (start < 0) {
                 return null;
             }
             try (InputStream prev = new FileInputStream(firstFile)) {
