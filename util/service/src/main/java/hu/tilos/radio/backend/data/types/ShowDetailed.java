@@ -24,6 +24,16 @@ public class ShowDetailed {
 
     private String statusTxt;
 
+    private ShowStats stats = new ShowStats();
+
+    public ShowStats getStats() {
+        return stats;
+    }
+
+    public void setStats(ShowStats stats) {
+        this.stats = stats;
+    }
+
     private List<MixSimple> mixes = new ArrayList<>();
 
     private List<ShowContribution> contributors = new ArrayList<>();

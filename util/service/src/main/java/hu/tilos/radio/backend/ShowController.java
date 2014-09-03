@@ -34,7 +34,7 @@ public class ShowController {
     private static Logger LOG = LoggerFactory.getLogger(ShowController.class);
     private final SchedulingTextUtil schedulingTextUtil = new SchedulingTextUtil();
 
-    @PersistenceContext
+    @Inject
     private EntityManager entityManager;
 
     @Inject
@@ -79,6 +79,11 @@ public class ShowController {
             if (ss.getValidFrom() < now && ss.getValidTo() > now)
                 ss.setText(schedulingTextUtil.create(ss));
         }
+
+
+        Long o = (Long) entityManager.createQuery("SELECT count(m) FROM Mix m where m.show = :show").setParameter("show", show).getSingleResult();
+        detailed.getStats().mixCount = o.intValue();
+
         return detailed;
 
     }
