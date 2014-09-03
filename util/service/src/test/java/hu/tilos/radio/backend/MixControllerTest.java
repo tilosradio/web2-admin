@@ -10,6 +10,7 @@ import hu.tilos.radio.backend.data.types.MixData;
 import hu.tilos.radio.backend.data.MixResponse;
 
 import hu.tilos.radio.backend.data.types.MixSimple;
+import hu.tilos.radio.backend.data.types.ShowSimple;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Assert;
@@ -23,7 +24,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @RunWith(CdiRunner.class)
-@AdditionalClasses(MappingFactory.class)
+@AdditionalClasses({MappingFactory.class, TestUtil.class})
 public class MixControllerTest {
 
     private static EntityManagerFactory factory;
@@ -97,6 +98,10 @@ public class MixControllerTest {
         r.setType(MixType.SPEECH);
         r.setCategory(MixCategory.DJ);
 
+        ShowSimple showSimple = new ShowSimple();
+        showSimple.setId(1);
+        r.setShow(showSimple);
+
         //when
         em.getTransaction().begin();
         CreateResponse response = controller.create(r);
@@ -108,6 +113,7 @@ public class MixControllerTest {
 
         Mix mix = em.find(Mix.class, response.getId());
         Assert.assertEquals("lajos", mix.getAuthor());
+        Assert.assertEquals(1,mix.getShow().getId());
         em.close();
     }
 

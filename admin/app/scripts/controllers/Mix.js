@@ -45,16 +45,16 @@ angular.module('tilosAdmin')
         $scope.mix = data;
         $scope.mixType = enumMixType;
         $scope.mixCategory = enumMixCategory;
-        //if (!$scope.mix.show.length == 0) {
-//        $scope.mix.$promise.then(function (a) {
-//            if (a.show.length == 0) {
-//                $scope.mix.show = {};
-//            }
-//        });
-//        //}
-//        $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
-//            $scope.shows = data;
-//        });
+
+        $scope.mix.$promise.then(function (a) {
+            if (a.show == null ) {
+                $scope.mix.show = {};
+            }
+        });
+
+        $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
+            $scope.shows = data;
+        });
         $scope.save = function () {
             $http.put(API_SERVER_ENDPOINT + '/api/v1/mix/' + $scope.mix.id, $scope.mix).success(function (data) {
                 var httpCache = $cacheFactory.get('$http');
@@ -91,7 +91,7 @@ angular.module('tilosAdmin')
 angular.module('tilosAdmin')
     .controller('MixesCtrl', function ($scope, data, $http, API_SERVER_ENDPOINT, $location) {
         $scope.mix = data;
-        $scope.delete = function() {
+        $scope.delete = function () {
             var id = $scope.mix.id;
             $http.delete(API_SERVER_ENDPOINT + '/api/v1/mix/' + id).success(function (data) {
                 $location.path('/mixes');

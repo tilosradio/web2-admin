@@ -14,7 +14,7 @@ public class SchedulingTextUtil {
         if (scheduling.getWeekType() == 2) {
             response.append("második ");
         }
-        String days[] =new String[]{"hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat", "vasárnap"};
+        String days[] = new String[]{"hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat", "vasárnap"};
 
         response.append(days[scheduling.getWeekDay()]);
         int to = scheduling.getHourFrom() * 60 + scheduling.getMinFrom() + scheduling.getDuration();

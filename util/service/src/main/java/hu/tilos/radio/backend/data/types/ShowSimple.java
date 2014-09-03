@@ -1,6 +1,8 @@
 package hu.tilos.radio.backend.data.types;
 
-public class ShowSimple {
+public class ShowSimple implements WithId{
+
+    private int id;
 
     private String name;
 
@@ -9,6 +11,14 @@ public class ShowSimple {
     private int type;
 
     private int status;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

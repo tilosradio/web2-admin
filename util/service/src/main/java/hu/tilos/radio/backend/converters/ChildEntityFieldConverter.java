@@ -12,13 +12,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 public class ChildEntityFieldConverter implements CustomConverter {
+    public static final String ID = "entityChild";
     private EntityManager entityManager;
 
     public ChildEntityFieldConverter(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-
-    public static final String ID = "entityChild";
 
     @Override
     public Object convert(Object existingDestinationFieldValue, Object sourceFieldValue, Class<?> destinationClass, Class<?> sourceClass) {

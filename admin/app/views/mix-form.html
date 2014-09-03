@@ -57,6 +57,17 @@ a
             </div>
         </div>
 
+
+        <div class="control-group">
+            <label class="control-label" for="Show">Kapcsolódó műsor</label>
+
+            <div class="controls">
+                <select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id"
+                        ng-options="s.id as s.name for s in shows"></select>
+            </div>
+        </div>
+
+
         <div class="control-group">
             <label class="control-label" for="content">Tracklista</label>
 
@@ -65,15 +76,6 @@ a
 
         </div>
 
-
-        <!--<div class="control-group">-->
-            <!--<label class="control-label" for="Show">Kapcsolódó műsor</label>-->
-
-            <!--<div class="controls">-->
-                <!--<select id="Show" name="Show" type="text" class="input-xlarge" ng-model="mix.show.id"-->
-                        <!--ng-options="s.id as s.name for s in shows"></select>-->
-            <!--</div>-->
-        <!--</div>-->
 
     </fieldset>
 

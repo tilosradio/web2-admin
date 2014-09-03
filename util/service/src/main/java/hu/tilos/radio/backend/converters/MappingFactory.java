@@ -16,6 +16,7 @@ import org.modelmapper.PropertyMap;
 
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -30,6 +31,12 @@ import java.util.Map;
  */
 @Named
 public class MappingFactory {
+
+    @Inject
+    EntityManager manager;
+
+    @Inject
+    EntityChildMapper entityChildMapper;
 
     private String uploadUrl = "http://tilos.hu/upload/";
 
@@ -112,9 +119,10 @@ public class MappingFactory {
                         }
                     }
                 }).map(source.getDate()).setDate(null);
-                skip().setShow(null);
+                using(entityChildMapper).map(source.getShow()).setShow(null);
             }
         });
+
         return modelMapper;
 
     }
