@@ -51,7 +51,7 @@ public class MixControllerTest {
         Assert.assertEquals("good mix", r.getTitle());
         Assert.assertNotNull(r.getShow());
         Assert.assertEquals(MixType.MUSIC.SPEECH, r.getType());
-        Assert.assertEquals(MixCategory.PARTY, r.getCategory());
+        Assert.assertEquals(MixCategory.SHOW, r.getCategory());
         Assert.assertEquals("3. utas", r.getShow().getName());
     }
 
