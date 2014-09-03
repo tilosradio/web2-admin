@@ -23,6 +23,7 @@ import javax.ws.rs.Produces;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import static hu.tilos.radio.jooqmodel.Tables.*;
 import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
@@ -73,8 +74,10 @@ public class ShowController {
             }
         });
 
+        long now = new Date().getTime();
         for (SchedulingSimple ss : detailed.getSchedulings()) {
-            ss.setText(schedulingTextUtil.create(ss));
+            if (ss.getValidFrom() < now && ss.getValidTo() > now)
+                ss.setText(schedulingTextUtil.create(ss));
         }
         return detailed;
 
