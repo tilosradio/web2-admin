@@ -4,7 +4,6 @@ public enum MixCategory implements DescriptiveType {
     DJ("Tilos DJ"),
     GUESTDJ("Vendég DJ"),
     SHOW("Beszélgetős műsor"),
-    PARTY("Tilos party"),
     TALE("Tilos mese");
 
     private String description;

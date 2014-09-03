@@ -5,5 +5,5 @@ angular.module('tilosAdmin').factory('enumMixType', function () {
 });
 
 angular.module('tilosAdmin').factory('enumMixCategory', function () {
-    return {"DJ": 'Tilos DJ Mix', "GUESTDJ": 'Guest DJ Mix', 'SHOW': 'Műsor', 'TALE': "Tilos Mese", 'PARTY': 'Tilos Party'};
+    return {"DJ": 'Tilos DJ Mix', "GUESTDJ": 'Guest DJ Mix', 'SHOW': 'Műsor', 'TALE': "Tilos Mese"};
 });
