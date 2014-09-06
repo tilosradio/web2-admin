@@ -1,5 +1,5 @@
 
-package hu.radio.tilos.model.util;
+package hu.radio.tilos.model.tools;
 
 import java.io.File;
 import java.net.URL;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import hu.radio.tilos.model.Mix;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -109,7 +108,7 @@ public class SchemaGenerator {
 
         SchemaUpdate export = new SchemaUpdate(cfg);
         export.setDelimiter(";");
-        export.setOutputFile("ddl_" + dialect.name().toLowerCase() + ".sql");
+        export.setOutputFile("src/main/resources/xx_ddl_" + dialect.name().toLowerCase() + ".sql");
 
         export.execute(true, false);
     }
