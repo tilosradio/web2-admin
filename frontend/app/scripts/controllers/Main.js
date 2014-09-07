@@ -28,9 +28,9 @@ angular.module('tilosApp').controller('MainCtrl', function ($scope, FeedService,
 
     var myTimeout;
     $scope.counter = '';
-    var deadline = new Date(2014, 6, 21, 12, 0, 0).getTime() + 45 * 24 * 60 * 60 * 1000;
+    var deadline = new Date(2014, 6, 23, 11, 59, 40).getTime();
     $scope.onTimeout = function () {
-        var diff = deadline - new Date().getTime();
+        var diff = new Date().getTime() - deadline;
         var days = Math.floor(diff / (60 * 60 * 24 * 1000));
         diff = diff - days * 60 * 60 * 24 * 1000;
         var hours = Math.floor(diff / (60 * 60 * 1000));
