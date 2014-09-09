@@ -2,9 +2,13 @@ package hu.tilos.radio.backend;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSetWriter;
+import org.dbunit.ext.mysql.MySqlConnection;
+import org.dbunit.ext.mysql.MySqlDataTypeFactory;
+import org.dbunit.ext.mysql.MySqlMetadataHandler;
 
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
@@ -69,11 +73,17 @@ public class TestUtil {
     public static void inidTestData() {
         try {
             Properties properties = loadProperties();
+
             JdbcDatabaseTester tester = new JdbcDatabaseTester(
                     properties.getProperty("jdbc.driver"),
                     properties.getProperty("jdbc.url"),
                     properties.getProperty("jdbc.user"),
                     properties.getProperty("jdbc.password"));
+            System.out.println(tester.getConnection());
+            tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
+
+            tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
+            tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER, new MySqlMetadataHandler());
             tester.setDataSet(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
             //new XmlDataSetWriter(new FileWriter("/tmp/test.xml")).write(new FlatXmlDataSet(SearchControllerTest.class.getResourceAsStream("baseData.xml")));
             tester.onSetup();

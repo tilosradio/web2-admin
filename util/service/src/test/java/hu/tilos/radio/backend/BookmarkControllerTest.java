@@ -23,14 +23,11 @@ import static org.junit.Assert.*;
 @AdditionalClasses({MappingFactory.class, TestUtil.class})
 public class BookmarkControllerTest {
 
-    private static EntityManagerFactory factory;
-
     @Inject
     BookmarkController controller;
 
     @BeforeClass
     public static void setUp() throws Exception {
-        factory = TestUtil.initPersistence();
         TestUtil.inidTestData();
     }
 

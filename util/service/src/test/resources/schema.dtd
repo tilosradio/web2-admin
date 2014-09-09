@@ -1,22 +1,37 @@
 <!ELEMENT dataset (
+    REVINFO*,
     api_audit*,
     author*,
+    author_AUD*,
     author_url*,
     bookmark*,
     change_password*,
     contribution*,
+    contribution_AUD*,
     episode*,
+    episode_AUD*,
     listener_stat*,
     mix*,
+    mix_AUD*,
     radioshow*,
+    radioshow_AUD*,
     role*,
     scheduling*,
+    scheduling_AUD*,
+    schema_version*,
     show_url*,
     tag*,
     tag_textcontent*,
     textcontent*,
+    textcontent_AUD*,
     url*,
     user*)>
+
+<!ELEMENT REVINFO EMPTY>
+<!ATTLIST REVINFO
+    REV CDATA #REQUIRED
+    REVTSTMP CDATA #IMPLIED
+>
 
 <!ELEMENT api_audit EMPTY>
 <!ATTLIST api_audit
@@ -40,6 +55,19 @@
     email CDATA #IMPLIED
 >
 
+<!ELEMENT author_AUD EMPTY>
+<!ATTLIST author_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    alias CDATA #IMPLIED
+    avatar CDATA #IMPLIED
+    email CDATA #IMPLIED
+    introduction CDATA #IMPLIED
+    name CDATA #IMPLIED
+    photo CDATA #IMPLIED
+>
+
 <!ELEMENT author_url EMPTY>
 <!ATTLIST author_url
     author_id CDATA #REQUIRED
@@ -57,6 +85,11 @@
     content CDATA #REQUIRED
     start CDATA #REQUIRED
     end CDATA #REQUIRED
+    realFrom CDATA #IMPLIED
+    realTo CDATA #IMPLIED
+    karma CDATA #IMPLIED
+    full_episode CDATA #REQUIRED
+    selected CDATA #REQUIRED
 >
 
 <!ELEMENT change_password EMPTY>
@@ -75,6 +108,16 @@
     nick CDATA #REQUIRED
 >
 
+<!ELEMENT contribution_AUD EMPTY>
+<!ATTLIST contribution_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    nick CDATA #IMPLIED
+    author_id CDATA #IMPLIED
+    radioshow_id CDATA #IMPLIED
+>
+
 <!ELEMENT episode EMPTY>
 <!ATTLIST episode
     id CDATA #REQUIRED
@@ -84,6 +127,19 @@
     plannedTo CDATA #REQUIRED
     realFrom CDATA #REQUIRED
     realTo CDATA #REQUIRED
+>
+
+<!ELEMENT episode_AUD EMPTY>
+<!ATTLIST episode_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    plannedFrom CDATA #IMPLIED
+    plannedTo CDATA #IMPLIED
+    realFrom CDATA #IMPLIED
+    realTo CDATA #IMPLIED
+    radioshow_id CDATA #IMPLIED
+    textcontent_id CDATA #IMPLIED
 >
 
 <!ELEMENT listener_stat EMPTY>
@@ -104,6 +160,22 @@
     date CDATA #IMPLIED
     type CDATA #REQUIRED
     category CDATA #REQUIRED
+    content CDATA #IMPLIED
+>
+
+<!ELEMENT mix_AUD EMPTY>
+<!ATTLIST mix_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    author CDATA #IMPLIED
+    category CDATA #IMPLIED
+    content CDATA #IMPLIED
+    date CDATA #IMPLIED
+    file CDATA #IMPLIED
+    title CDATA #IMPLIED
+    type CDATA #IMPLIED
+    show_id CDATA #IMPLIED
 >
 
 <!ELEMENT radioshow EMPTY>
@@ -116,6 +188,19 @@
     description CDATA #IMPLIED
     type CDATA #REQUIRED
     status CDATA #REQUIRED
+>
+
+<!ELEMENT radioshow_AUD EMPTY>
+<!ATTLIST radioshow_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    alias CDATA #IMPLIED
+    definition CDATA #IMPLIED
+    description CDATA #IMPLIED
+    name CDATA #IMPLIED
+    status CDATA #IMPLIED
+    type CDATA #IMPLIED
 >
 
 <!ELEMENT role EMPTY>
@@ -137,6 +222,37 @@
     duration CDATA #REQUIRED
     validFrom CDATA #REQUIRED
     validTo CDATA #REQUIRED
+>
+
+<!ELEMENT scheduling_AUD EMPTY>
+<!ATTLIST scheduling_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    base CDATA #IMPLIED
+    duration CDATA #IMPLIED
+    hourFrom CDATA #IMPLIED
+    minFrom CDATA #IMPLIED
+    validFrom CDATA #IMPLIED
+    validTo CDATA #IMPLIED
+    weekDay CDATA #IMPLIED
+    weekType CDATA #IMPLIED
+    radioshow_id CDATA #IMPLIED
+>
+
+<!ELEMENT schema_version EMPTY>
+<!ATTLIST schema_version
+    version_rank CDATA #REQUIRED
+    installed_rank CDATA #REQUIRED
+    version CDATA #REQUIRED
+    description CDATA #REQUIRED
+    type CDATA #REQUIRED
+    script CDATA #REQUIRED
+    checksum CDATA #IMPLIED
+    installed_by CDATA #REQUIRED
+    installed_on CDATA #IMPLIED
+    execution_time CDATA #REQUIRED
+    success CDATA #REQUIRED
 >
 
 <!ELEMENT show_url EMPTY>
@@ -169,6 +285,18 @@
     modified CDATA #REQUIRED
     author CDATA #REQUIRED
     alias CDATA #REQUIRED
+>
+
+<!ELEMENT textcontent_AUD EMPTY>
+<!ATTLIST textcontent_AUD
+    id CDATA #REQUIRED
+    REV CDATA #REQUIRED
+    REVTYPE CDATA #IMPLIED
+    alias CDATA #IMPLIED
+    content CDATA #IMPLIED
+    format CDATA #IMPLIED
+    title CDATA #IMPLIED
+    type CDATA #IMPLIED
 >
 
 <!ELEMENT url EMPTY>

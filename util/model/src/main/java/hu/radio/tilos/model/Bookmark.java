@@ -19,20 +19,56 @@ public class Bookmark {
     private String title;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="start")
+    @Column(name = "start")
     private Date realFrom;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="end")
+    @Column(name = "end")
     private Date realTo;
 
     @ManyToOne()
     @JoinColumn(name = "radioshow_id", referencedColumnName = "id")
-    Show show;
+    private Show show;
 
     @ManyToOne()
     @JoinColumn(name = "episode_id", referencedColumnName = "id")
-    Episode episode;
+    private Episode episode;
+
+    @Basic
+    @Column(name = "full_episode", nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean fullEpisode = false;
+
+    @Basic
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean selected = false;
+
+    @Basic
+    @Column()
+    private int karma;
+
+    public boolean isFullEpisode() {
+        return fullEpisode;
+    }
+
+    public void setFullEpisode(boolean fullEpisode) {
+        this.fullEpisode = fullEpisode;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public int getKarma() {
+        return karma;
+    }
+
+    public void setKarma(int karma) {
+        this.karma = karma;
+    }
 
     public Show getShow() {
         return show;
