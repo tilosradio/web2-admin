@@ -58,8 +58,16 @@ public class LocalBackend implements Backend {
             //TODO: FIlter out the real excetptions...
         } finally {
             is.close();
-            out.flush();
-            out.close();
+            try {
+                out.flush();
+            } catch (Exception ex){
+                //don't worry
+            }
+            try {
+                out.close();
+            } catch (Exception ex){
+                //be happy
+            }
         }
 
 
