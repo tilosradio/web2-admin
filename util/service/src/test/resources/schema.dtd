@@ -85,8 +85,6 @@
     content CDATA #REQUIRED
     start CDATA #REQUIRED
     end CDATA #REQUIRED
-    realFrom CDATA #IMPLIED
-    realTo CDATA #IMPLIED
     karma CDATA #IMPLIED
     full_episode CDATA #REQUIRED
     selected CDATA #REQUIRED
