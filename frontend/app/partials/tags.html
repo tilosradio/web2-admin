@@ -1,8 +1,7 @@
 <section class="col-md-9 main" role="main">
     <h1>Cimkék listája</h1>
         <a ng-repeat="tag in tags" ng-href="/tag/{{tag.name}}">
-
-            <span class="label label-info">{{tag.name}} ({{tag.count}})</span>
+            <span class="tag-badge">{{tag.name}} ({{tag.count}})</span>
         </a>
 </section>
 

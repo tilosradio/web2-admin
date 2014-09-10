@@ -18,3 +18,7 @@ angular.module('tilosApp')
 
 
     ]);
+
+angular.module('tilosApp').controller('TagCloudCtrl', function(Tags, $scope) {
+    $scope.tags = Tags.query();
+});

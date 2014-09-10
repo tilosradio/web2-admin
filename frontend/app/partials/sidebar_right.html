@@ -59,6 +59,20 @@
 		</h2>
 	</div> <!-- box -->
 
+
+    <div class="box box-simple" id="tags" ng-controller="TagCloudCtrl">
+
+        <h2>Népszerű cimkék</h2>
+        <p>
+            <a ng-repeat="tag in tags" ng-href="/tag/{{tag.name}}">
+                <span class="tag-badge">{{tag.name}} ({{tag.count}})</span>
+            </a>
+        </p>
+        <p><a href="/tags">További cimkék...</a></p>
+        </h2>
+    </div>
+
+
 	<div class="box-simple social-box" ng-controller="SocialCtrl">
 		<div class="row collapse-row">
 			<div class="col-xs-3">

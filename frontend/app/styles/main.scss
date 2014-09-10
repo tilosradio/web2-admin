@@ -1251,3 +1251,13 @@ input.datepicker {
     color: white;
   }
 }
+
+
+
+.tag-badge {
+  @extend .label;
+  @extend .label-info;
+  display: inline;
+  font-size: 16px;
+  line-height: 240%;
+}

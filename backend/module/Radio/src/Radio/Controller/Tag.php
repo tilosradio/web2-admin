@@ -28,9 +28,16 @@ class Tag extends BaseController
             $rsm = new ResultSetMapping();
 
             $sql = "select tag.name,count(tt.textcontent_id) as count from tag left join tag_textcontent tt on tt.tag_id = tag.id group by tag.name having count > 0 order by count(tt.textcontent_id) desc";
-            $q = $this->getEntityManager()->getConnection()->query($sql);
+
+            $limit = (int) $this->params()->fromQuery("limit", 0);
+            if ($limit > 0) {
+               $sql .= " limit $limit";
+            }
             $result = [];
             $tags = [];
+
+            $q = $this->getEntityManager()->getConnection()->query($sql);
+
             foreach ($q as $row) {
                 $tags[] = $row;
             }
