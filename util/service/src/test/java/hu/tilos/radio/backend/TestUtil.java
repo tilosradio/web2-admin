@@ -9,6 +9,7 @@ import org.dbunit.dataset.xml.XmlDataSetWriter;
 import org.dbunit.ext.mysql.MySqlConnection;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.ext.mysql.MySqlMetadataHandler;
+import org.flywaydb.core.Flyway;
 
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
@@ -79,7 +80,13 @@ public class TestUtil {
                     properties.getProperty("jdbc.url"),
                     properties.getProperty("jdbc.user"),
                     properties.getProperty("jdbc.password"));
-            System.out.println(tester.getConnection());
+
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(properties.getProperty("jdbc.url"), properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
+            flyway.setInitOnMigrate(true);
+            flyway.repair();
+            flyway.migrate();
+
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
 
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
