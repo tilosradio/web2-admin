@@ -133,6 +133,16 @@ public class StreamController extends HttpServlet {
 
     private void detectJoins(ResourceCollection collection) {
         List<Mp3File> mp3Files = collection.getCollection();
+        if (mp3Files.size() > 0) {
+            try (FileInputStream fis = new FileInputStream(backend.getLocalFile(mp3Files.get(0)))) {
+                Mp3Joiner.RingBufferWithPosition firstFrame = joiner.findFirstFrame(fis);
+                mp3Files.get(0).setStartOffset(firstFrame.position);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         for (int i = 0; i < mp3Files.size() - 1; i++) {
             Mp3Joiner.OffsetDouble joinPositions = joiner.findJoinPositions(backend.getLocalFile(mp3Files.get(i)), backend.getLocalFile(mp3Files.get(i + 1)));
             if (joinPositions != null) {

@@ -17,12 +17,22 @@ public class Mp3Joiner {
     private static final Logger LOG = LoggerFactory.getLogger(Mp3Joiner.class);
     private Map<String, OffsetDouble> cache = new ConcurrentHashMap<>();
 
+    public static void main2(String[] args) throws Exception {
+        File root = new File("/home/elek/projects/tilos/archive-files/online/2014/06/04/");
+        File f1 = new File(root, "tilosradio-20140604-1100.mp3");
+
+        RingBufferWithPosition firstFrame = new Mp3Joiner().findFirstFrame(new FileInputStream(f1));
+        System.out.println(firstFrame);
+
+    }
+
     public static void main(String[] args) throws Exception {
         File root = new File("/home/elek/projects/tilos/archive-files/online/2014/06/04/");
         File f1 = new File(root, "tilosradio-20140604-1100.mp3");
         File f2 = new File(root, "tilosradio-20140604-1130.mp3");
         OffsetDouble joinPositions = new Mp3Joiner().findJoinPositions(f1, f2);
-        LimitedInputStream li1 = new LimitedInputStream(new FileInputStream(f1), 0, (int) joinPositions.firstEndOffset);
+        RingBufferWithPosition firstFrame = new Mp3Joiner().findFirstFrame(new FileInputStream(f1));
+        LimitedInputStream li1 = new LimitedInputStream(new FileInputStream(f1), firstFrame.position, (int) joinPositions.firstEndOffset);
         ByteArrayInputStream is = new ByteArrayInputStream(new byte[]{50, 50, 50, 50});
         LimitedInputStream li2 = new LimitedInputStream(new FileInputStream(f2), (int) joinPositions.secondStartOffset, Integer.MAX_VALUE);
 
@@ -87,7 +97,7 @@ public class Mp3Joiner {
         return null;
     }
 
-    private RingBufferWithPosition findFirstFrame(InputStream is) throws IOException {
+    public RingBufferWithPosition findFirstFrame(InputStream is) throws IOException {
         RingBuffer b = new RingBuffer(BUFFER_SIZE);
         int i = 0, last = 0;
         while (i < Integer.MAX_VALUE) {
@@ -131,9 +141,9 @@ public class Mp3Joiner {
         }
     }
 
-    private class RingBufferWithPosition {
-        RingBuffer buffer;
-        int position;
+    public class RingBufferWithPosition {
+        public RingBuffer buffer;
+        public int position;
 
         private RingBufferWithPosition(RingBuffer buffer, int position) {
             this.buffer = buffer;
