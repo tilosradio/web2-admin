@@ -1,6 +1,6 @@
 <section class="col-md-9 main" role="main">
     <h1>{{tag.name}}</h1>
-    <p>A cimke az alábbi műsorokhoz kapcsolódik:</p>
+    <p>A címke az alábbi műsorokhoz kapcsolódik:</p>
     <table class="table">
         <tr ng-repeat="episode in tag.episodes">
             <td><a ng-href="/episode/{{episode.show.alias}}/{{episode.plannedFrom * 1000 | date:'yyyy/MM/dd'}}">{{episode.plannedFrom
