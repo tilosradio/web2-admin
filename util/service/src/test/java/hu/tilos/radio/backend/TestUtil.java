@@ -74,27 +74,36 @@ public class TestUtil {
         }
     }
 
-    public static void initSchema() throws ClassNotFoundException {
-        Properties properties = loadProperties();
+    public static void initSchema() {
+        try {
+            Properties properties = loadProperties();
 
-        JdbcDatabaseTester tester = new JdbcDatabaseTester(
-                properties.getProperty("jdbc.driver"),
-                properties.getProperty("jdbc.url"),
-                properties.getProperty("jdbc.user"),
-                properties.getProperty("jdbc.password"));
+            JdbcDatabaseTester tester = new JdbcDatabaseTester(
+                    properties.getProperty("jdbc.driver"),
+                    properties.getProperty("jdbc.url"),
+                    properties.getProperty("jdbc.user"),
+                    properties.getProperty("jdbc.password"));
 
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(properties.getProperty("jdbc.url"), properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
-        flyway.setInitOnMigrate(true);
-        flyway.repair();
-        flyway.migrate();
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(properties.getProperty("jdbc.url"), properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
+            flyway.setInitOnMigrate(true);
+            flyway.repair();
+            flyway.migrate();
+        } catch (Exception ex) {
+            throw new RuntimeException("Can't migrate database", ex);
+        }
     }
+
     public static void initTestData() {
         try {
             Properties properties = loadProperties();
 
             initSchema();
-
+            JdbcDatabaseTester tester = new JdbcDatabaseTester(
+                    properties.getProperty("jdbc.driver"),
+                    properties.getProperty("jdbc.url"),
+                    properties.getProperty("jdbc.user"),
+                    properties.getProperty("jdbc.password"));
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
 
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
