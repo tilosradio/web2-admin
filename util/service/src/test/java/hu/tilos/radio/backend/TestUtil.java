@@ -34,6 +34,7 @@ public class TestUtil {
 
     public static DataSource initDatasource() {
         try {
+            initSchema();
             Properties properties = loadProperties();
             MysqlDataSource ds = new MysqlDataSource();
             Class.forName(properties.getProperty("jdbc.driver")).newInstance();
@@ -48,6 +49,7 @@ public class TestUtil {
 
     public static Connection initConnection() {
         try {
+            initSchema();
             Properties properties = loadProperties();
             Class.forName(properties.getProperty("jdbc.driver")).newInstance();
             Connection conn = DriverManager.getConnection(properties.getProperty("jdbc.url"), properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
@@ -59,6 +61,7 @@ public class TestUtil {
 
     public static EntityManagerFactory initPersistence() {
         try {
+            initSchema();
             Properties properties = loadProperties();
             properties.setProperty("javax.persistence.jdbc.url", properties.getProperty("jdbc.url"));
             properties.setProperty("javax.persistence.jdbc.driver", properties.getProperty("jdbc.driver"));
@@ -71,21 +74,26 @@ public class TestUtil {
         }
     }
 
-    public static void inidTestData() {
+    public static void initSchema() throws ClassNotFoundException {
+        Properties properties = loadProperties();
+
+        JdbcDatabaseTester tester = new JdbcDatabaseTester(
+                properties.getProperty("jdbc.driver"),
+                properties.getProperty("jdbc.url"),
+                properties.getProperty("jdbc.user"),
+                properties.getProperty("jdbc.password"));
+
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(properties.getProperty("jdbc.url"), properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
+        flyway.setInitOnMigrate(true);
+        flyway.repair();
+        flyway.migrate();
+    }
+    public static void initTestData() {
         try {
             Properties properties = loadProperties();
 
-            JdbcDatabaseTester tester = new JdbcDatabaseTester(
-                    properties.getProperty("jdbc.driver"),
-                    properties.getProperty("jdbc.url"),
-                    properties.getProperty("jdbc.user"),
-                    properties.getProperty("jdbc.password"));
-
-            Flyway flyway = new Flyway();
-            flyway.setDataSource(properties.getProperty("jdbc.url"), properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
-            flyway.setInitOnMigrate(true);
-            flyway.repair();
-            flyway.migrate();
+            initSchema();
 
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
 
