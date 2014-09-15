@@ -20,7 +20,7 @@ public class SearchControllerTest {
 
     @BeforeClass
     public static void testDataInit() throws Exception {
-        TestUtil.inidTestData();
+        TestUtil.initTestData();
         TestUtil.initPersistence();
     }
 

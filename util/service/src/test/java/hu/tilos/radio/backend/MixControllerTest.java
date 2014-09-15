@@ -35,7 +35,7 @@ public class MixControllerTest {
     @BeforeClass
     public static void setUp() throws Exception {
         factory = TestUtil.initPersistence();
-        TestUtil.inidTestData();
+        TestUtil.initTestData();
     }
 
     @Test

@@ -26,7 +26,7 @@ public class FeedControllerTest {
     public static void setup() {
         dataSource = TestUtil.initDatasource();
         emf = TestUtil.initPersistence();
-        TestUtil.inidTestData();
+        TestUtil.initTestData();
 
     }
 

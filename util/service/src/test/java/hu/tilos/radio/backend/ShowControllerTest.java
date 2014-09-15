@@ -27,7 +27,7 @@ public class ShowControllerTest {
     @BeforeClass
     public static void init() {
         emf = TestUtil.initPersistence();
-        TestUtil.inidTestData();
+        TestUtil.initTestData();
     }
 
     @Test

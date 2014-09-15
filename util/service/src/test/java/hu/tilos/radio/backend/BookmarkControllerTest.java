@@ -28,7 +28,7 @@ public class BookmarkControllerTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        TestUtil.inidTestData();
+        TestUtil.initTestData();
     }
 
     @Test

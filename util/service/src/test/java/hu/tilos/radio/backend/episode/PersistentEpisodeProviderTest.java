@@ -22,7 +22,7 @@ public class PersistentEpisodeProviderTest {
     @BeforeClass
     public static void setUp() {
         ds = TestUtil.initDatasource();
-        TestUtil.inidTestData();
+        TestUtil.initTestData();
     }
 
     @Test
