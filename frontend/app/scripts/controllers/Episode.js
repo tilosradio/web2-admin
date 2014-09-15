@@ -33,12 +33,14 @@ angular.module('tilosApp').config(['$routeProvider', function ($routeProvider) {
 angular.module('tilosApp')
     .controller('EpisodeCtrl', function ($scope, data, show, $sce, Meta) {
         $scope.episode = data.data;
-        $scope.episode.text.formatted = $sce.trustAsHtml(data.data.text.formatted);
+        if (data.data.text && data.data.text.formatted) {
+            $scope.episode.text.formatted = $sce.trustAsHtml(data.data.text.formatted);
+        }
         $scope.currentShow = show.data;
         var start = new Date();
         start.setTime($scope.episode.plannedFrom * 1000);
         var dateStr = start.format('yyyy.mm.dd');
-        if ($scope.episode.text.title) {
+        if ($scope.episode.text && $scope.episode.text.title) {
             Meta.setDescription(dateStr + ' - ' + $scope.episode.text.title);
         } else {
             Meta.setDescription(dateStr + ' - ' + $scope.currentShow.name + ' adás');
