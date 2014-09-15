@@ -24,6 +24,7 @@ public class ModelUpgrader implements ServletContextListener {
         Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
         flyway.repair();
+        flyway.setInitOnMigrate(true);
         flyway.migrate();
         LOG.info("Model has been upgraded");
 
