@@ -4,7 +4,6 @@ return array(
 'modules' => array(
     'Radio',
     'ZendDeveloperTools',
-    'SwaggerModule',
     'DoctrineModule',
     'DoctrineORMModule'),
 // These are various options for the listeners attached to the ModuleManager
