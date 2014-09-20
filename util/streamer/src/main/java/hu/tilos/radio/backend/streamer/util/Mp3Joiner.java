@@ -97,6 +97,39 @@ public class Mp3Joiner {
         return null;
     }
 
+
+    /**
+     * Find the next frame for a random position
+     */
+    public int findNextFrame(File file, int startOffset) {
+        try {
+            try (FileInputStream fis = new FileInputStream(file)) {
+                fis.skip(startOffset);
+
+                RingBuffer b = new RingBuffer(BUFFER_SIZE);
+                int i = 0, last = 0;
+                while (i < Integer.MAX_VALUE) {
+                    int ch = fis.read();
+                    b.add(ch);
+                    if (i > 2000) {
+                        break;
+                    }
+                    if (i > 3) {
+                        if (isFrameStart(b)) {
+                            return startOffset + i - b.getSize() + 1;
+                        }
+                    }
+                    i++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return startOffset;
+        }
+        return startOffset;
+
+    }
+
     public RingBufferWithPosition findFirstFrame(InputStream is) throws IOException {
         RingBuffer b = new RingBuffer(BUFFER_SIZE);
         int i = 0, last = 0;
@@ -122,6 +155,7 @@ public class Mp3Joiner {
                 (b.get(2) & 0xFD) == 0xD0 &&
                 (b.get(3) & 0xCF) == 0x44;
     }
+
 
     public static class OffsetDouble {
         public int firstEndOffset;

@@ -72,6 +72,7 @@ public class StreamController extends HttpServlet {
         try {
             ResourceCollection collection = getMp3Links(segment.start, segment.duration);
             detectJoins(collection);
+            adjustFirstFrame(collection);
             int size = backend.getSize(collection);
 
 
@@ -131,18 +132,21 @@ public class StreamController extends HttpServlet {
         }
     }
 
-    private void detectJoins(ResourceCollection collection) {
+    /**
+     * Find the next real frame of the adjusted position.
+     *
+     * @param collection
+     */
+    private void adjustFirstFrame(ResourceCollection collection) {
         List<Mp3File> mp3Files = collection.getCollection();
         if (mp3Files.size() > 0) {
-            try (FileInputStream fis = new FileInputStream(backend.getLocalFile(mp3Files.get(0)))) {
-                Mp3Joiner.RingBufferWithPosition firstFrame = joiner.findFirstFrame(fis);
-                mp3Files.get(0).setStartOffset(firstFrame.position);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            int position = joiner.findNextFrame(backend.getLocalFile(mp3Files.get(0)), mp3Files.get(0).getStartOffset());
+            mp3Files.get(0).setStartOffset(position);
         }
+    }
+
+    private void detectJoins(ResourceCollection collection) {
+        List<Mp3File> mp3Files = collection.getCollection();
         for (int i = 0; i < mp3Files.size() - 1; i++) {
             Mp3Joiner.OffsetDouble joinPositions = joiner.findJoinPositions(backend.getLocalFile(mp3Files.get(i)), backend.getLocalFile(mp3Files.get(i + 1)));
             if (joinPositions != null) {
