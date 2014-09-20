@@ -10,10 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.Segment;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +20,22 @@ import static org.junit.Assert.*;
 public class StreamControllerTest {
 
     public static SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMddHHmm");
+
+    @Test
+    public void generateSplittedResources() {
+        //given
+        StreamController controller = new StreamController();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        //when
+        controller.generateSplittedResources("/mp3/tilos-20140916-100940-125058.m3u", output);
+
+        //then
+        String result = output.toString();
+
+        System.out.println(output);
+
+    }
 
     @Test
     public void testDoGet() throws IOException, ServletException {
@@ -172,8 +185,6 @@ public class StreamControllerTest {
         Assert.assertEquals(36, n.getSize(resources));
 
     }
-
-
 
 
 }

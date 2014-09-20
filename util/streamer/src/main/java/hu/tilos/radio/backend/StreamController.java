@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,10 +65,12 @@ public class StreamController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             output.write(("Error on parsing url pattern" + e.getMessage()).getBytes());
             LOG.error("Error on parsing url pattern " + req.getRequestURI(), e);
+            return;
         }
         if (segment.duration > 360) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             output.write(("Too long duration").getBytes());
+            return;
         }
         try {
             ResourceCollection collection = getMp3Links(segment.start, segment.duration);
@@ -162,8 +165,32 @@ public class StreamController extends HttpServlet {
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + filename + ".m3u\"");
         resp.getOutputStream().write("#EXTM3U\n".getBytes());
         resp.getOutputStream().write(("#EXTINF:" + size + ", Tilos Rádió - " + FILE_NAME_FORMAT.format(segment.start) + "\n").getBytes());
-        resp.getOutputStream().write((serverUrl + req.getRequestURI().toString().replaceAll("\\.m3u", ".mp3")).getBytes());
+        //workaround for the WP7Application: use the unsplitted version
+        if (req.getHeader("User-Agent").contains("WP7App")) {
+            generateSplittedResources(req.getRequestURI(), resp.getOutputStream());
+        } else {
+            resp.getOutputStream().write((serverUrl + req.getRequestURI().toString().replaceAll("\\.m3u", ".mp3")).getBytes());
+        }
 
+    }
+
+    protected void generateSplittedResources(String requestURI, OutputStream outputStream) {
+        try {
+            SimpleDateFormat fileNameFormat = new SimpleDateFormat("yyyyMMdd'-'HHmm");
+            SimpleDateFormat dirNameFormat = new SimpleDateFormat("yyyy'/'MM'/'dd");
+            //http://tilos.hu/mp3/tilos-20140916-100940-125058.m3u
+            SimpleDateFormat parsing = new SimpleDateFormat("yyyyMMddHHmmss");
+
+            long current = getPrevHalfHour(parsing.parse(requestURI.substring(11, 19) + requestURI.substring(20, 26))).getTime();
+            long to = parsing.parse(requestURI.substring(11, 19) + requestURI.substring(27, 33)).getTime();
+            while (current < to) {
+                //http://archive.tilos.hu/online/2014/09/01/tilosradio-20140901-1700.mp3
+                outputStream.write(String.format("http://archive.tilos.hu/online/%s/tilosradio-%s.mp3\n", dirNameFormat.format(current), fileNameFormat.format(current)).getBytes());
+                current += 1000 * 60 * 30;
+            }
+        } catch (Exception ex) {
+            LOG.error("Can't generate m3u", ex);
+        }
     }
 
     protected Segment parse(String requestURI) throws ParseException {
