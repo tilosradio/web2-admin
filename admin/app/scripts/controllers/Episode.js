@@ -61,7 +61,7 @@ angular.module('tilosAdmin')
             $scope.episode.id = id;
             $scope.show = data['show'];
             $scope.episode.show = null;
-            if (!$scope.episode.text) {
+            if (!$scope.episode.text || $scope.episode.text.length == 0) {
                $scope.episode.text = {};
             }
 
