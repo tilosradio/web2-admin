@@ -1,12 +1,17 @@
 package hu.tilos.radio.backend;
 
+import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import hu.tilos.radio.backend.episode.PersistentEpisodeProvider;
 import hu.tilos.radio.backend.episode.ScheduledEpisodeProvider;
 import net.anzix.jaxrs.atom.Feed;
+import org.jglue.cdiunit.AdditionalClasses;
+import org.jglue.cdiunit.CdiRunner;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
@@ -16,50 +21,29 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RunWith(CdiRunner.class)
+@AdditionalClasses({MappingFactory.class, TestUtil.class, TestConfigProvider.class})
 public class FeedControllerTest {
 
-    private static DataSource dataSource;
-
-    private static EntityManagerFactory emf;
+    @Inject
+    FeedController feedController;
 
     @BeforeClass
     public static void setup() {
-        dataSource = TestUtil.initDatasource();
-        emf = TestUtil.initPersistence();
         TestUtil.initTestData();
-
     }
 
     @Test
     public void testFeed() throws Exception {
         //given
-        FeedController c = new FeedController() {
-            @Override
-            protected Date getNow() {
-                try {
-                    return new SimpleDateFormat("yyyyMMdd").parse("20140501");
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
-        c.setEntityManager(emf.createEntityManager());
 
-        c.setServerUrl("http://tilos.hu");
 
-        EpisodeUtil u = new EpisodeUtil();
-        ScheduledEpisodeProvider sp = new ScheduledEpisodeProvider();
-        sp.setDataSource(dataSource);
-        PersistentEpisodeProvider pp = new PersistentEpisodeProvider();
-        pp.setEntityManager(TestUtil.initPersistence().createEntityManager());
+        feedController.setServerUrl("http://tilos.hu");
 
-        u.setPersistentProvider(pp);
-        u.setScheduledProvider(sp);
-        c.setEpisodeUtil(u);
 
 
         //when
-        Feed feed = (Feed) c.feed("3utas", null).getEntity();
+        Feed feed = (Feed) feedController.feed("3utas", null).getEntity();
 
         //then
         JAXBContext jaxbc = JAXBContext.newInstance(Feed.class);

@@ -39,4 +39,17 @@ public class EpisodeControllerTest {
         Assert.assertNotNull(episode.getText());
         Assert.assertEquals("Jo musor", episode.getText().getTitle());
     }
+
+
+    @Test
+    public void testGetByDate() throws Exception {
+        //given
+
+        //when
+        EpisodeData episode = controller.getByDate("3utas",2014,04,11);
+
+        //then
+        Assert.assertNotNull(episode.getText());
+        Assert.assertEquals("Jo musor", episode.getText().getTitle());
+    }
 }

@@ -1,16 +1,17 @@
 package hu.tilos.radio.backend.episode;
 
+import hu.radio.tilos.model.Scheduling;
+import hu.radio.tilos.model.Show;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.data.types.ShowSimple;
-import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
-import hu.tilos.radio.jooqmodel.tables.pojos.Scheduling;
 import org.dozer.DozerBeanMapper;
-import org.jooq.*;
-import org.jooq.conf.Settings;
-import org.jooq.impl.DSL;
+import org.modelmapper.ModelMapper;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.util.*;
 import java.util.Date;
@@ -22,78 +23,52 @@ import static hu.tilos.radio.jooqmodel.Tables.*;
  */
 public class ScheduledEpisodeProvider {
 
-    @Resource
-    private DataSource dataSource;
+    @Inject
+    private ModelMapper modelMapper;
+
+    @Inject
+    private EntityManager entityManager;
 
     public List<EpisodeData> listEpisode(int showId, final Date from, final Date to) {
-        final DSLContext context = DSL.using(dataSource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));
-        final DozerBeanMapper mapper = MappingFactory.createDozer(context);
 
 
-        Condition whereCondition = SCHEDULING.VALIDFROM.lt(new java.sql.Date(to.getTime()));
-        whereCondition = whereCondition.and(SCHEDULING.VALIDTO.gt(new java.sql.Date(from.getTime())));
-
+        String query = "SELECT s from Scheduling s WHERE s.validFrom < :end AND s.validTo > :start";
         if (showId > 0) {
-            whereCondition = whereCondition.and(RADIOSHOW.ID.eq(showId));
+            query += " AND s.show.id = :showId";
         } else {
-            whereCondition = whereCondition.and(RADIOSHOW.STATUS.eq(1));
+            query += " AND s.show.status = 1";
         }
+        Query q = entityManager.createQuery(query);
+        q.setParameter("start", from);
+        q.setParameter("end", to);
+        if (showId > 0) {
+            q.setParameter("showId", showId);
+        }
+        List<Scheduling> schedulings = q.getResultList();
 
-
-        final List<EpisodeData> result = new ArrayList<>();
-
-        context.selectFrom(
-                SCHEDULING.join(RADIOSHOW).onKey()
-                ).where(whereCondition).
-                fetchInto(new RecordHandler<Record>() {
-                    @Override
-                    public void next(Record record) {
-                        result.addAll(calculateEpisodes(context,
-                                record.into(Scheduling.class),
-                                record.into(Radioshow.class),
-                                from,
-                                to));
-                    }
-                });
-
-
-//        String query = "SELECT s from Scheduling s WHERE s.validFrom < :end AND s.validTo > :start";
-//        if (showId > 0) {
-//            query += " AND s.show.id = :showId";
-//        } else {
-//            query += " AND s.show.status = 1";
-//        }
-//        Query q = entityManager.createQuery(query);
-//        q.setParameter("start", from);
-//        q.setParameter("end", to);
-//        if (showId > 0) {
-//            q.setParameter("showId", showId);
-//        }
-//        List<Scheduling> schedulings = q.getResultList();
-//
-//        List<EpisodeData> result = new ArrayList<>();
-//        for (Scheduling s : schedulings) {
-//
-//        }
+        List<EpisodeData> result = new ArrayList<>();
+        for (Scheduling s : schedulings) {
+            result.addAll(calculateEpisodes(s, entityManager.find(Show.class, showId), from, to));
+        }
 
         return result;
 
     }
 
-    private List<EpisodeData> calculateEpisodes(DSLContext jooq, Scheduling s, Radioshow show, Date from, Date to) {
-        DozerBeanMapper mapper = MappingFactory.createDozer(jooq);
+    private List<EpisodeData> calculateEpisodes(Scheduling s, Show show, Date from, Date to) {
+
         Calendar toCalendar = Calendar.getInstance(TimeZone.getTimeZone("CET"));
         Calendar scheduledUntil = Calendar.getInstance(TimeZone.getTimeZone("CET"));
         toCalendar.setTime(to);
-        scheduledUntil.setTime(s.getValidto());
+        scheduledUntil.setTime(s.getValidTo());
 
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("CET"));
-        c.set(from.getYear() + 1900, from.getMonth(), from.getDate(), s.getHourfrom(), s.getMinfrom(), 0);
+        c.set(from.getYear() + 1900, from.getMonth(), from.getDate(), s.getHourFrom(), s.getMinFrom(), 0);
         int offset = c.get(Calendar.DAY_OF_WEEK) - 2;
         if (offset < 0) {
             offset += 7;
         }
-        c.add(Calendar.DAY_OF_MONTH, -1 * offset + s.getWeekday());
+        c.add(Calendar.DAY_OF_MONTH, -1 * offset + s.getWeekDay());
         c.set(Calendar.MILLISECOND, 0);
 
         List<EpisodeData> result = new ArrayList<>();
@@ -106,7 +81,7 @@ public class ScheduledEpisodeProvider {
                 d.setRealFrom(d.getPlannedFrom());
                 d.setRealTo(d.getPlannedTo());
                 d.setPersistent(false);
-                d.setShow(mapper.map(show, ShowSimple.class));
+                d.setShow(modelMapper.map(show, ShowSimple.class));
                 result.add(d);
             }
             c.add(Calendar.DAY_OF_MONTH, 7);
@@ -117,17 +92,17 @@ public class ScheduledEpisodeProvider {
     }
 
     protected boolean isValidDate(Calendar c, Scheduling s, Date from, Date to) {
-        if (s.getWeektype() > 1) {
+        if (s.getWeekType() > 1) {
             int weekNo = (int) Math.floor((c.getTime().getTime() - s.getBase().getTime()) / (7000l * 60 * 60 * 24));
-            if (weekNo % s.getWeektype() != 0) {
+            if (weekNo % s.getWeekType() != 0) {
                 return false;
             }
         }
         Long realTime = c.getTime().getTime();
         Long toTime = to.getTime();
         Long fromTime = from.getTime();
-        Long validFromTime = s.getValidfrom().getTime();
-        Long validToTime = s.getValidto().getTime();
+        Long validFromTime = s.getValidFrom().getTime();
+        Long validToTime = s.getValidTo().getTime();
 
         if (realTime.compareTo(fromTime) >= 0 && realTime.compareTo(toTime) < 0 && realTime.compareTo(validFromTime) >= 0 && realTime.compareTo(validToTime) < 0) {
             return true;
@@ -139,11 +114,4 @@ public class ScheduledEpisodeProvider {
         return null;
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 }

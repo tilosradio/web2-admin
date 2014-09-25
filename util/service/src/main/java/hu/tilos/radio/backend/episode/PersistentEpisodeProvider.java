@@ -8,6 +8,7 @@ import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,7 +35,7 @@ import static hu.tilos.radio.jooqmodel.Tables.*;
  */
 public class PersistentEpisodeProvider {
 
-    @PersistenceContext
+    @Inject
     private EntityManager entityManager;
 
     public List<EpisodeData> listEpisode(int showId, Date from, Date to) {

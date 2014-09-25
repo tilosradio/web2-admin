@@ -48,7 +48,7 @@ public class FeedController {
     @ConfigProperty(name = "server.url")
     private String serverUrl;
 
-    @PersistenceContext
+    @Inject
     private EntityManager entityManager;
 
     public static String createDownloadURI(EpisodeData episode) {
