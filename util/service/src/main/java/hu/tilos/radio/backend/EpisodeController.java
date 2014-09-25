@@ -40,7 +40,7 @@ public class EpisodeController {
 
 
     @GET
-    @Path("/{show}/{year}/{mohth}/{day}")
+    @Path("/{show}/{year}/{month}/{day}")
     @Security(role = Role.GUEST)
     @Produces("application/json")
     public EpisodeData getByDate(@PathParam("show") String showAlias, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) {
