@@ -1,18 +1,13 @@
 package hu.tilos.radio.backend;
 
 import hu.tilos.radio.backend.streamer.Backend;
-import hu.tilos.radio.backend.streamer.LocalBackend;
 import hu.tilos.radio.backend.streamer.util.Mp3Joiner;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
-import org.apache.deltaspike.core.api.jmx.JmxManaged;
-import org.apache.deltaspike.core.api.jmx.MBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +60,7 @@ public class StreamController extends HttpServlet {
             LOG.error("Error on parsing url pattern " + req.getRequestURI(), e);
             return;
         }
-        if (segment.duration > 360) {
+        if (segment.duration > 360 * 60 /* 6 hours */) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             output.write(("Too long duration").getBytes());
             return;
@@ -201,9 +194,9 @@ public class StreamController extends HttpServlet {
 
             s.start = SDF.parse(m.group(1) + m.group(2));
             Date end = SDF.parse(m.group(1) + m.group(3));
-            s.duration = Math.round((end.getTime() - s.start.getTime()) / (1000 * 60));
+            s.duration = Math.round((end.getTime() - s.start.getTime()) / 1000);
             if (s.duration < 0) {
-                s.duration += 24 * 60;
+                s.duration += 24 * 60 * 60;
             }
             return s;
 
@@ -212,7 +205,7 @@ public class StreamController extends HttpServlet {
             if (m.matches()) {
                 s.start = SDF.parse(m.group(1) + m.group(2));
                 Date end = SDF.parse(m.group(1) + m.group(3));
-                s.duration = Math.round((end.getTime() - s.start.getTime()) / (1000 * 60));
+                s.duration = Math.round((end.getTime() - s.start.getTime()) / 1000);
                 return s;
             } else {
                 m = Pattern.compile("^/mp3/(\\d+)-(\\d+).*$").matcher(requestURI);
@@ -240,12 +233,19 @@ public class StreamController extends HttpServlet {
         return result;
     }
 
+    /**
+     * Duration is in seconds.
+     *
+     * @param start
+     * @param duration
+     * @return
+     */
     public ResourceCollection getMp3Links(Date start, int duration) {
         ResourceCollection collection = new ResourceCollection();
         Date from = getPrevHalfHour(start);
 
         Date end = new Date();
-        end.setTime(start.getTime() + 60 * 1000 * duration);
+        end.setTime(start.getTime() + 1000 * duration);
 
         Date i = new Date();
         Date lastStart = new Date();
@@ -278,64 +278,4 @@ public class StreamController extends HttpServlet {
     }
 
 
-    public static class ResourceCollection {
-
-        private List<Mp3File> collection = new ArrayList();
-
-        public void add(Mp3File mp3File) {
-            collection.add(mp3File);
-        }
-
-        public List<Mp3File> getCollection() {
-            return collection;
-        }
-
-        public void setCollection(List<Mp3File> collection) {
-            this.collection = collection;
-        }
-
-
-    }
-
-    public static class Mp3File {
-
-        private String name;
-
-        private int startOffset = 0;
-
-        private int endOffset = Integer.MAX_VALUE;
-
-        public Mp3File(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getStartOffset() {
-            return startOffset;
-        }
-
-        public void setStartOffset(int startOffset) {
-            this.startOffset = startOffset;
-        }
-
-        public int getEndOffset() {
-            return endOffset;
-        }
-
-        public void setEndOffset(int endOffset) {
-            this.endOffset = endOffset;
-        }
-    }
-
-    public static class Segment {
-        Date start;
-        int duration;
-    }
 }

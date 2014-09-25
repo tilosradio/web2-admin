@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.streamer;
 
-import hu.tilos.radio.backend.StreamController;
+import hu.tilos.radio.backend.Mp3File;
+import hu.tilos.radio.backend.ResourceCollection;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
 import javax.inject.Inject;
@@ -9,8 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 @Named
 public class LocalBackend implements Backend {
@@ -34,11 +33,11 @@ public class LocalBackend implements Backend {
     }
 
     @Override
-    public void stream(StreamController.ResourceCollection collection, int startOffset, int endPosition, OutputStream out) throws Exception {
+    public void stream(ResourceCollection collection, int startOffset, int endPosition, OutputStream out) throws Exception {
         InputStream[] streams = new InputStream[collection.getCollection().size()];
 
         int i = 0;
-        for (StreamController.Mp3File file : collection.getCollection()) {
+        for (Mp3File file : collection.getCollection()) {
             streams[i++] = new LimitedInputStream(new FileInputStream(root + file.getName()), file.getStartOffset(), file.getEndOffset());
         }
         byte[] b = new byte[4096];
@@ -74,21 +73,21 @@ public class LocalBackend implements Backend {
     }
 
     @Override
-    public int getSize(StreamController.ResourceCollection collection) {
+    public int getSize(ResourceCollection collection) {
         int size = 0;
-        for (StreamController.Mp3File file : collection.getCollection()) {
+        for (Mp3File file : collection.getCollection()) {
             size += size(file);
         }
         return size;
     }
 
     @Override
-    public File getLocalFile(StreamController.Mp3File mp3File) {
+    public File getLocalFile(Mp3File mp3File) {
         return new File(root, mp3File.getName());
     }
 
 
-    public long size(StreamController.Mp3File file) {
+    public long size(Mp3File file) {
         long size = new File(root + file.getName()).length();
         if (file.getEndOffset() < size) {
             size = file.getEndOffset();

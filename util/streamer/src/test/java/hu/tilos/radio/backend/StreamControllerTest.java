@@ -9,13 +9,10 @@ import org.mockito.Mockito;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.Segment;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class StreamControllerTest {
 
@@ -44,8 +41,8 @@ public class StreamControllerTest {
             @Override
             public ResourceCollection getMp3Links(Date start, int duration) {
                 ResourceCollection c = new ResourceCollection();
-                c.add(new StreamController.Mp3File("/a.txt"));
-                c.add(new StreamController.Mp3File("/b.txt"));
+                c.add(new Mp3File("/a.txt"));
+                c.add(new Mp3File("/b.txt"));
                 return c;
             }
         };
@@ -71,8 +68,8 @@ public class StreamControllerTest {
             @Override
             public ResourceCollection getMp3Links(Date start, int duration) {
                 ResourceCollection c = new ResourceCollection();
-                c.add(new StreamController.Mp3File("/a.txt"));
-                c.add(new StreamController.Mp3File("/b.txt"));
+                c.add(new Mp3File("/a.txt"));
+                c.add(new Mp3File("/b.txt"));
                 return c;
             }
         };
@@ -96,11 +93,11 @@ public class StreamControllerTest {
         //given
         StreamController controller = new StreamController();
         //when
-        StreamController.Segment segment = controller.parse("/mp3/tilos-20131012-200000-230000.mp3");
+        Segment segment = controller.parse("/mp3/tilos-20131012-200000-230000.mp3");
 
         //then
         Assert.assertEquals(SDF.parse("201310122000"), segment.start);
-        Assert.assertEquals(180, segment.duration);
+        Assert.assertEquals(180 * 60, segment.duration);
     }
 
     @Test
@@ -108,7 +105,7 @@ public class StreamControllerTest {
         //given
         StreamController controller = new StreamController();
         //when
-        StreamController.Segment segment = controller.parse("/mp3/1404763200-135.mp3");
+        Segment segment = controller.parse("/mp3/1404763200-135.mp3");
 
         //then
         Assert.assertEquals(SDF.parse("201407072200"), segment.start);
@@ -172,10 +169,10 @@ public class StreamControllerTest {
     @Test
     public void stream() throws Exception {
         StreamController controller = new StreamController();
-        StreamController.ResourceCollection resources = controller.getMp3Links(SDF.parse("201406041005"), 90);
+        ResourceCollection resources = controller.getMp3Links(SDF.parse("201406041005"), 90 * 60);
         resources.getCollection().get(0).setStartOffset(2);
         resources.getCollection().get(1).setEndOffset(8);
-        for (StreamController.Mp3File f : resources.getCollection()) {
+        for (Mp3File f : resources.getCollection()) {
             System.out.println(f.getName());
             System.out.println(f.getStartOffset());
             System.out.println(f.getEndOffset());
