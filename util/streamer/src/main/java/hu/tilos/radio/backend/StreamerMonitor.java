@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @MBean(description = "StreamMonitor", name = "StreamerMonitor", category = "hu.tilos.radio.stream")
 @Singleton
@@ -18,18 +19,18 @@ public class StreamerMonitor implements StreamerMonitorMBean {
     private static final Logger LOG = LoggerFactory.getLogger(StreamerMonitor.class);
 
     @JmxManaged(description = "description currently active archive listeners")
-    private volatile int counter;
+    private AtomicInteger counter;
 
     public int getCounter() {
-        return counter;
+        return counter.get();
     }
 
     public void decrement() {
-        this.counter--;
+        this.counter.decrementAndGet();
     }
 
     public void increment() {
 
-        this.counter++;
+        this.counter.incrementAndGet();
     }
 }
