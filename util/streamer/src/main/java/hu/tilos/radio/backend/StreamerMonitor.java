@@ -19,7 +19,7 @@ public class StreamerMonitor implements StreamerMonitorMBean {
     private static final Logger LOG = LoggerFactory.getLogger(StreamerMonitor.class);
 
     @JmxManaged(description = "description currently active archive listeners")
-    private AtomicInteger counter;
+    private AtomicInteger counter = new AtomicInteger();
 
     public int getCounter() {
         return counter.get();
