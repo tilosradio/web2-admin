@@ -34,11 +34,10 @@
     <h2 class="blue top">Legfrissebb adásnaplók</h2>
     <div class="episode-last episode-list" data-ng-repeat="episode in last">
         <h3><a ng-href="{{episode.url}}">{{episode.text.title}}</a></h3>
-        <a ng-href="{{episode.m3uUrl}}" target="_self" class="pull-right label label-episode episode"><i class="icon-volume-up"></i> Meghallgat</a>
         <p>
           {{episode.plannedFrom * 1000 | date:'yyyy. MMMM dd.'}}
           <a class="label label-episode label-default pull-right" ng-href="/show/{{episode.show.alias}}">{{episode.show.name}}</a>
-
+          <a ng-href="{{episode.m3uUrl}}" target="_self" class="label label-episode episode"><i class="icon-volume-up"></i> Meghallgat</a>
         </p>
     </div>
   </div>

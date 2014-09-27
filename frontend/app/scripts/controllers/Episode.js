@@ -7,10 +7,10 @@ angular.module('tilosApp').config(['$routeProvider', function ($routeProvider) {
         controller: 'EpisodeCtrl',
         resolve: {
             data: function ($route, $http, API_SERVER_ENDPOINT) {
-                return $http.get(API_SERVER_ENDPOINT + '/api/v0/episode/' + $route.current.params.id, {cache: true});
+                return $http.get(API_SERVER_ENDPOINT + '/api/v1/episode/' + $route.current.params.id, {cache: true});
             },
             show: function ($route, $http, API_SERVER_ENDPOINT) {
-                return $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + $route.current.params.show);
+                return $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $route.current.params.show);
             }
         }
     });
@@ -19,14 +19,13 @@ angular.module('tilosApp').config(['$routeProvider', function ($routeProvider) {
         controller: 'EpisodeCtrl',
         resolve: {
             data: function ($route, $http, API_SERVER_ENDPOINT) {
-                return $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + $route.current.params.show + '/episode/' + $route.current.params.year + '/' + $route.current.params.month + '/' + $route.current.params.day);
+                return $http.get(API_SERVER_ENDPOINT + '/api/v1/episode/' + $route.current.params.show + '/' + $route.current.params.year + '/' + $route.current.params.month + '/' + $route.current.params.day);
             },
             show: function ($route, $http, API_SERVER_ENDPOINT) {
-                return $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + $route.current.params.show);
+                return $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $route.current.params.show);
             }
         }
     });
-
 }]);
 
 /*global angular*/
