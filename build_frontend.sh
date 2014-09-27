@@ -4,6 +4,7 @@ mkdir -p $DIR/build
 cd $DIR/backend
 php composer.phar update
 cd $DIR/frontend
+bower update
 gulp build
 cd $DIR/frontend/dist
 rm $DIR/build/frontend.zip
