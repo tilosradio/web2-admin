@@ -2,9 +2,11 @@ package hu.tilos.radio.backend.converters;
 
 import hu.radio.tilos.model.Author;
 import hu.radio.tilos.model.Mix;
+import hu.radio.tilos.model.TextContent;
 import hu.tilos.radio.backend.data.types.AuthorSimple;
 import hu.tilos.radio.backend.data.types.MixData;
 import hu.tilos.radio.backend.data.types.MixSimple;
+import hu.tilos.radio.backend.data.types.TextData;
 import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
@@ -12,6 +14,7 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.spi.MappingContext;
 
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
@@ -30,6 +33,12 @@ import java.util.Map;
  */
 @Named
 public class MappingFactory {
+
+    @Inject
+    TagUtil tagUtil;
+
+    @Inject
+    HTMLSanitizer sanitizer;
 
     @Inject
     EntityManager manager;
@@ -67,6 +76,20 @@ public class MappingFactory {
                 using(uploadUrlConverter).map().setAvatar(source.getAvatar());
             }
         });
+
+        modelMapper.addMappings(new PropertyMap<TextContent, TextData>() {
+            @Override
+            protected void configure() {
+                using(new Converter<String, String>() {
+
+                    @Override
+                    public String convert(MappingContext<String, String> context) {
+                        return tagUtil.replaceToHtml(sanitizer.clean(context.getSource()));
+                    }
+                }).map().setFormatted(source.getContent());
+            }
+        });
+
         modelMapper.addMappings(new PropertyMap<Mix, MixSimple>() {
             @Override
             protected void configure() {

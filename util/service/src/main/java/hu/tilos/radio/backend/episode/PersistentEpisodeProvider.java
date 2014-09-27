@@ -27,6 +27,7 @@ import hu.tilos.radio.backend.data.types.TextData;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
+import org.modelmapper.ModelMapper;
 
 
 /**
@@ -37,17 +38,10 @@ public class PersistentEpisodeProvider {
     @Inject
     private EntityManager entityManager;
 
+    @Inject
+    private ModelMapper modelMapper;
+
     public List<EpisodeData> listEpisode(int showId, Date from, Date to) {
-
-
-        DozerBeanMapper mapper = MappingFactory.createDozer(entityManager, new BeanMappingBuilder() {
-            @Override
-            protected void configure() {
-                mapping(Episode.class, EpisodeData.class).fields("text", "text").fields("show", "show");
-                mapping(Show.class, ShowSimple.class);
-                mapping(TextContent.class, TextData.class);
-            }
-        });
 
         String query = "SELECT e from Episode e WHERE e.plannedFrom < :end AND e.plannedTo > :start";
 
@@ -67,7 +61,7 @@ public class PersistentEpisodeProvider {
 
         List<EpisodeData> result = new ArrayList<>();
         for (Episode e : q.getResultList()) {
-            EpisodeData d = mapper.map(e, EpisodeData.class);
+            EpisodeData d = modelMapper.map(e, EpisodeData.class);
             d.setPersistent(true);
             result.add(d);
         }

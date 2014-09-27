@@ -13,15 +13,21 @@ public class TextData {
 
     private String title;
 
-
     private String type;
-
 
     private String format;
 
-
     private String content;
 
+    private String formatted;
+
+    public String getFormatted() {
+        return formatted;
+    }
+
+    public void setFormatted(String formatted) {
+        this.formatted = formatted;
+    }
 
     private String alias;
 
