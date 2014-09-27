@@ -7,7 +7,6 @@ import hu.tilos.radio.backend.data.types.*;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.modelmapper.jooq.RecordValueReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import static hu.tilos.radio.jooqmodel.Tables.*;
 import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 
 @Path("/api/v1/show")

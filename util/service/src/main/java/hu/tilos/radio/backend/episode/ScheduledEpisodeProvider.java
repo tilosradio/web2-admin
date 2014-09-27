@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 import java.util.*;
 import java.util.Date;
 
-import static hu.tilos.radio.jooqmodel.Tables.*;
 
 /**
  * Returns with the persisted episode records.

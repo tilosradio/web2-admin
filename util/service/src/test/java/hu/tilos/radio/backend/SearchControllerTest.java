@@ -1,34 +1,41 @@
 package hu.tilos.radio.backend;
 
+import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.SearchResponse;
 import hu.tilos.radio.backend.data.SearchResponseElement;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
+import org.jglue.cdiunit.AdditionalClasses;
+import org.jglue.cdiunit.CdiRunner;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.persistence.Persistence;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
 
+@RunWith(CdiRunner.class)
+@AdditionalClasses({MappingFactory.class, TestUtil.class})
 public class SearchControllerTest {
+
+    @Inject
+    SearchController controller;
 
     @BeforeClass
     public static void testDataInit() throws Exception {
         TestUtil.initTestData();
-        TestUtil.initPersistence();
     }
 
     @Test
     public void test() throws IOException, ParseException {
         //given
-        SearchController controller = new SearchController();
-        controller.setDataSource(TestUtil.initDatasource());
 
         //when
         SearchResponse respo = controller.search("tamogatas");

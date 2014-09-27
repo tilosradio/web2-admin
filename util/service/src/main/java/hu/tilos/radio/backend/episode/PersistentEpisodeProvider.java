@@ -28,7 +28,6 @@ import hu.tilos.radio.backend.data.types.TextData;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
 
-import static hu.tilos.radio.jooqmodel.Tables.*;
 
 /**
  * Returns with the persisted episode records.

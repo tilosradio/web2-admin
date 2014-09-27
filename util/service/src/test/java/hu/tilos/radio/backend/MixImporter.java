@@ -3,10 +3,14 @@ package hu.tilos.radio.backend;
 import hu.radio.tilos.model.Mix;
 import hu.radio.tilos.model.type.MixCategory;
 import hu.radio.tilos.model.type.MixType;
+import hu.tilos.radio.backend.converters.MappingFactory;
+import org.jglue.cdiunit.AdditionalClasses;
+import org.jglue.cdiunit.CdiRunner;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.junit.runner.RunWith;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

@@ -9,7 +9,6 @@
         <module>integration</module>
         <module>prerender</module>
         <module>model</module>
-        <module>jooq-model</module>
         <module>smoketest</module>
         <module>service</module>
         <module>streamer</module>

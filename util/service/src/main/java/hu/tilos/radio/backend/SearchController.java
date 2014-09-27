@@ -1,16 +1,9 @@
 package hu.tilos.radio.backend;
 
 
-import hu.radio.tilos.model.Role;
-import hu.radio.tilos.model.TextContent;
+import hu.radio.tilos.model.*;
 import hu.tilos.radio.backend.data.SearchResponse;
 import hu.tilos.radio.backend.data.SearchResponseElement;
-import hu.tilos.radio.jooqmodel.Tables;
-import hu.tilos.radio.jooqmodel.tables.daos.TextcontentDao;
-import hu.tilos.radio.jooqmodel.tables.pojos.Author;
-import hu.tilos.radio.jooqmodel.tables.pojos.Episode;
-import hu.tilos.radio.jooqmodel.tables.pojos.Radioshow;
-import hu.tilos.radio.jooqmodel.tables.pojos.Textcontent;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
@@ -35,14 +28,11 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
-import org.jooq.*;
-import org.jooq.conf.Settings;
-import org.jooq.impl.DSL;
-import org.jooq.impl.DefaultConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.naming.directory.SearchResult;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -53,6 +43,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.xml.soap.Text;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -60,35 +51,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static hu.tilos.radio.jooqmodel.Tables.*;
 import static org.apache.lucene.util.Version.*;
 import static org.apache.lucene.util.Version.LUCENE_48;
 
 @Path("api/v1/search")
 public class SearchController {
 
+    @Inject
+    private EntityManager entityManager;
+
     private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
+
     private Directory index;
 
-    @Resource
-    private DataSource dataSource;
-
-    private Directory getIndex(DSLContext context) throws IOException {
+    private Directory getIndex() throws IOException {
         if (index == null) {
             index = new RAMDirectory();
-            index(context);
+            index();
         }
         return index;
     }
 
-    private void index(DSLContext context) throws IOException {
+    private void createIndex() throws IOException {
         IndexWriterConfig config = new IndexWriterConfig(LUCENE_48, createAnalyzer());
 
-        IndexWriter w = new IndexWriter(getIndex(context), config);
-        addAuthors(context, w);
-        addShows(context, w);
-        addPages(context, w);
-        addEpisodes(context, w);
+        IndexWriter w = new IndexWriter(getIndex(), config);
+        addAuthors(w);
+        addShows(w);
+        addPages(w);
+        addEpisodes(w);
         w.close();
 
     }
@@ -97,7 +88,7 @@ public class SearchController {
     @Path("index")
     public String index() {
         try {
-            index(createDslContext());
+            createIndex();
             return "Indexing is finished";
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -136,7 +127,6 @@ public class SearchController {
     @Produces("application/json")
     @Security(role = Role.GUEST)
     public SearchResponse search(@QueryParam("q") String search) throws IOException, ParseException {
-        DSLContext context = createDslContext();
 
         MultiFieldQueryParser queryParser = new MultiFieldQueryParser(
                 LUCENE_48,
@@ -146,7 +136,7 @@ public class SearchController {
 
         org.apache.lucene.search.Query q = queryParser.parse(search);
 
-        IndexReader reader = IndexReader.open(getIndex(context));
+        IndexReader reader = IndexReader.open(getIndex());
         IndexSearcher searcher = new IndexSearcher(reader);
         TopScoreDocCollector collector = TopScoreDocCollector.create(10, true);
         searcher.search(q, collector);
@@ -175,8 +165,9 @@ public class SearchController {
         return type.stringValue();
     }
 
-    private void addAuthors(DSLContext context, IndexWriter w) throws IOException {
-        for (Author a : context.selectFrom(AUTHOR).fetchInto(Author.class)) {
+    private void addAuthors(IndexWriter w) throws IOException {
+        List<Author> authors = entityManager.createQuery("SELECT a FROM Author a").getResultList();
+        for (Author a : authors) {
             Document doc = new Document();
             doc.add(new TextField("name", a.getName(), Field.Store.YES));
             if (a.getAlias() != null) {
@@ -204,8 +195,9 @@ public class SearchController {
         }
     }
 
-    private void addShows(DSLContext context, IndexWriter w) throws IOException {
-        for (Radioshow show : context.selectFrom(RADIOSHOW).fetchInto(Radioshow.class)) {
+    private void addShows(IndexWriter w) throws IOException {
+        List<Show> shows = entityManager.createQuery("SELECT a FROM Show a").getResultList();
+        for (Show show : shows) {
             Document doc = new Document();
             doc.add(new TextField("name", show.getName(), Field.Store.YES));
             if (show.getAlias() != null) {
@@ -227,9 +219,9 @@ public class SearchController {
 
     }
 
-    private void addPages(DSLContext context, IndexWriter w) throws IOException {
-        TextcontentDao dao = new TextcontentDao(context.configuration());
-        for (Textcontent page : dao.fetchByType("page")) {
+    private void addPages(IndexWriter w) throws IOException {
+        List<TextContent> textContents = entityManager.createQuery("SELECT t FROM TextContent t where t.type = 'page'").getResultList();
+        for (TextContent page : textContents) {
             Document doc = new Document();
 
             doc.add(new TextField("content", safe(page.getContent()), Field.Store.NO));
@@ -248,12 +240,12 @@ public class SearchController {
 
     }
 
-    private void addEpisodes(DSLContext context, final IndexWriter w) throws IOException {
-        context.selectFrom(EPISODE.join(TEXTCONTENT).onKey().join(RADIOSHOW).onKey()).fetchInto(new RecordHandler<Record>() {
-            @Override
-            public void next(Record record) {
-                Episode episode = record.into(Episode.class);
-                Textcontent text = record.into(Textcontent.class);
+    private void addEpisodes(final IndexWriter w) throws IOException {
+
+        List<Episode> episodes = entityManager.createQuery("SELECT e FROM Episode e").getResultList();
+        for (Episode e : episodes) {
+            TextContent text = e.getText();
+            if (text != null) {
 
 
                 Document doc = new Document();
@@ -264,15 +256,14 @@ public class SearchController {
                 doc.add(new TextField("content", safe(text.getContent()), Field.Store.NO));
                 doc.add(new TextField("type", "episode", Field.Store.YES));
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                doc.add(new TextField("uri", "/episode/" + record.getValue(RADIOSHOW.ALIAS) + "/" + dateFormat.format(new Date(episode.getPlannedfrom().getTime())), Field.Store.YES));
+                doc.add(new TextField("uri", "/episode/" + e.getShow().getAlias() + "/" + dateFormat.format(new Date(e.getPlannedFrom().getTime())), Field.Store.YES));
                 try {
                     w.addDocument(doc);
-                } catch (IOException e) {
-                    LOG.error("Can't index episode record", e);
+                } catch (IOException ex) {
+                    LOG.error("Can't index episode record", ex);
                 }
             }
-        });
-
+        }
     }
 
 
@@ -283,16 +274,5 @@ public class SearchController {
         return content;
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    private DSLContext createDslContext() {
-        return DSL.using(dataSource, SQLDialect.MYSQL, new Settings().withRenderSchema(false));
-    }
 
 }
