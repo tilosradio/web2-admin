@@ -1,8 +1,7 @@
 ﻿'use strict';
 var debug;
 
-angular.module('tilosApp')
-  .controller('ProgramCtrl', ['$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http','datepickerPopupConfig','$timeout',
+angular.module('tilosApp').controller('ProgramCtrl', ['$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http','datepickerPopupConfig','$timeout',
     function ($scope, $routeParams, $server, $http, $popupconfig, $timeout) {
       $popupconfig.closeText = "Bezár";
       $popupconfig.toggleWeeksText = 'Hetek száma';

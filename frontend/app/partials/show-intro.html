@@ -1,17 +1,9 @@
-<section class="col-md-9 main" role="main">
-    <h1 class="ubuntu">{{show.name}}</h1>
+<p><i>{{show.definition}}</i></p>
+<span ng-bind-html="show.description"></span></br>
+<footer>
+    <div class="social" ng-controller="SocialCtrl">
+        <iframe ng-src="{{likeURL}}" scrolling="no" frameborder="0"
+                style="border:none; overflow:hidden; height:80px;" allowTransparency="true"></iframe>
+    </div>
+</footer>
 
-    <div ng-include src="'/partials/show-tabs.html'"></div>
-
-    <p><i>{{show.definition}}</i></p>
-    <span ng-bind-html="show.description"></span></br>
-    <footer>
-        <div class="social" ng-controller="SocialCtrl">
-            <iframe ng-src="{{likeURL}}" scrolling="no" frameborder="0"
-                    style="border:none; overflow:hidden; height:80px;" allowTransparency="true"></iframe>
-        </div>
-    </footer>
-
-</section>
-
-<div ng-include src="'partials/sidebar_show.html'"></div>

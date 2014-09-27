@@ -1,5 +1,43 @@
 'use strict';
 
+angular.module('tilosApp').config(function ($stateProvider) {
+    $stateProvider.state('show', {
+        abstract: true,
+        url: '/show/:id',
+        templateUrl: 'partials/show.html',
+        controller: function ($scope, $http, API_SERVER_ENDPOINT, $stateParams) {
+            $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
+                $scope.show = data;
+            });
+        }
+    });
+
+    $stateProvider.state('show.main', {
+        url: '',
+        templateUrl: 'partials/show-main.html',
+        controller: 'ShowCtrl'
+    });
+
+    $stateProvider.state('show.intro', {
+        url: '/intro',
+        templateUrl: 'partials/show-intro.html',
+        controller: 'ShowIntroCtrl'
+    });
+
+    $stateProvider.state('show.mixes', {
+        url: '/mixes',
+        templateUrl: 'partials/show-mixes.html',
+        controller: 'ShowMixesCtrl'
+    });
+
+    $stateProvider.state('show.bookmarks', {
+        url: '/bookmarks',
+        templateUrl: 'partials/show-bookmarks.html',
+        controller: 'ShowBookmarksCtrl'
+    });
+})
+;
+
 angular.module('tilosApp').config(function ($routeProvider) {
     $routeProvider.when('/show/:id', {
         templateUrl: 'partials/show.html',
@@ -20,37 +58,29 @@ angular.module('tilosApp').config(function ($routeProvider) {
     });
 });
 
-angular.module('tilosApp')
-    .controller('ShowIntroCtrl', function ($scope, $routeParams, API_SERVER_ENDPOINT, $http, $route) {
-        $scope.tab = $route.current.tab;
-        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
-            $scope.show = data;
-        });
-    });
+angular.module('tilosApp').controller('ShowIntroCtrl', function ($scope) {
+});
 
 angular.module('tilosApp')
-    .controller('ShowMixesCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
-        $scope.tab = $route.current.tab;
-        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
+    .controller('ShowMixesCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
-        $http.get(API_SERVER_ENDPOINT + '/api/v1/mix?show=' + $routeParams.id, {cache: true}).success(function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/mix?show=' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.mixes = data;
         });
     });
 
 angular.module('tilosApp')
-    .controller('ShowBookmarksCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
-        $scope.tab = $route.current.tab;
-        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
+    .controller('ShowBookmarksCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
     });
 
 angular.module('tilosApp')
-    .controller('ShowCtrl', function (Player, $scope, $routeParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
-        $scope.tab = $route.current.tab;
-        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $routeParams.id, {cache: true}).success(function (data) {
+    .controller('ShowCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
             $scope.server = API_SERVER_ENDPOINT;
             Meta.setTitle(data.name);

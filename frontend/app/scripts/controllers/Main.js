@@ -1,15 +1,17 @@
 'use strict';
 
+angular.module('tilosApp').config(function ($stateProvider) {
+    $stateProvider.state('index', {
+        url: '/',
+        templateUrl: 'partials/index.html',
+        controller: 'MainCtrl'
+    });
+    $stateProvider.state('index-i', {
+        url: '/index',
+        templateUrl: 'partials/index.html',
+        controller: 'MainCtrl'
+    });
 
-angular.module('tilosApp').config(function ($routeProvider) {
-    $routeProvider.when('/index', {
-        templateUrl: 'partials/index.html',
-        controller: 'MainCtrl'
-    });
-    $routeProvider.when('/', {
-        templateUrl: 'partials/index.html',
-        controller: 'MainCtrl'
-    });
 });
 
 angular.module('tilosApp').controller('MainCtrl', function ($scope, FeedService, $http, API_SERVER_ENDPOINT, $sce, $timeout) {
@@ -40,7 +42,8 @@ angular.module('tilosApp').controller('MainCtrl', function ($scope, FeedService,
         var seconds = Math.floor(diff / 1000);
         myTimeout = $timeout($scope.onTimeout, 1000);
         $scope.counter = '' + days + ' nap, ' + hours + ' óra, ' + minutes + ' perc és ' + seconds + ' másodperc';
-    };-
-    $scope.onTimeout();
+    };
+    -
+        $scope.onTimeout();
 
 });

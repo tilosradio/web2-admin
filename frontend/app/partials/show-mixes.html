@@ -1,28 +1,22 @@
-<section class="col-md-9 main" role="main">
-    <h1 class="ubuntu">{{show.name}}</h1>
-    <div ng-include src="'/partials/show-tabs.html'"></div>
-    <p>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Szerző</th>
-            <th>Cím</th>
-            <th>Meghallgat</th>
-        </tr>
-        </thead>
-        <tr ng-repeat="mix in show.mixes">
-            <td>
-                {{mix.author}}
-            </td>
-            <td>
-                {{mix.title}}
-            </td>
-            <td>
-                <a ng-href="{{mix.link}}" class="label label-episode episode">Letölt</a>
-            </td>
-        </tr>
-    </table>
-    </p>
-</section>
-
-<div ng-include src="'/partials/sidebar_show.html'"></div>
+<p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Szerző</th>
+        <th>Cím</th>
+        <th>Meghallgat</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="mix in show.mixes">
+        <td>
+            {{mix.author}}
+        </td>
+        <td>
+            {{mix.title}}
+        </td>
+        <td>
+            <a ng-href="{{mix.link}}" class="label label-episode episode">Letölt</a>
+        </td>
+    </tr>
+</table>
+</p>

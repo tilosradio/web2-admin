@@ -1,4 +1,6 @@
 ﻿'use strict';
+
+
 angular.module('tilosApp')
 		.controller('NewsCtrl', ['$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http', 'validateUrl', function ($scope, $routeParams, $server, $http, validateUrl) {
 		$http.get($server + '/api/v0/text/' + $routeParams.id, {cache: true}).success(function (data) {

@@ -1,8 +1,10 @@
 'use strict';
 
 
-angular.module('tilosApp').config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/episode/:id', {
+angular.module('tilosApp').config(function($stateProvider)
+{
+    $stateProvider.state('episode-id', {
+        url: '/episode/:id',
         templateUrl: 'partials/episode.html',
         controller: 'EpisodeCtrl',
         resolve: {
@@ -13,24 +15,24 @@ angular.module('tilosApp').config(['$routeProvider', function ($routeProvider) {
                 return $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $route.current.params.show);
             }
         }
-    });
-    $routeProvider.when('/episode/:show/:year/:month/:day', {
+    }).state('episode-date', {
+        url: '/episode/:show/:year/:month/:day',
         templateUrl: 'partials/episode.html',
         controller: 'EpisodeCtrl',
         resolve: {
-            data: function ($route, $http, API_SERVER_ENDPOINT) {
-                return $http.get(API_SERVER_ENDPOINT + '/api/v1/episode/' + $route.current.params.show + '/' + $route.current.params.year + '/' + $route.current.params.month + '/' + $route.current.params.day);
+            data: function ($stateParams, $http, API_SERVER_ENDPOINT) {
+                return $http.get(API_SERVER_ENDPOINT + '/api/v1/episode/' + $stateParams.show + '/' + $stateParams.year + '/' + $stateParams.month + '/' + $stateParams.day);
             },
-            show: function ($route, $http, API_SERVER_ENDPOINT) {
-                return $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $route.current.params.show);
+            show: function ($stateParams, $http, API_SERVER_ENDPOINT) {
+                return $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.show);
             }
         }
     });
-}]);
+});
+
 
 /*global angular*/
-angular.module('tilosApp')
-    .controller('EpisodeCtrl', function ($scope, data, show, $sce, Meta) {
+angular.module('tilosApp').controller('EpisodeCtrl', function ($scope, data, show, $sce, Meta) {
         $scope.episode = data.data;
         if (data.data.text && data.data.text.formatted) {
             $scope.episode.text.formatted = $sce.trustAsHtml(data.data.text.formatted);
