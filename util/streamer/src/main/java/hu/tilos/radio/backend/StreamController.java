@@ -93,10 +93,10 @@ public class StreamController extends HttpServlet {
                     resp.setHeader("Content-Length", "" + (to - start)); // The size of the range
                     resp.setHeader("Content-Range", "bytes=" + start + "-" + (to - 1) + "/" + size); // The size of the range
                     try {
-                        monitor.increment();
+                        //monitor.increment();
                         backend.stream(collection, start, size, output);
                     } finally {
-                        monitor.decrement();
+                        //monitor.decrement();
                     }
                 } else {
                     throw new RuntimeException("Unknown range request");
@@ -110,10 +110,10 @@ public class StreamController extends HttpServlet {
 
                 resp.setHeader("Accept-Ranges", "bytes");
                 try {
-                    monitor.increment();
+                    //monitor.increment();
                     backend.stream(collection, 0, size, output);
                 } finally {
-                    monitor.decrement();
+                    //monitor.decrement();
                 }
             }
         } catch (Exception e) {
