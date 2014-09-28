@@ -47,7 +47,7 @@ public class ScheduledEpisodeProvider {
 
         List<EpisodeData> result = new ArrayList<>();
         for (Scheduling s : schedulings) {
-            result.addAll(calculateEpisodes(s, entityManager.find(Show.class, showId), from, to));
+            result.addAll(calculateEpisodes(s, s.getShow(), from, to));
         }
 
         return result;
