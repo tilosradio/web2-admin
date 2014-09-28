@@ -13,13 +13,13 @@ tilos.weekStart = function (date) {
 };
 
 
-tilos.factory('Meta', function ($rootScope, $rootElement) {
+tilos.factory('Meta', function ($rootScope) {
     return {
         setTitle: function (newTitle) {
-            $rootScope.pageTitle = newTitle
+            $rootScope.pageTitle = newTitle;
         },
         setDescription: function (newDesc) {
-            var metaDesc = angular.element(document.querySelector("#desc"));
+            var metaDesc = angular.element(document.querySelector('#desc'));
             metaDesc.attr('content', newDesc);
         }
 
@@ -27,9 +27,9 @@ tilos.factory('Meta', function ($rootScope, $rootElement) {
 });
 
 tilos.run(function ($rootScope, Meta) {
-    $rootScope.$on('$locationChangeStart', function (evt, next) {
-        Meta.setTitle("");
-        Meta.setDescription("");
+    $rootScope.$on('$locationChangeStart', function () {
+        Meta.setTitle('');
+        Meta.setDescription('');
 
     });
 
@@ -37,13 +37,12 @@ tilos.run(function ($rootScope, Meta) {
 
 tilos.config(function ($routeProvider, $stateProvider, $urlRouterProvider) {
 
-
     $urlRouterProvider.otherwise(function ($injector, $location) {
         var $http = $injector.get('$http');
         var API_SERVER_ENDPOINT = $injector.get('API_SERVER_ENDPOINT');
         var path = $location.path();
         var result = '?';
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/text' + path, function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v0/text' + path, function () {
             result = '/page' + path;
         });
 
@@ -60,16 +59,10 @@ tilos.config(function ($routeProvider, $stateProvider, $urlRouterProvider) {
 
     });
 
-    $routeProvider.when('/archive', {
-        templateUrl: 'partials/program.html',
-        controller: 'ProgramCtrl'
-    }).when('/news/:id', {
-        templateUrl: 'partials/news.html',
-        controller: 'NewsCtrl'
-    }).otherwise({
-        templateUrl: '/partials/404.html',
-        controller: '404Ctrl'
-    });
+//    .when('/news/:id', {
+//        templateUrl: 'partials/news.html',
+//        controller: 'NewsCtrl'
+//    });
 
 });
 

@@ -1,15 +1,5 @@
 'use strict';
 
-
-angular.module('tilosApp').config(function ($stateProvider) {
-    $stateProvider.state('episodes', {
-        url: '/page/:id',
-        templateUrl: 'partials/page.html',
-        controller: 'EpisodeCtrl'
-    });
-});
-
-/*global angular*/
 angular.module('tilosApp').controller('EpisodesCtrl', function ($scope, $stateParams, API_SERVER_ENDPOINT, $http) {
         $scope.now = new Date();
 

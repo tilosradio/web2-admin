@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('tilosApp').config(function ($stateProvider) {
     $stateProvider.state('page', {
         url: '/page/:id',
@@ -9,8 +8,8 @@ angular.module('tilosApp').config(function ($stateProvider) {
     });
 });
 
-angular.module('tilosApp').controller('PageCtrl', function ($scope, $stateParams, tilosData) {
-    tilosData.getText($stateParams.id, function (data) {
+angular.module('tilosApp').controller('PageCtrl', function ($scope, API_SERVER_ENDPOINT, $stateParams, $http) {
+    $http.get(API_SERVER_ENDPOINT + '/api/v0/text/' + $stateParams.id).success(function (data) {
         $scope.page = data;
     });
 });

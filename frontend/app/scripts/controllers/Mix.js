@@ -6,7 +6,7 @@ angular.module('tilosApp').config(function ($stateProvider) {
         templateUrl: 'partials/mixes.html',
         controller: 'MixListCtrl'
     });
-    $stateProvider.state("mix", {
+    $stateProvider.state('mix', {
         url: '/mix/:id',
         templateUrl: 'partials/mix.html',
         controller: 'MixCtrl'

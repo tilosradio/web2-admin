@@ -58,11 +58,11 @@ angular.module('tilosApp').config(function ($routeProvider) {
     });
 });
 
-angular.module('tilosApp').controller('ShowIntroCtrl', function ($scope) {
+angular.module('tilosApp').controller('ShowIntroCtrl', function () {
 });
 
 angular.module('tilosApp')
-    .controller('ShowMixesCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+    .controller('ShowMixesCtrl', function ($scope, $stateParams, API_SERVER_ENDPOINT, $http) {
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
@@ -72,7 +72,7 @@ angular.module('tilosApp')
     });
 
 angular.module('tilosApp')
-    .controller('ShowBookmarksCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+    .controller('ShowMixesCtrl', function ($scope, $stateParams, API_SERVER_ENDPOINT, $http) {
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
         });
@@ -94,7 +94,7 @@ angular.module('tilosApp')
 
             var to = new Date().getTime() / 1000;
             var from = to - ( 6 * 30 * 24 * 3600);
-            $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + "&to=" + to).success(function (data) {
+            $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + '&to=' + to).success(function (data) {
                 $scope.show.episodes = data;
             });
 
@@ -104,7 +104,7 @@ angular.module('tilosApp')
                 $scope.currentShowPage--;
                 var to = $scope.show.episodes[$scope.show.episodes.length - 1].plannedFrom - 60;
                 var from = to - 60 * 24 * 60 * 60;
-                $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + "&to=" + to).success(function (data) {
+                $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + '&to=' + to).success(function (data) {
                     $scope.show.episodes = data;
                 });
 
@@ -113,12 +113,12 @@ angular.module('tilosApp')
                 $scope.currentShowPage++;
                 var from = $scope.show.episodes[0].plannedTo + 60;
                 var to = from + 60 * 24 * 60 * 60;
-                $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + "&to=" + to).success(function (data) {
+                $http.get(API_SERVER_ENDPOINT + '/api/v0/show/' + data.id + '/episodes?from=' + from + '&to=' + to).success(function (data) {
                     $scope.show.episodes = data;
                 });
             };
 
-            $http.get('https://graph.facebook.com/fql?q=SELECT%20url,%20normalized_url,%20share_count,%20like_count,%20comment_count,%20total_count,commentsbox_count,%20comments_fbid,%20click_count%20FROM%20link_stat%20WHERE%20url=%27http%3A%2F%2F' + API_SERVER_ENDPOINT + "2Fshow%2F" + $scope.show.alias + "%27", {cache: true}).success(function (data) {
+            $http.get('https://graph.facebook.com/fql?q=SELECT%20url,%20normalized_url,%20share_count,%20like_count,%20comment_count,%20total_count,commentsbox_count,%20comments_fbid,%20click_count%20FROM%20link_stat%20WHERE%20url=%27http%3A%2F%2F' + API_SERVER_ENDPOINT + '2Fshow%2F' + $scope.show.alias + '%27', {cache: true}).success(function (data) {
                 if (data.data[0] !== undefined) {
                     $scope.show.sharecount = data.data[0].share_count;
                 }
