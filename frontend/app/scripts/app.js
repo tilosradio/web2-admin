@@ -42,20 +42,17 @@ tilos.config(function ($routeProvider, $stateProvider, $urlRouterProvider) {
         var API_SERVER_ENDPOINT = $injector.get('API_SERVER_ENDPOINT');
         var path = $location.path();
         var result = '?';
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/text' + path, function () {
-            result = '/page' + path;
+        $http.get(API_SERVER_ENDPOINT + '/api/v0/text' + path).success(function (data) {
+            var $state = $injector.get('$state');
+            $state.go('page', {id: path.substr(1)});
+        }).error(function (data) {
+            $http.get(API_SERVER_ENDPOINT + '/api/v0/show' + path).success(function (data) {
+                $injector.get('$state').go('show.main', {id: path.substr(1)});
+            }).error(function (data) {
+                $injector.get('$state').go('notfound');
+            });
         });
-
-
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-            if (result !== '?') {
-                return result;
-            }
-            if ((new Date().getTime() - start) > 1000) {
-                return '/404';
-            }
-        }
+        return false;
 
     });
 
