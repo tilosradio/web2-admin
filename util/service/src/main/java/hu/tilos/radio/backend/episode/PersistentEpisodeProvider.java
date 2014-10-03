@@ -63,6 +63,9 @@ public class PersistentEpisodeProvider {
         for (Episode e : q.getResultList()) {
             EpisodeData d = modelMapper.map(e, EpisodeData.class);
             d.setPersistent(true);
+            if (d.getPlannedTo() == d.getRealTo()) {
+                d.setPlannedTo(d.getPlannedTo() + 30 * 60 * 1000);
+            }
             result.add(d);
         }
 

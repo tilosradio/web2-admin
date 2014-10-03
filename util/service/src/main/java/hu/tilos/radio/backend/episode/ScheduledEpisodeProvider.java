@@ -48,6 +48,7 @@ public class ScheduledEpisodeProvider {
         List<EpisodeData> result = new ArrayList<>();
         for (Scheduling s : schedulings) {
             result.addAll(calculateEpisodes(s, s.getShow(), from, to));
+
         }
 
         return result;
@@ -76,7 +77,7 @@ public class ScheduledEpisodeProvider {
                 //create episode from scheduling
                 EpisodeData d = new EpisodeData();
                 d.setPlannedFrom(c.getTime().getTime());
-                d.setPlannedTo(d.getPlannedFrom() + s.getDuration() * 60 * 1000);
+                d.setPlannedTo(d.getPlannedFrom() + (s.getDuration() + 30) * 60 * 1000);
                 d.setRealFrom(d.getPlannedFrom());
                 d.setRealTo(d.getPlannedTo());
                 d.setPersistent(false);
