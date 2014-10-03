@@ -77,7 +77,7 @@ public class M3uController {
                 title += " adás archívum";
             }
             result.append("#EXTINF:-1, " + artist + " - " + title + "\n");
-            result.append(FeedController.createDownloadURI(episode) + "\n");
+            result.append(FeedRenderer.createDownloadURI(episode) + "\n");
         }
         return Response.ok(result.toString()).build();
     }

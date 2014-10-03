@@ -33,36 +33,84 @@ import java.util.*;
 @Path("/feed")
 public class FeedController {
 
-    private static final SimpleDateFormat YYYY_DOT_MM_DOT_DD = new SimpleDateFormat("yyyy'.'MM'.'dd");
-
-    private static final SimpleDateFormat YYYY_PER_MM_PER_DD = new SimpleDateFormat("yyyy'/'MM'/'dd");
-
-    private static final SimpleDateFormat YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
-
-    private static final SimpleDateFormat HHMMSS = new SimpleDateFormat("HHmmss");
 
     @Inject
     private EpisodeUtil episodeUtil;
 
     @Inject
+    private EntityManager entityManager;
+
+
+    @Inject
+    private FeedRenderer feedRenderer;
+
+    @Inject
     @ConfigProperty(name = "server.url")
     private String serverUrl;
 
-    @Inject
-    private EntityManager entityManager;
-
-    public static String createDownloadURI(EpisodeData episode) {
-        return "http://tilos.hu/mp3/tilos-" +
-                YYYYMMDD.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                HHMMSS.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                HHMMSS.format(dateFromEpoch(episode.getRealTo())) + ".mp3";
+    @GET
+    @Path("/weekly")
+    @Security(role = Role.GUEST)
+    @Produces("application/atom+xml")
+    public Response weeklyFeed() {
+        return weeklyFeed(null);
     }
 
-    private static Date dateFromEpoch(long realTo) {
-        Date d = new Date();
-        d.setTime(realTo);
-        return d;
+
+    @GET
+    @Path("/weekly/{type}")
+    @Security(role = Role.GUEST)
+    @Produces("application/atom+xml")
+    public Response weeklyFeed(@PathParam("type") String type) {
+        Date now = new Date();
+        Date weekAgo = new Date();
+        weekAgo.setTime(now.getTime() - (long) 604800000L);
+
+        List<EpisodeData> episodes = filter(episodeUtil.getEpisodeData(-1, weekAgo, now), type);
+
+        Collections.sort(episodes, new Comparator<EpisodeData>() {
+            @Override
+            public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
+                return Long.compare(episodeData2.getPlannedFrom(), episodeData.getPlannedFrom());
+            }
+        });
+
+        Feed feed = feedRenderer.generateFeed(episodes, true);
+
+
+        feed.setTitle("Tilos Rádió heti podcast");
+        feed.setUpdated(new Date());
+
+        Link feedLink = new Link();
+        feedLink.setRel("self");
+        feedLink.setType(new MediaType("application", "atom+xml"));
+        feedLink.setHref(uri(serverUrl + "/feed/weekly"));
+
+        return Response.ok().entity(feed).build();
     }
+
+    private List<EpisodeData> filter(List<EpisodeData> episodeData, String type) {
+        if (type == null) {
+            return episodeData;
+        } else {
+            List<EpisodeData> result = new ArrayList<>();
+            for (EpisodeData data : episodeData) {
+                if ((type.equals("talk") && data.getShow().getType() == 1) || (type.equals("music") && data.getShow().getType() == 0)) {
+                    result.add(data);
+                }
+            }
+            return result;
+        }
+    }
+
+    private URI uri(String s) {
+        try {
+            return new URI(s);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("URL can't be converted", e);
+        }
+    }
+
 
     @GET
     @Path("/show/{alias}{year:(/.*)?}")
@@ -77,98 +125,52 @@ public class FeedController {
             year = year.substring(1);
         }
 
-        Feed feed = new Feed();
-        try {
-            Query q = entityManager.createQuery("SELECT s FROM Show s WHERE s.alias = :alias");
-            q.setParameter("alias", alias);
-            Show show = (Show) q.getSingleResult();
-            feed.setTitle(show.getName() + " [Tilos Rádió podcast]");
-            feed.setUpdated(new Date());
+        Query q = entityManager.createQuery("SELECT s FROM Show s WHERE s.alias = :alias");
+        q.setParameter("alias", alias);
+        Show show = (Show) q.getSingleResult();
 
-            String yearPostfix = ("".equals(year) ? "" : "/" + year);
-
-            Link feedLink = new Link();
-            feedLink.setRel("self");
-            feedLink.setType(new MediaType("application", "atom+xml"));
-            feedLink.setHref(new URI(serverUrl + "/feed/show/" + show.getAlias() + yearPostfix));
-
-            feed.getLinks().add(feedLink);
-            feed.setId(new URI("http://tilos.hu/show/" + show.getAlias() + yearPostfix));
-
-
-            Date end;
-            Date start;
-            if ("".equals(year)) {
-                end = getNow();
-                //six monthes
-                start = new Date();
-                start.setTime(end.getTime() - (long) 60 * 24 * 30 * 6 * 60 * 1000);
-            } else {
-                int yearInt = Integer.parseInt(year);
-                start = new Date(yearInt - 1900, 0, 1);
-                end = new Date(yearInt - 1900 + 1, 0, 1);
-            }
-
-            Person p = new Person();
-            p.setEmail("info@tilos.hu");
-            p.setName("Tilos Rádió");
-            List<Person> authors = new ArrayList();
-            authors.add(p);
-
-            List<EpisodeData> episodeData = episodeUtil.getEpisodeData(show.getId(), start, end);
-            Collections.sort(episodeData, new Comparator<EpisodeData>() {
-                @Override
-                public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
-                    return Long.compare(episodeData2.getPlannedFrom(), episodeData.getPlannedFrom());
-                }
-            });
-            for (EpisodeData episode : episodeData) {
-                try {
-                    Entry e = new Entry();
-                    if (episode.getText() != null) {
-                        e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + episode.getText().getTitle());
-                        e.setSummary(new Summary("html", episode.getText().getContent()));
-                    } else {
-                        e.setTitle(YYYY_DOT_MM_DOT_DD.format(episode.getPlannedFrom()) + " " + "adásnapló");
-                        e.setSummary(new Summary("adás archívum"));
-                    }
-
-
-                    e.setPublished(dateFromEpoch(episode.getRealTo()));
-                    e.setUpdated(dateFromEpoch(episode.getRealTo()));
-
-                    URL url = new URL(serverUrl + "/episode/" + show.getAlias() + "/" + YYYY_PER_MM_PER_DD.format(e.getPublished()));
-
-                    e.setId(url.toURI());
-
-                    Link alternate = new Link();
-                    alternate.setRel("alternate");
-                    alternate.setType(MediaType.TEXT_HTML_TYPE);
-                    alternate.setHref(url.toURI());
-                    e.getLinks().add(alternate);
-
-                    Link sound = new Link();
-                    sound.setType(new MediaType("audio", "mpeg"));
-                    sound.setRel("enclosure");
-                    sound.setHref(new URI(createDownloadURI(episode)));
-                    e.getLinks().add(sound);
-
-
-                    e.getAuthors().addAll(authors);
-
-                    feed.getEntries().add(e);
-                } catch (MalformedURLException e1) {
-                    throw new RuntimeException(e1);
-                } catch (URISyntaxException e1) {
-                    throw new RuntimeException(e1);
-                }
-
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            //TODO
+        Date end;
+        Date start;
+        if ("".equals(year)) {
+            end = getNow();
+            //six monthes
+            start = new Date();
+            start.setTime(end.getTime() - (long) 60 * 24 * 30 * 6 * 60 * 1000);
+        } else {
+            int yearInt = Integer.parseInt(year);
+            start = new Date(yearInt - 1900, 0, 1);
+            end = new Date(yearInt - 1900 + 1, 0, 1);
         }
+
+        List<EpisodeData> episodeData = episodeUtil.getEpisodeData(show.getId(), start, end);
+        Collections.sort(episodeData, new Comparator<EpisodeData>() {
+            @Override
+            public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
+                return Long.compare(episodeData2.getPlannedFrom(), episodeData.getPlannedFrom());
+            }
+        });
+
+
+        Feed feed = feedRenderer.generateFeed(episodeData);
+
+        //generate header
+
+        feed.setTitle(show.getName() + " [Tilos Rádió podcast]");
+        feed.setUpdated(new Date());
+
+        String yearPostfix = ("".equals(year) ? "" : "/" + year);
+
+        Link feedLink = new Link();
+        feedLink.setRel("self");
+        feedLink.setType(new MediaType("application", "atom+xml"));
+        feedLink.setHref(uri(serverUrl + "/feed/show/" + show.getAlias() + yearPostfix));
+
+        feed.getLinks().add(feedLink);
+        feed.setId(uri("http://tilos.hu/show/" + show.getAlias() + yearPostfix));
+
         return Response.ok().entity(feed).build();
+
+
     }
 
     protected Date getNow() {
