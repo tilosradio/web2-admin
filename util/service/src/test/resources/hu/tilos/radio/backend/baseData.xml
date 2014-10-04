@@ -44,9 +44,9 @@
                 weekDay="5"
                 radioshow_id="3"></scheduling>
 
-    <bookmark id="1" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00"
-              title="Jo kis beszelgetes 1" content="x1" episode_id="1" selected="0" full_episode="0" karma="0"></bookmark>
-    <bookmark id="2" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00" modified="2014-04-04 08:13:00"
+    <bookmark id="1" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00"
+              title="Jo kis beszelgetes 1" content="x1" episode_id="1" selected="1" full_episode="0" karma="0"></bookmark>
+    <bookmark id="2" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00"
               title="Jo kis beszelgetes 2" content="x2" episode_id="1" radioshow_id="1" selected="0" full_episode="0" karma="0"></bookmark>
 
     <mix id="1" type="1" author="asd" title="good mix" file="asd.mp3" date="2013-04-05" show_id="1" category="2"></mix>

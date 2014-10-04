@@ -55,7 +55,6 @@
     user_id CDATA #IMPLIED
     start CDATA #REQUIRED
     end CDATA #REQUIRED
-    modified CDATA #REQUIRED
     title CDATA #REQUIRED
     content CDATA #REQUIRED
     full_episode CDATA #REQUIRED
@@ -206,5 +205,6 @@
     password CDATA #IMPLIED
     email CDATA #REQUIRED
     salt CDATA #IMPLIED
+    role CDATA #IMPLIED
 >
 

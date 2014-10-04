@@ -6,9 +6,7 @@ import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.type.MixCategory;
 import hu.tilos.radio.backend.converters.ChildEntityFieldConverter;
 import hu.tilos.radio.backend.converters.DateToTextConverter;
-import hu.tilos.radio.backend.data.BookmarkSimple;
-import hu.tilos.radio.backend.data.CreateResponse;
-import hu.tilos.radio.backend.data.MixResponse;
+import hu.tilos.radio.backend.data.*;
 import hu.tilos.radio.backend.data.types.MixData;
 import hu.tilos.radio.backend.data.types.MixSimple;
 import org.dozer.loader.DozerBuilder;
@@ -52,14 +50,39 @@ public class BookmarkController {
         }
         List<Bookmark> bookmarks = q.getResultList();
 
-
         List<BookmarkSimple> response = new ArrayList<>();
         for (Bookmark bm : bookmarks) {
             response.add(modelMapper.map(bm, BookmarkSimple.class));
         }
-
         return response;
+    }
 
+    @Produces("application/json")
+    @Security(role = Role.ADMIN)
+    @POST
+    @Transactional
+    public CreateResponse create(BookmarkData data) {
+
+        Bookmark entity = modelMapper.map(data, Bookmark.class);
+
+        entityManager.persist(entity);
+
+        return new CreateResponse(entity.getId());
+
+    }
+
+    @Produces("application/json")
+    @Security(role = Role.ADMIN)
+    @Transactional
+    @PUT
+    @Path("/{id}")
+    public UpdateResponse update(@PathParam("id") int id, BookmarkData inputData) {
+
+        Bookmark entity = entityManager.find(Bookmark.class, id);
+
+        modelMapper.map(inputData, entity);
+
+        return new UpdateResponse(entity.getId());
     }
 
 

@@ -43,8 +43,8 @@ public class PersistentEpisodeProviderTest {
         //then
         Assert.assertEquals(2, episodes.size());
         Assert.assertNotNull(episodes.get(0).getShow());
-//      Assert.assertNotNull(episodes.get(0).getText());
-//      Assert.assertEquals("Jo kis beszelgetes 1", episodes.get(0).getText().getTitle());
+        Assert.assertNotNull(episodes.get(0).getText());
+        Assert.assertEquals("Jo kis beszelgetes 1", episodes.get(0).getText().getTitle());
         Assert.assertNotNull(episodes.get(1).getText());
         Assert.assertEquals("Jo musor", episodes.get(1).getText().getTitle());
 

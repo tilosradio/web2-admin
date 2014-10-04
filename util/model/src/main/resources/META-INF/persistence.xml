@@ -13,6 +13,8 @@
         <class>hu.radio.tilos.model.Mix</class>
         <class>hu.radio.tilos.model.Contribution</class>
         <class>hu.radio.tilos.model.Scheduling</class>
+        <class>hu.radio.tilos.model.Bookmark</class>
+        <class>hu.radio.tilos.model.User</class>
 
     </persistence-unit>
 

@@ -11,7 +11,7 @@ import java.util.Date;
 public class Bookmark {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Basic
@@ -45,6 +45,10 @@ public class Bookmark {
     @Basic
     @Column()
     private int karma;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User author;
 
     public boolean isFullEpisode() {
         return fullEpisode;
@@ -116,5 +120,13 @@ public class Bookmark {
 
     public void setRealTo(Date realTo) {
         this.realTo = realTo;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

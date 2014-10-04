@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.episode;
 
 
+import hu.radio.tilos.model.Bookmark;
 import hu.radio.tilos.model.Episode;
 import hu.radio.tilos.model.Show;
 import hu.radio.tilos.model.TextContent;
@@ -63,30 +64,42 @@ public class PersistentEpisodeProvider {
         for (Episode e : q.getResultList()) {
             EpisodeData d = modelMapper.map(e, EpisodeData.class);
             d.setPersistent(true);
+
+            if (e.getPlannedTo() == e.getRealTo() || e.getText() == null) {
+                Query bookmarkQuery = entityManager.createQuery("SELECT b FROM Bookmark b WHERE b.episode.id = :id").setParameter("id", d.getId());
+                List<Bookmark> bookmarks = bookmarkQuery.getResultList();
+                Bookmark bookmark = chooseTheBestBookmark(bookmarks);
+                useBookmarkForEpisodeText(d, bookmark);
+            }
             if (d.getPlannedTo() == d.getRealTo()) {
                 d.setPlannedTo(d.getPlannedTo() + 30 * 60 * 1000);
             }
             result.add(d);
         }
 
-
         return result;
 
     }
 
-//    private Bookmark chooseTheBestBookmark(Result<Record> bookmarks) {
-//        if (bookmarks.size() == 0) {
-//            return null;
-//        }
-//        Record r = (Record) bookmarks.get(0);
-//        Bookmark b = new Bookmark();
-//        b.setContent(r.getValue(BOOKMARK.CONTENT));
-//        b.setTitle(r.getValue(BOOKMARK.TITLE));
-//        b.setStart(r.getValue(BOOKMARK.START));
-//        b.setEnd(r.getValue(BOOKMARK.END));
-//        return b;
-//    }
+    private void useBookmarkForEpisodeText(EpisodeData episodeData, Bookmark bookmark) {
+        if (bookmark != null) {
+            TextData textData = new TextData();
+            textData.setTitle(bookmark.getTitle());
+            episodeData.setText(textData);
+        }
+    }
 
+    private Bookmark chooseTheBestBookmark(List<Bookmark> bookmarks) {
+        if (bookmarks.size() == 0) {
+            return null;
+        }
+        for (Bookmark bookmark : bookmarks) {
+            if (bookmark.isSelected()) {
+                return bookmark;
+            }
+        }
+        return null;
+    }
 
     public EntityManager getEntityManager() {
         return entityManager;
