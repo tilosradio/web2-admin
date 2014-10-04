@@ -4,6 +4,7 @@
 			<tr ng-repeat="episode in episodes" class="{{(current.show.id == episode.show.id) && 'actual'|| ''}}" >
 				<td><a href="#/show/{{episode.show.alias}}">{{episode.show.name}}<a></td>
 				<td>{{episode.plannedFrom * 1000| date: 'HH:mm'}}</td>
+				<a class="btn btn-default" href="http://tilos.hu/upload/content/musorlista/program.pdf" target="_blank">heti műsortábla</a>
 				<!--<td><a href="#" class="icon-star"><span class="sr-only">kedvenchez adás</span></a></td>--> <!-- if is fav change icon-star2 -->
 			</tr>
 		</table>
