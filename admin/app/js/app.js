@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('tilosAdmin', [
+      'ui.bootstrap',
       'ngCookies',
       'ngResource',
       'ngSanitize',

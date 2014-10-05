@@ -1,41 +1,178 @@
 <div class="row">
-    <div class="col-8">
-
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Admin hírek
+    <div class="col-lg-12">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="fa fa-tasks"></i> Admin hírek
             </div>
-            <div class="panel-body">
-                Elérhetővé vált a címkék (tag-ek) használata az adásnaplókon belül. Az alábbi verziók
-                használhatóak: <code>#címke</code> vagy <code>@személynév</code> <a ng-href="/page/admin-tags">További részletek itt</a>
-            </div>
-            <div class="panel-body">
-                A kék gombok legvégére bekerült a <b>stat</b>, ami a naponta tárolásra kerülő <b>online hallgatási statisztikára</b> mutat.
+            <div class="widget-body no-padding">
+                <div class="message">Elérhetővé vált a címkék (tag-ek) használata az adásnaplókon belül. Az alábbi verziók
+                használhatóak: <code>#címke</code> vagy <code>@személynév</code> <a ng-href="/page/admin-tags">További
+                részletek itt</a></div>
+
+                <div class="message">A kék gombok legvégére bekerült a <b>stat</b>, ami a naponta tárolásra kerülő <b>online hallgatási
+                statisztikára</b> mutat.</div>
             </div>
         </div>
-        <h2>Hasznos linkek!</h2>
-
-        <p>
-            <a class="btn btn-primary btn-lg" role="button" href="/page/ujoldal">Új oldal GYIK</a>
-            <a class="btn btn-primary btn-lg" role="button" href="/page/face">Tilos Facebook szabályat</a>
-            <a class="btn btn-primary btn-lg" role="button" href="/page/szerkesztes">Szerkesztési segédlet</a>
-            <a class="btn btn-primary btn-lg" role="button" href="/page/78">Tilos Dokumentumok</a>
-            <a class="btn btn-primary btn-lg" role="button" href="http://tilos.hu/upload/stats/">Stat</a>
-        </p>
-
-        <h2>Saját műsorok</h2>
-
-        <p ng-repeat="contribution in user.author.contributions">
-
-            <a class="btn btn-default" ng-href="/show/{{contribution.show.id}}/"
-               role="button">{{contribution.show.name}}</a>
-
-
-        </p>
-
-
-
-
     </div>
+</div>
+
+
+<div class="row alerts-container">
+    <div class="col-xs-12">
+        <alert data-ng-repeat="alert in alerts" type="warning" close=""></alert>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-icon green pull-left">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="widget-content pull-left">
+                    <div class="title">80</div>
+                    <div class="comment">Adásnapló</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-icon red pull-left">
+                    <i class="fa fa-tasks"></i>
+                </div>
+                <div class="widget-content pull-left">
+                    <div class="title">16</div>
+                    <div class="comment">Műsor</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-icon orange pull-left">
+                    <i class="fa fa-sitemap"></i>
+                </div>
+                <div class="widget-content pull-left">
+                    <div class="title">225</div>
+                    <div class="comment">Mix</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="spacer visible-xs"></div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-icon blue pull-left">
+                    <i class="fa fa-support"></i>
+                </div>
+                <div class="widget-content pull-left">
+                    <div class="title">62</div>
+                    <div class="comment">Műsorkészítő</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="fa fa-tasks"></i> Saját adásnaplók
+            </div>
+            <div class="widget-body medium no-padding">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>RDVMPC001</td>
+                            <td>238.103.133.37</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDVMPC002</td>
+                            <td>68.66.63.170</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDVMPC003</td>
+                            <td>76.117.212.33</td>
+                            <td><span tooltip="Server Down!" class="text-danger"><i
+                                    class="fa fa-warning"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDPHPC001</td>
+                            <td>91.88.224.5</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDESX001</td>
+                            <td>197.188.15.93</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDESX002</td>
+                            <td>168.85.154.251</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDESX003</td>
+                            <td>209.25.191.61</td>
+                            <td><span tooltip="Server Down!" class="text-danger"><i
+                                    class="fa fa-warning"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDESX004</td>
+                            <td>252.37.192.235</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDTerminal01</td>
+                            <td>139.71.18.207</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        <tr>
+                            <td>RDTerminal02</td>
+                            <td>136.80.122.212</td>
+                            <td><span tooltip="Could not connect!" class="text-warning"><i
+                                    class="fa fa-flash"></i></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RDDomainCont01</td>
+                            <td>196.80.245.33</td>
+                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="fa fa-users"></i> Tegnapi hallgatottság
+                <a href="#" class="pull-right">További statisztikák...</a>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="widget-body no-padding">
+               <img src="http://tilos.hu/upload/stats/2014-10-03.png" class="img-responsive" >
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Main Content -->
+
 </div>

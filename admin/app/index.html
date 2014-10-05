@@ -1,78 +1,246 @@
 <!doctype html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html lang="en" ng-app="tilosAdmin">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="/styles/main.css">
-    <!-- endbuild -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Tilos Admin</title>
+
     <base href="/">
+
+    <!-- build:less lib/bootstrap/css/bootstrap.css -->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <!-- endbuild -->
+
+    <!-- build:css lib/font-awesome/css/font-awesome.css -->
+    <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.css">
+    <!-- endbuild -->
+
+    <!-- build:less css/dashboard/dashboard.css -->
+    <link rel="stylesheet" type="text/css" href="less/dashboard/variables.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/mixins.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/main.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/loading.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/content.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/header.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/sidebar.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/widgets.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/hamburg.less">
+    <!-- endbuild -->
+
+    <!-- SCRIPTS -->
+    <!-- build:js lib/angular/angular.js -->
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <!-- endbuild -->
+    <!-- build:js lib/angular-cookies/angular-cookies.js -->
+    <script type="text/javascript" src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <!-- endbuild -->
+    <!-- build:js lib/angular-bootstrap/ui-bootstrap.js -->
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <!-- endbuild -->
+    <!-- build:js lib/angular-bootstrap/ui-bootstrap-tpls.js -->
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js lib/angular-resource/angular-resource.js -->
+    <script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js lib/angular-sanitize/angular-sanitize.js -->
+    <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <!-- endbuild -->
+
+
+    <!-- build:js lib/angular-route/angular-route.js -->
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js lib/textAngular/textAngular.js -->
+    <script type="text/javascript" src="bower_components/textAngular/textAngular.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js js/dashboard.js -->
+    <!--<script type="text/javascript" src="js/dashboard/module.js"></script>-->
+    <!--<script type="text/javascript" src="js/dashboard/routes.js"></script>-->
+    <!--<script type="text/javascript" src="js/dashboard/controllers/Dashboard.js"></script>-->
+    <!--<script type="text/javascript" src="js/dashboard/controllers/alerts-ctrl.js"></script>-->
+    <!--<script type="text/javascript" src="js/dashboard/directives/loading.js"></script>-->
+    <!-- endbuild -->
+
+    <!-- build:js js/tilosadmin.js -->
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/enum.js"></script>
+    <script type="text/javascript" src="js/controllers/Auth.js"></script>
+    <script type="text/javascript" src="js/controllers/Author.js"></script>
+    <script type="text/javascript" src="js/controllers/Contribution.js"></script>
+    <script type="text/javascript" src="js/controllers/Episode.js"></script>
+    <script type="text/javascript" src="js/controllers/Login.js"></script>
+    <script type="text/javascript" src="js/controllers/main.js"></script>
+    <script type="text/javascript" src="js/controllers/Mix.js"></script>
+    <script type="text/javascript" src="js/controllers/Scheduling.js"></script>
+    <script type="text/javascript" src="js/controllers/Show.js"></script>
+    <script type="text/javascript" src="js/controllers/Page.js"></script>
+    <script type="text/javascript" src="js/controllers/ChangePassword.js"></script>
+    <script type="text/javascript" src="js/controllers/Url.js"></script>
+    <script type="text/javascript" src="js/controllers/User.js"></script>
+    <script type="text/javascript" src="js/controllers/Dashboard.js"></script>
+    <!-- endbuild -->
+    <!-- SCRIPTS -->
+
 </head>
-<body ng-app="tilosAdmin">
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a>
-    to improve your experience.</p>
-<![endif]-->
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="AuthCtrl">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Admin nyitóoldal</a>
+<body>
+<div ng-controller="DashboardCtrl" id="page-wrapper" ng-class="{'active': toggle}" ng-cloak>
+
+    <!-- Sidebar -->
+
+    <div id="sidebar-wrapper"  ng-show="user">
+        <ul class="sidebar">
+            <li class="sidebar-main">
+                <a href="#" ng-click="toggleSidebar()">
+                    Dashboard
+                    <span class="menu-icon glyphicon glyphicon-transfer"></span>
+                </a>
+            </li>
+            <li class="sidebar-title"><span>SAJÁT MŰSOROK</span></li>
+
+            <li class="sidebar-list" data-ng-repeat="contribution in user.author.contributions">
+                <a ng-href="/show/{{contribution.show.id}}/">{{contribution.show.name}}<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-title"><span>TILOS tartalom</span></li>
+
+            <li class="sidebar-list">
+                <a ng-href="/shows">Műsorok<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/authors">Műsorkészítők<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/mixes">Mixek<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/pages">Oldalak<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-title"><span>SEGÍTSÉG</span></li>
+
+            <li class="sidebar-list">
+                <a ng-href="/page/ujoldal">Új oldal hogyan<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/page/face">Facebook<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/page/szerkesztes">Szerkesztés<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/page/78">Dokumentumok<span class="menu-icon fa fa-tachometer"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/page/78">Statisztika<span class="menu-icon fa fa-external-link"></span></a>
+            </li>
+
+
+
+        </ul>
+        <div class="sidebar-footer">
+            <div class="col-xs-4">
+                <a href="http://tilos.hu" target="_blank">
+                    Tilos.hu
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="http://tilos.hu/chat/" target="_blank">
+                    Chat
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="http://facebook.com/tilosradio">
+                    Facebook
+                </a>
+            </div>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul ng-show="user" class="nav navbar-nav">
-                <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/authors">Szerzők</a></li>
-                <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/shows">Műsorok</a></li>
-                <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/pages">Oldalak</a></li>
-                <li ng-show="user.role.name == 'admin'" active-link="active"><a ng-href="/mixes">Mixek</a></li>
-                <li ng-show="user" active-link="active"><a ng-href="/user/me">Felhasználó: <b>{{user.username}}</b></a></li>
-                <li ng-show="user" active-link="active"><a ng-href="/author/{{user.author.id}}">Műsorkészítő profil: <b>{{user.author.name}}</b></a></li>
-                <li active-link="active"><a ng-click="logout()">Logout</a></li>
-            </ul>
+    </div>
+
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+        <div class="page-content">
+
+            <!-- Header Bar -->
+
+            <div class="row header" ng-show="user">
+                <div class="col-xs-12">
+                    <div class="user pull-right">
+                        <div class="item dropdown">
+                            <a href="#" class="dropdown-toggle">
+                                <img src="img/avatar.jpg">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">
+                                    {{user.username}}
+                                </li>
+                                <li class="divider"></li>
+                                <li class="link">
+                                    <a ng-href="/user/me">
+                                        Felhasználó
+                                    </a>
+                                </li>
+                                <li class="link">
+                                    <a href="/author/{{user.author.id}}">
+                                        Műsorszerkesztő profil
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li class="link">
+                                    <a ng-click="logout()">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item dropdown">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="fa fa-bell-o"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">
+                                    Notifications
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">Server Down!</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meta">
+                        <div class="page">
+                            Tilos Rádió
+                        </div>
+                        <div class="breadcrumb-links">
+                            Adminisztráció
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Header Bar -->
+            <!-- Main Content -->
+            <section class="content" ng-view></section>
         </div>
-        <!-- /.nav-collapse -->
+        <!-- End Page Content -->
     </div>
+    <!-- End Content Wrapper -->
 </div>
-<div class="container" id="content">
-
-    <div ng-view>
-
-    </div>
-
-
-</div>
-
-
-<!--[if lt IE 9]>
-<script src="bower_components/es5-shim/es5-shim.js"></script>
-<!--script src="bower_components/json3/lib/json3.min.js"></script-->
-<![endif]-->
-
-
-<script src="/scripts/angular.js"></script>
-<script src="/scripts/tilos.js"></script>
+<!-- End Page Wrapper -->
 
 </body>
 </html>
