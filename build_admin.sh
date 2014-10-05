@@ -4,6 +4,7 @@ mkdir -p $DIR/build
 cd $DIR/backend
 php composer.phar update
 cd $DIR/admin
+npm install
 bower install
 gulp build
 cd dist
