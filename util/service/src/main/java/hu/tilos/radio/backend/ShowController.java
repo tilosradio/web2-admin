@@ -4,6 +4,7 @@ import hu.radio.tilos.model.*;
 import hu.tilos.radio.backend.converters.SchedulingTextUtil;
 import hu.tilos.radio.backend.data.MixResponse;
 import hu.tilos.radio.backend.data.types.*;
+import hu.tilos.radio.backend.episode.EpisodeUtil;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -14,15 +15,9 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.persistence.*;
 import javax.sql.DataSource;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.*;
 
 import static org.dozer.loader.api.FieldsMappingOptions.customConverter;
 
@@ -34,6 +29,9 @@ public class ShowController {
 
     @Inject
     private EntityManager entityManager;
+
+    @Inject
+    EpisodeUtil episodeUtil;
 
     @Inject
     private ModelMapper modelMapper;
@@ -83,6 +81,19 @@ public class ShowController {
         detailed.getStats().mixCount = o.intValue();
 
         return detailed;
+
+    }
+
+    @GET
+    @Path("/{show}/episodes")
+    @Security(role = Role.GUEST)
+    @Produces("application/json")
+    public List<EpisodeData> listEpisodes(@PathParam("show") String showAlias, @QueryParam("start") long from, @QueryParam("end") long to) {
+        Date fromDate = new Date();
+        fromDate.setTime(from);
+        Date toDate = new Date();
+        toDate.setTime(to);
+        return episodeUtil.getEpisodeData(626, fromDate, toDate);
 
     }
 

@@ -5,12 +5,15 @@
                 <i class="fa fa-tasks"></i> Admin hírek
             </div>
             <div class="widget-body no-padding">
-                <div class="message">Elérhetővé vált a címkék (tag-ek) használata az adásnaplókon belül. Az alábbi verziók
-                használhatóak: <code>#címke</code> vagy <code>@személynév</code> <a ng-href="/page/admin-tags">További
-                részletek itt</a></div>
+                <div class="message">Elérhetővé vált a címkék (tag-ek) használata az adásnaplókon belül. Az alábbi
+                    verziók
+                    használhatóak: <code>#címke</code> vagy <code>@személynév</code> <a ng-href="/page/admin-tags">További
+                        részletek itt</a></div>
 
-                <div class="message">A kék gombok legvégére bekerült a <b>stat</b>, ami a naponta tárolásra kerülő <b>online hallgatási
-                statisztikára</b> mutat.</div>
+                <div class="message">A kék gombok legvégére bekerült a <b>stat</b>, ami a naponta tárolásra kerülő <b>online
+                    hallgatási
+                    statisztikára</b> mutat.
+                </div>
             </div>
         </div>
     </div>
@@ -31,7 +34,7 @@
                     <i class="fa fa-users"></i>
                 </div>
                 <div class="widget-content pull-left">
-                    <div class="title">80</div>
+                    <div class="title">{{stat.episodeCount}}</div>
                     <div class="comment">Adásnapló</div>
                 </div>
                 <div class="clearfix"></div>
@@ -45,7 +48,7 @@
                     <i class="fa fa-tasks"></i>
                 </div>
                 <div class="widget-content pull-left">
-                    <div class="title">16</div>
+                    <div class="title">{{stat.showCount}}</div>
                     <div class="comment">Műsor</div>
                 </div>
                 <div class="clearfix"></div>
@@ -59,7 +62,7 @@
                     <i class="fa fa-sitemap"></i>
                 </div>
                 <div class="widget-content pull-left">
-                    <div class="title">225</div>
+                    <div class="title">{{stat.mixCount}}</div>
                     <div class="comment">Mix</div>
                 </div>
                 <div class="clearfix"></div>
@@ -74,7 +77,7 @@
                     <i class="fa fa-support"></i>
                 </div>
                 <div class="widget-content pull-left">
-                    <div class="title">62</div>
+                    <div class="title">{{stat.authorCount}}</div>
                     <div class="comment">Műsorkészítő</div>
                 </div>
                 <div class="clearfix"></div>
@@ -89,68 +92,24 @@
             <div class="widget-header">
                 <i class="fa fa-tasks"></i> Saját adásnaplók
             </div>
-            <div class="widget-body medium no-padding">
+            <div class="widget-body no-padding">
                 <div class="table-responsive">
                     <table class="table">
                         <tbody>
-                        <tr>
-                            <td>RDVMPC001</td>
-                            <td>238.103.133.37</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDVMPC002</td>
-                            <td>68.66.63.170</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDVMPC003</td>
-                            <td>76.117.212.33</td>
-                            <td><span tooltip="Server Down!" class="text-danger"><i
-                                    class="fa fa-warning"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDPHPC001</td>
-                            <td>91.88.224.5</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDESX001</td>
-                            <td>197.188.15.93</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDESX002</td>
-                            <td>168.85.154.251</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDESX003</td>
-                            <td>209.25.191.61</td>
-                            <td><span tooltip="Server Down!" class="text-danger"><i
-                                    class="fa fa-warning"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDESX004</td>
-                            <td>252.37.192.235</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDTerminal01</td>
-                            <td>139.71.18.207</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
-                        </tr>
-                        <tr>
-                            <td>RDTerminal02</td>
-                            <td>136.80.122.212</td>
-                            <td><span tooltip="Could not connect!" class="text-warning"><i
-                                    class="fa fa-flash"></i></span>
+                        <tr data-ng-repeat="episode in episodes">
+                            <td>
+                                <a ng-show="episode.id" ng-href="/episode/{{episode.id}}">{{episode.plannedFrom * 1000 | date:'yyyy-MM-dd'}}</a>
+                                <span ng-hide="episode.id">{{episode.plannedFrom * 1000 | date:'yyyy-MM-dd'}}</span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>RDDomainCont01</td>
-                            <td>196.80.245.33</td>
-                            <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                            <td>{{episode.text.title}}</td>
+                            <td>
+                                <span ng-show="episode.text.content" class="text-success"><i class="fa fa-check"></i></span>
+                                <span ng-hide="episode.text.content" tooltip="Hiányzó adásnapló" class="text-danger"><i class="fa fa-warning">
+                            </td>
+                            <td>
+                                <span ng-show="episode.plannedFrom == episode.realFrom" class="text-success"><i class="fa fa-check"></i></span>
+                                <span ng-hide="episode.plannedFrom == episode.realFrom" tooltip="Hiányzó adás pozíció" class="text-danger"><i class="fa fa-warning">
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -167,7 +126,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="widget-body no-padding">
-               <img src="http://tilos.hu/upload/stats/2014-10-03.png" class="img-responsive" >
+                <img src="http://tilos.hu/upload/stats/2014-10-03.png" class="img-responsive">
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-@Path("api/int/stat")
+@Path("api/v1/stat")
 public class StatController {
 
     @Inject
