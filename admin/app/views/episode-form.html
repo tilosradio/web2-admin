@@ -1,4 +1,4 @@
-<form class="form-horizontal" role="form">
+<form name="form" class="form-horizontal" role="form">
   <div class="alert alert-danger" ng-show="error">{{error}}</div>
 
   <fieldset>
@@ -20,13 +20,16 @@
       <!-- Text input-->
       <div class="form-group">
           <label for="plannedFrom">Valós kezdet</label>
-          <input class="form-control" id="realFrom" name="realFrom" type="time" step="1" ng-model="realFrom">
+          <input class="form-control" id="realFrom" name="realFrom" type="text"  ng-model="realFrom" ng-pattern="/^[0-2][0-9]:[0-6][0-9](:[0-2][0-6])?$/">
+          <div class="alert alert-danger" ng-show="form.realFrom.$error.pattern">A kezdetet óó:pp:mm formátumban kell megadni</div>
+
 
       </div>
       <!-- Text input-->
       <div class="form-group">
           <label for="realTo">Valós vég</label>
-          <input class="form-control" id="realTo" name="realTo" type="time" step="1" ng-model="realTo">
+          <input class="form-control" id="realTo" name="realTo" type="text" ng-model="realTo"  ng-pattern="/^[0-2][0-9]:[0-6][0-9](:[0-2][0-6])?$/">
+          <div class="alert alert-danger" ng-show="form.realTo.$error.pattern">A véget óó:pp:mm formátumban kell megadni</div>
       </div>
 
 
@@ -51,5 +54,6 @@
     </div>
 
   </fieldset>
-  <input value="Mentés" class="btn" type="submit" ng-click="save()"/>
+  <div class="alert alert-danger" ng-hide="form.$valid">Mentéshez előbb javítsd ki a jelzett hibákat.</div>
+  <input value="Mentés" class="btn" type="submit" ng-show="form.$valid" ng-click="save()"/>
 </form>

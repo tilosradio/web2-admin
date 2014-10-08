@@ -42,7 +42,9 @@ angular.module('tilosAdmin').factory('dateUtil', function () {
             var parts = dateStr.split(':');
             date.setHours(parseInt(parts[0], 10));
             date.setMinutes(parseInt(parts[1], 10));
-            date.setSeconds(parseInt(parts[2], 10));
+            if (parts.length > 2) {
+                date.setSeconds(parseInt(parts[2], 10));
+            }
             return date.getTime() / 1000;
         }
     };
