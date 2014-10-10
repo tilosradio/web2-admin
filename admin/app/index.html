@@ -56,7 +56,7 @@
     <!-- endbuild -->
 
     <!-- build:js lib/textAngular/textAngular.js -->
-    <script type="text/javascript" src="bower_components/textAngular/textAngular.js"></script>
+    <script type="text/javascript" src="bower_components/textAngular/dist/textAngular.min.js"></script>
     <!-- endbuild -->
 
     <!-- build:js js/dashboard.js -->
@@ -84,6 +84,9 @@
     <script type="text/javascript" src="js/controllers/Url.js"></script>
     <script type="text/javascript" src="js/controllers/User.js"></script>
     <script type="text/javascript" src="js/controllers/Dashboard.js"></script>
+    <script type="text/javascript" src="js/util/DateFormatUtils.js"></script>
+    
+
     <!-- endbuild -->
     <!-- SCRIPTS -->
 
@@ -104,43 +107,43 @@
             <li class="sidebar-title"><span>SAJÁT MŰSOROK</span></li>
 
             <li class="sidebar-list" data-ng-repeat="contribution in user.author.contributions">
-                <a ng-href="/show/{{contribution.show.id}}/">{{contribution.show.name}}<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/show/{{contribution.show.id}}/">{{contribution.show.name}}<span class="menu-icon fa fa-gear"></span></a>
             </li>
 
             <li class="sidebar-title"><span>TILOS tartalom</span></li>
 
             <li class="sidebar-list">
-                <a ng-href="/shows">Műsorok<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/shows">Műsorok<span class="menu-icon fa fa-tasks"></span></a>
             </li>
 
             <li class="sidebar-list">
-                <a ng-href="/authors">Műsorkészítők<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/authors">Műsorkészítők<span class="menu-icon fa fa-user"></span></a>
             </li>
 
             <li class="sidebar-list">
-                <a ng-href="/mixes">Mixek<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/mixes">Mixek<span class="menu-icon fa fa-music"></span></a>
             </li>
 
             <li class="sidebar-list">
-                <a ng-href="/pages">Oldalak<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/pages">Oldalak<span class="menu-icon fa fa-quote-right"></span></a>
             </li>
 
             <li class="sidebar-title"><span>SEGÍTSÉG</span></li>
 
             <li class="sidebar-list">
-                <a ng-href="/page/ujoldal">Új oldal hogyan<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/page/ujoldal">Új oldal hogyan<span class="menu-icon fa fa-question"></span></a>
             </li>
 
             <li class="sidebar-list">
-                <a ng-href="/page/face">Facebook<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/page/face">Facebook<span class="menu-icon fa fa-facebook-square"></span></a>
             </li>
 
             <li class="sidebar-list">
-                <a ng-href="/page/szerkesztes">Szerkesztés<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/page/szerkesztes">Szerkesztés<span class="menu-icon fa fa-edit"></span></a>
             </li>
 
             <li class="sidebar-list">
-                <a ng-href="/page/78">Dokumentumok<span class="menu-icon fa fa-tachometer"></span></a>
+                <a ng-href="/page/78">Dokumentumok<span class="menu-icon fa fa-file-text-o"></span></a>
             </li>
 
             <li class="sidebar-list">

@@ -5,8 +5,8 @@
 
 <h1>Cím: {{mix.title}}
 
-    <a class="btn btn-danger" role="btn" ng-href="/edit/mix/{{mix.id}}">Szerkesztés</a>
-    <a class="btn btn-danger" role="btn" ng-click="delete()">Törlés</a>
+    <a class="btn btn-danger" ng-show="user.role.name == 'admin'"  role="btn" ng-href="/edit/mix/{{mix.id}}">Szerkesztés</a>
+    <a class="btn btn-danger" ng-show="user.role.name == 'admin'"  role="btn" ng-click="delete()">Törlés</a>
 
 </h1>
 

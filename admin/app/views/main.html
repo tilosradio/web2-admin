@@ -31,7 +31,7 @@
         <div class="widget">
             <div class="widget-body">
                 <div class="widget-icon green pull-left">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-file-text-o"></i>
                 </div>
                 <div class="widget-content pull-left">
                     <div class="title">{{stat.episodeCount}}</div>
@@ -59,7 +59,7 @@
         <div class="widget">
             <div class="widget-body">
                 <div class="widget-icon orange pull-left">
-                    <i class="fa fa-sitemap"></i>
+                    <i class="fa fa-music"></i>
                 </div>
                 <div class="widget-content pull-left">
                     <div class="title">{{stat.mixCount}}</div>
@@ -74,7 +74,7 @@
         <div class="widget">
             <div class="widget-body">
                 <div class="widget-icon blue pull-left">
-                    <i class="fa fa-support"></i>
+                    <i class="fa fa-users"></i>
                 </div>
                 <div class="widget-content pull-left">
                     <div class="title">{{stat.authorCount}}</div>
@@ -98,10 +98,13 @@
                         <tbody>
                         <tr data-ng-repeat="episode in episodes">
                             <td>
-                                <a ng-show="episode.id" ng-href="/episode/{{episode.id}}">{{episode.plannedFrom * 1000 | date:'yyyy-MM-dd'}}</a>
-                                <span ng-hide="episode.id">{{episode.plannedFrom * 1000 | date:'yyyy-MM-dd'}}</span>
+                                <a ng-show="episode.id" ng-href="/episode/{{episode.id}}">{{episode.plannedFrom | date:'yyyy-MM-dd'}}</a>
+                                <span ng-hide="episode.id">{{episode.plannedFrom | date:'yyyy-MM-dd'}}</span>
                             </td>
-                            <td>{{episode.text.title}}</td>
+                            <td>
+                                <span ng-show="episode.id">{{episode.text.title}}</span>
+                                <a class="button button-warning" ng-hide="episode.id" ng-click="newEpisode(episode)">Adásnapló megírása</a>
+                            </td>
                             <td>
                                 <span ng-show="episode.text.content" class="text-success"><i class="fa fa-check"></i></span>
                                 <span ng-hide="episode.text.content" tooltip="Hiányzó adásnapló" class="text-danger"><i class="fa fa-warning">
@@ -120,13 +123,13 @@
     <div class="col-lg-6">
         <div class="widget">
             <div class="widget-header">
-                <i class="fa fa-users"></i> Tegnapi hallgatottság
+                <i class="fa fa-area-chart"></i> Tegnapi hallgatottság
                 <a href="http://tilos.hu/upload/stats" class="pull-right">További statisztikák...</a>
 
                 <div class="clearfix"></div>
             </div>
             <div class="widget-body no-padding">
-                <img src="http://tilos.hu/upload/stats/2014-10-03.png" class="img-responsive">
+                <a ng-href="http://tilos.hu/upload/stats/{{yesterday | date:'yyyy-MM-dd'}}.png"><img src="http://tilos.hu/upload/stats/{{yesterday | date:'yyyy-MM-dd'}}.png" class="img-responsive"></a>
             </div>
         </div>
     </div>

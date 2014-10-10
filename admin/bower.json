@@ -11,7 +11,7 @@
     "angular-ui-router": "^0.2.10",
     "angular-sanitize": "~1.2.21",
     "angular-route": "~1.2.21",
-    "textAngular": "1.1.2"
+    "textAngular": "1.2.1"
   },
   "resolutions": {
     "angular": "~1.2.21"

@@ -86,7 +86,7 @@ angular.module('tilosAdmin')
                     $scope.error = "Unknown.error";
                 }
             });
-            ;
+
 
         };
 
@@ -128,7 +128,7 @@ angular.module('tilosAdmin')
 ;
 
 angular.module('tilosAdmin').factory('Episodes', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-    return $resource(server + '/api/v0/episode/:id', null, {
+    return $resource(server + '/api/v1/episode/:id', null, {
         'update': { method: 'PUT'}
     });
 }]);

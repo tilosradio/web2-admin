@@ -46,7 +46,6 @@ angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cook
         $http.get(API_SERVER_ENDPOINT + '/api/v0/auth/sign_out').success(function (data) {
             delete $rootScope.user;
             $location.path('/login');
-
         });
     };
 

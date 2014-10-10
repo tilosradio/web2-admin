@@ -16,7 +16,7 @@ angular.module('tilosApp').config(function ($stateProvider) {
         url: '',
         templateUrl: 'partials/show-main.html',
         controller: 'ShowCtrl'
-    });
+*    });
 
     $stateProvider.state('show.intro', {
         url: '/intro',

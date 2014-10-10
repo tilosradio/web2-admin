@@ -8,13 +8,13 @@
     <div class="form-group">
       <label for="plannedFrom">Tervezett kezdet</label>
 
-      <p id="plannedFrom">{{episode.plannedFrom * 1000 | date:'yyyy-MM-dd HH:ss'}}</p>
+      <p id="plannedFrom">{{episode.plannedFrom | date:'yyyy-MM-dd HH:ss'}}</p>
 
     </div>
     <!-- Text input-->
     <div class="form-group">
       <label for="plannedTo">Tervezett vég</label>
-      <p id="plannedTo">{{episode.plannedTo * 1000 | date:'yyyy-MM-dd HH:ss'}}</p>
+      <p id="plannedTo">{{episode.plannedTo | date:'yyyy-MM-dd HH:ss'}}</p>
     </div>
 
       <!-- Text input-->
@@ -37,7 +37,7 @@
 
     </div>
 
-    <div ng-show="episode.plannedFrom * 1000 > now" class="alert alert-warning alert-dismissable">
+    <div ng-show="episode.plannedFrom > now" class="alert alert-warning alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       <strong>Figyelem!</strong> A jövőbeni műsorajánló a műsor elhangzása után automatikusan adásnaplóvá változik. Érdemes ezért pl.
       jelen időben fogalmazni (pl. az <i>Ebben az adásban vendégünk X.Z</i> sokkal időtállóbb mint a <i>vendégünk lesz/volt</i>).

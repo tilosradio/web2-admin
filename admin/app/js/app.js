@@ -23,29 +23,54 @@ angular.module('tilosAdmin', [
           });
     });
 
+
+angular.module('tilosAdmin').config(['$provide', function($provide) {
+    // this demonstrates how to register a new tool and add it to the default toolbar
+    $provide.decorator('taOptions', ['$delegate', function (taOptions) {
+        // $delegate is the taOptions we are decorating
+        // here we override the default toolbars and classes specified in taOptions.
+        taOptions.toolbar = [
+            ['h2', 'h3', 'p'],
+            ['bold', 'italics'],
+            ['ol', 'ul'],
+            ['insertLink', 'insertImage'],
+            ['html']
+        ];
+        return taOptions; // whatever you return will be the taOptions
+    }]);
+
+    $provide.decorator('taTools', ['$delegate', function(taTools){
+        taTools.h2.buttontext = 'Cím';
+        taTools.h3.buttontext = 'Alcím';
+        taTools.p.buttontext = 'Normál';
+        return taTools;
+    }]);
+
+}]);
+
 angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SERVER_ENDPOINT) {
 
-  $rootScope.textAngularOpts = {
-    toolbar: [
-      ['h2', 'h3','p'],
-      ['bold', 'italics'],
-      ['ol', 'ul'],
-      ['insertLink','insertImage'],
-      ['html']
-
-    ]
-  };
-  $rootScope.textAngularTools = {
-    h2: {
-      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>cím</button>"
-    },
-    h3: {
-      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>alcím</button>"
-    },
-    p: {
-      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>normál</button>"
-    }
-  };
+//  $rootScope.textAngularOpts = {
+//    toolbar: [
+//      ['h2', 'h3','p'],
+//      ['bold', 'italics'],
+//      ['ol', 'ul'],
+//      ['insertLink','insertImage'],
+//      ['html']
+//
+//    ]
+//  };
+//  $rootScope.textAngularTools = {
+//    h2: {
+//      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>cím</button>"
+//    },
+//    h3: {
+//      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>alcím</button>"
+//    },
+//    p: {
+//      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>normál</button>"
+//    }
+//  };
 
 
   var endsWith = function (str, suffix) {

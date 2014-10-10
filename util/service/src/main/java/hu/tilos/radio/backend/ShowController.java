@@ -41,16 +41,22 @@ public class ShowController {
     @Security(role = Role.GUEST)
     @GET
     public ShowDetailed get(@PathParam("alias") String alias) {
+        Show show = null;
+        if (!alias.matches("\\d+")) {
+            show = entityManager.createQuery("SELECT s FROM Show s " +
+                    "LEFT JOIN FETCH s.mixes " +
+                    "LEFT JOIN FETCH s.contributors " +
+                    "LEFT JOIN FETCH s.schedulings " +
+                    "WHERE s.alias=:alias", Show.class).setParameter("alias", alias).getSingleResult();
+        } else {
+            show = entityManager.createQuery("SELECT s FROM Show s " +
+                    "LEFT JOIN FETCH s.mixes " +
+                    "LEFT JOIN FETCH s.contributors " +
+                    "LEFT JOIN FETCH s.schedulings " +
+                    "WHERE s.id=:id", Show.class).setParameter("id", Integer.parseInt(alias)).getSingleResult();
+        }
 
 
-        TypedQuery<Show> query = entityManager.createQuery("SELECT s FROM Show s " +
-                "LEFT JOIN FETCH s.mixes " +
-                "LEFT JOIN FETCH s.contributors " +
-                "LEFT JOIN FETCH s.schedulings " +
-                "WHERE s.alias=:alias", Show.class);
-        query.setParameter("alias", alias);
-
-        Show show = query.getSingleResult();
         ShowDetailed detailed = modelMapper.map(show, ShowDetailed.class);
 
 
@@ -93,7 +99,11 @@ public class ShowController {
         fromDate.setTime(from);
         Date toDate = new Date();
         toDate.setTime(to);
-        return episodeUtil.getEpisodeData(626, fromDate, toDate);
+        int showId;
+        showId = Integer.parseInt(showAlias);
+        //todo on parse error
+        //Show show = (Show) entityManager.createQuery("SELECT s FROM Show s WHERE s.alias = :alias").setParameter("alias",showAlias).getSingleResult();
+        return episodeUtil.getEpisodeData(showId, fromDate, toDate);
 
     }
 
