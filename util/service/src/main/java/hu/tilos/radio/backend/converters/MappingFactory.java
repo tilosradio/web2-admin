@@ -1,12 +1,10 @@
 package hu.tilos.radio.backend.converters;
 
 import hu.radio.tilos.model.Author;
+import hu.radio.tilos.model.Episode;
 import hu.radio.tilos.model.Mix;
 import hu.radio.tilos.model.TextContent;
-import hu.tilos.radio.backend.data.types.AuthorSimple;
-import hu.tilos.radio.backend.data.types.MixData;
-import hu.tilos.radio.backend.data.types.MixSimple;
-import hu.tilos.radio.backend.data.types.TextData;
+import hu.tilos.radio.backend.data.types.*;
 import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
 import org.dozer.loader.api.BeanMappingBuilder;
@@ -128,6 +126,12 @@ public class MappingFactory {
                         }
                     }
                 }).map(source.getDate()).setDate(null);
+                using(entityChildMapper).map(source.getShow()).setShow(null);
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<EpisodeData,Episode>(){
+            @Override
+            protected void configure() {
                 using(entityChildMapper).map(source.getShow()).setShow(null);
             }
         });

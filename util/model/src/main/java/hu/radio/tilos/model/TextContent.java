@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class TextContent {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Basic

@@ -22,9 +22,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 public class TestUtil {
+
+    public static SimpleDateFormat YYYYMMDD = new SimpleDateFormat("yyyMMdd");
+
+    public static SimpleDateFormat YYYYMMDDHHMM = new SimpleDateFormat("yyyMMddHHmm");
+
 
     public static Properties loadProperties() throws IOException {
         Properties properties = new Properties();

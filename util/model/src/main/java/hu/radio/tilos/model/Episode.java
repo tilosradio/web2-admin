@@ -9,6 +9,7 @@ import java.util.Date;
 public class Episode {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -32,7 +33,7 @@ public class Episode {
     Show show;
 
     @OneToOne()
-    @JoinColumn(name = "textcontent_id", referencedColumnName = "id")
+    @JoinColumn(insertable = true, updatable = true, name = "textcontent_id", referencedColumnName = "id")
     TextContent text;
 
     public int getId() {

@@ -1,8 +1,9 @@
 package hu.tilos.radio.backend;
 
-import hu.radio.tilos.model.Episode;
-import hu.radio.tilos.model.Role;
-import hu.radio.tilos.model.Show;
+import hu.radio.tilos.model.*;
+import hu.tilos.radio.backend.data.BookmarkData;
+import hu.tilos.radio.backend.data.CreateResponse;
+import hu.tilos.radio.backend.data.UpdateResponse;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import org.modelmapper.ModelMapper;
@@ -10,10 +11,8 @@ import org.modelmapper.ModelMapper;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.transaction.Transactional;
+import javax.ws.rs.*;
 import java.util.Date;
 import java.util.List;
 
@@ -55,5 +54,54 @@ public class EpisodeController {
     }
 
 
+    @Produces("application/json")
+    @Security(role = Role.AUTHOR)
+    @POST
+    @Transactional
+    public CreateResponse create(EpisodeData data) {
+
+        Episode entity = modelMapper.map(data, Episode.class);
+
+        if (entity.getText() != null) {
+            entity.getText().setAlias("");
+            entity.getText().setFormat("default");
+            entity.getText().setType("episode");
+            entityManager.persist(entity.getText());
+            entityManager.flush();
+        }
+        entityManager.persist(entity);
+        entityManager.flush();
+        return new CreateResponse(entity.getId());
+
+    }
+
+    @Produces("application/json")
+    @Security(role = Role.AUTHOR)
+    @Transactional
+    @PUT
+    @Path("/{id}")
+    public UpdateResponse update(@PathParam("id") int id, EpisodeData inputData) {
+
+        Episode entity = entityManager.find(Episode.class, id);
+
+        modelMapper.map(inputData, entity);
+
+        if (entity.getText() != null) {
+            entity.getText().setAlias("");
+            entity.getText().setFormat("default");
+            entity.getText().setType("episode");
+            entityManager.persist(entity.getText());
+            entityManager.flush();
+        }
+        entityManager.persist(entity);
+        entityManager.flush();
+
+        return new UpdateResponse(entity.getId());
+    }
+
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 
 }

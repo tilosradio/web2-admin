@@ -58,6 +58,9 @@ angular.module('tilosAdmin')
         var to = new Date().getTime();
         var from = to - ( 6 * 30 * 24 * 3600 * 1000);
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + '&end=' + to).success(function (data) {
+            data.sort(function (a, b) {
+                return b.plannedFrom - a.plannedFrom
+            });
             $scope.show.episodes = data;
         });
 
@@ -65,7 +68,7 @@ angular.module('tilosAdmin')
         $scope.prev = function () {
             $scope.currentShowPage--;
             var to = $scope.show.episodes[$scope.show.episodes.length - 1].plannedFrom - 60000;
-            var from = to - 60 * 24 * 60 * 60 * 1000;
+            var from = to - 6 * 30 * 24 * 60 * 60 * 1000;
             $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + "&end=" + to).success(function (data) {
                 $scope.show.episodes = data;
             });
@@ -74,7 +77,7 @@ angular.module('tilosAdmin')
         $scope.next = function () {
             $scope.currentShowPage++;
             var from = $scope.show.episodes[0].plannedTo + 60000;
-            var to = from + 60 * 24 * 60 * 60 * 1000;
+            var to = from + 6 * 30 * 24 * 60 * 60 * 1000;
             $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + "&end=" + to).success(function (data) {
                 $scope.show.episodes = data;
             });
