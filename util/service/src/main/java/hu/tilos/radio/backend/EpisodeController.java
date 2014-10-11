@@ -28,6 +28,9 @@ public class EpisodeController {
     @Inject
     EpisodeUtil episodeUtil;
 
+    @Inject
+    UserInfo info;
+
     @GET
     @Path("/{id}")
     @Security(role = Role.GUEST)

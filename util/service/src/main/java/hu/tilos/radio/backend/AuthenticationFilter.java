@@ -32,13 +32,19 @@ import java.util.Scanner;
 public class AuthenticationFilter implements ContainerRequestFilter {
 
     private static Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
+
     @Context
     ResourceInfo resource;
+
     @Context
     HttpServletRequest servletRequest;
+
     @Inject
     @ConfigProperty(name = "auth.url")
     private String serverUrl;
+
+    @Inject
+    UserInfo userInfo;
 
     public AuthenticationFilter() {
         try {
@@ -109,6 +115,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 if (user == null || (s.role().ordinal() > user.getRole().getId())) {
                     requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
                     return;
+                } else {
+                    userInfo.setUsername(user.getUsername());
+                    userInfo.setRole(user.getRole().getId());
                 }
             }
         } else {
