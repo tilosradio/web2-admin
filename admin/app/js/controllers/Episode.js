@@ -66,8 +66,12 @@ angular.module('tilosAdmin')
                 $scope.episode.text = {};
             }
 
+            if ($scope.episode.realTo - $scope.episode.plannedTo == 30 * 60 * 1000) {
+                $scope.episode.realTo = $scope.episode.plannedTo;
+            }
             $scope.realTo = dateUtil.toHourMin($scope.episode.realTo);
             $scope.realFrom = dateUtil.toHourMin($scope.episode.realFrom);
+
 
         });
 
@@ -101,6 +105,9 @@ angular.module('tilosAdmin')
         $scope.episode.show = {id: $scope.episode.show.id}
         $scope.now = new Date().getTime();
 
+        if ($scope.episode.realTo - $scope.episode.plannedTo == 30 * 60 * 1000) {
+            $scope.episode.realTo = $scope.episode.plannedTo;
+        }
         $scope.realTo = dateUtil.toHourMin($scope.episode.plannedTo);
         $scope.realFrom = dateUtil.toHourMin($scope.episode.plannedFrom)
         $scope.save = function () {

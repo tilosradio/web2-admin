@@ -48,10 +48,10 @@ angular.module("tilosAdmin").directive('ifShowAdmin', function ($rootScope, $q) 
       if ($rootScope.user && $rootScope.user.role.name == 'admin') {
         return;
       }
-      scope.xxx.$promise.then(function (show) {
+      $q.when(scope.xxx).then(function (show) {
         if ($rootScope.user.author && $rootScope.user.author.contributions) {
           var own = false;
-          for (idx in $rootScope.user.author.contributions) {
+          for (var idx in $rootScope.user.author.contributions) {
             var contribution = $rootScope.user.author.contributions[idx];
             if (contribution.show.id == show.id) {
               own = true;
