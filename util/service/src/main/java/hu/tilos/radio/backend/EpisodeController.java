@@ -40,7 +40,6 @@ public class EpisodeController {
         return r;
     }
 
-
     @GET
     @Path("/{show}/{year}/{month}/{day}")
     @Security(role = Role.GUEST)

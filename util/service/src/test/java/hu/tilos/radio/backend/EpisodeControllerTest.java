@@ -10,6 +10,7 @@ import hu.tilos.radio.backend.data.types.TextData;
 import org.junit.Assert;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +28,8 @@ public class EpisodeControllerTest {
     @Inject
     EpisodeController controller;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        EntityManagerFactory factory = TestUtil.initPersistence();
+    @Before
+    public void resetDatabase(){
         TestUtil.initTestData();
     }
 

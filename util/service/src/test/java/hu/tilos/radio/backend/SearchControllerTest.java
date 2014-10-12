@@ -9,10 +9,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
@@ -28,8 +25,8 @@ public class SearchControllerTest {
     @Inject
     SearchController controller;
 
-    @BeforeClass
-    public static void testDataInit() throws Exception {
+    @Before
+    public void resetDatabase(){
         TestUtil.initTestData();
     }
 
