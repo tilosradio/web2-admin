@@ -1,23 +1,29 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.*;
+import hu.radio.tilos.model.type.TagType;
+import hu.tilos.radio.backend.converters.TagUtil;
 import hu.tilos.radio.backend.data.BookmarkData;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.UpdateResponse;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Path("/api/v1/episode")
 public class EpisodeController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EpisodeController.class);
 
     @Inject
     ModelMapper modelMapper;
@@ -30,6 +36,9 @@ public class EpisodeController {
 
     @Inject
     UserInfo info;
+
+    @Inject
+    TagUtil tagUtil;
 
     @GET
     @Path("/{id}")
@@ -71,6 +80,7 @@ public class EpisodeController {
             entityManager.persist(entity.getText());
             entityManager.flush();
         }
+        updateTags(entity);
         entityManager.persist(entity);
         entityManager.flush();
         return new CreateResponse(entity.getId());
@@ -95,10 +105,56 @@ public class EpisodeController {
             entityManager.persist(entity.getText());
             entityManager.flush();
         }
+        updateTags(entity);
         entityManager.persist(entity);
         entityManager.flush();
 
         return new UpdateResponse(entity.getId());
+    }
+
+    private void updateTags(Episode entity) {
+        if (entity.getText() != null && entity.getText().getContent() != null) {
+            try {
+                Set<String> tags = tagUtil.getTags(entity.getText().getContent());
+                List<Tag> existingTags = new ArrayList(entity.getText().getTags());
+                Set<String> existingTagNames = new HashSet<>();
+                for (Tag tag : existingTags) {
+                    existingTagNames.add(tag.getName());
+                }
+
+                //check new tags
+                for (String tag : tags) {
+                    if (!existingTagNames.contains(tag)) {
+                        Tag tagEntity = null;
+                        try {
+                            tagEntity = entityManager.createNamedQuery("tag.byName", Tag.class).setParameter("name", tag).getSingleResult();
+                        } catch (NoResultException ex) {
+                            tagEntity = new Tag();
+                            tagEntity.setName(tag);
+                            tagEntity.setType(TagType.GENERIC);
+                            entityManager.persist(tagEntity);
+                            entityManager.flush();
+                        }
+                        //maintain both side
+                        tagEntity.getTaggedTexts().add(entity.getText());
+                        entity.getText().getTags().add(tagEntity);
+                    }
+                }
+
+
+                //check removed tags
+                for (Tag oldTag : existingTags) {
+                    if (!tags.contains(oldTag.getName())) {
+                        //registered but the new text doesn't contain it
+                        oldTag.getTaggedTexts().remove(entity.getText());
+                        entity.getText().getTags().remove(oldTag);
+                    }
+                }
+
+            } catch (Exception ex) {
+                LOG.error("Can't create tag for entity " + entity, ex);
+            }
+        }
     }
 
 

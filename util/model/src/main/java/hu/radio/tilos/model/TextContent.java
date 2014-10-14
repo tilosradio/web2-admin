@@ -1,6 +1,8 @@
 package hu.radio.tilos.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity()
 @Table(name = "textcontent")
@@ -29,6 +31,17 @@ public class TextContent {
     @Basic
     @Column
     private String alias;
+
+    @ManyToMany(mappedBy = "taggedTexts")
+    private List<Tag> tags = new ArrayList<Tag>();
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     public int getId() {
         return id;

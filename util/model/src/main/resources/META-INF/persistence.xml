@@ -15,6 +15,7 @@
         <class>hu.radio.tilos.model.Scheduling</class>
         <class>hu.radio.tilos.model.Bookmark</class>
         <class>hu.radio.tilos.model.User</class>
+        <class>hu.radio.tilos.model.Tag</class>
 
     </persistence-unit>
 

@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Episode;
+import hu.radio.tilos.model.Tag;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.UpdateResponse;
@@ -29,7 +30,7 @@ public class EpisodeControllerTest {
     EpisodeController controller;
 
     @Before
-    public void resetDatabase(){
+    public void resetDatabase() {
         TestUtil.initTestData();
     }
 
@@ -43,7 +44,7 @@ public class EpisodeControllerTest {
         //then
         Assert.assertNotNull(episode.getText());
         Assert.assertEquals("Jo musor", episode.getText().getTitle());
-        Assert.assertEquals("http://tilos.hu/mp3/tilos-20140411-080000-100000.m3u",episode.getM3uUrl());
+        Assert.assertEquals("http://tilos.hu/mp3/tilos-20140411-080000-100000.m3u", episode.getM3uUrl());
     }
 
 
@@ -72,7 +73,7 @@ public class EpisodeControllerTest {
 
         TextData td = new TextData();
         td.setTitle("Title");
-        td.setContent("ahoj");
+        td.setContent("ahoj #teg ahoj");
         episode.setText(td);
 
         //when
@@ -85,6 +86,10 @@ public class EpisodeControllerTest {
         Assert.assertNotNull(episodeEntity.getText());
         Assert.assertEquals("Title", episodeEntity.getText().getTitle());
         Assert.assertEquals(1, episodeEntity.getShow().getId());
+
+        Tag tag = controller.getEntityManager().createQuery("SELECT t FROM Tag t WHERE t.name = :name", Tag.class).setParameter("name", "teg").getSingleResult();
+        Assert.assertEquals(1, tag.getTaggedTexts().size());
+        Assert.assertEquals("Title", tag.getTaggedTexts().get(0).getTitle());
     }
 
     @Test
@@ -94,7 +99,7 @@ public class EpisodeControllerTest {
         episode.setPlannedFrom(TestUtil.YYYYMMDDHHMM.parse("201405011200").getTime());
         episode.setPlannedTo(TestUtil.YYYYMMDDHHMM.parse("201405011300").getTime());
 
-        episode.getText().setContent("ez jobb");
+        episode.getText().setContent("ez jobb #kukac de a harom nincs");
 
         //when
         controller.getEntityManager().getTransaction().begin();
@@ -104,6 +109,13 @@ public class EpisodeControllerTest {
         //then
         Episode episodeEntity = controller.getEntityManager().find(Episode.class, createResponse.getId());
         Assert.assertNotNull(episodeEntity.getText());
-        Assert.assertEquals("ez jobb", episodeEntity.getText().getContent());
+        Assert.assertEquals("ez jobb #kukac de a harom nincs", episodeEntity.getText().getContent());
+
+        Tag tag = controller.getEntityManager().createNamedQuery("tag.byName",Tag.class).setParameter("name", "kukac").getSingleResult();
+        Assert.assertEquals(2, tag.getTaggedTexts().size());
+
+        tag = controller.getEntityManager().createNamedQuery("tag.byName",Tag.class).setParameter("name", "harom").getSingleResult();
+        Assert.assertEquals(0, tag.getTaggedTexts().size());
+
     }
 }
