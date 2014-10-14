@@ -3,7 +3,7 @@ package hu.radio.tilos.model.type;
 public enum TagType implements DescriptiveType {
 
     GENERIC("Cimke"),
-    PEOPLE("Ember");
+    PERSON("Ember");
 
     private final String description;
 

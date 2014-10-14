@@ -2,6 +2,7 @@ package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Episode;
 import hu.radio.tilos.model.Tag;
+import hu.radio.tilos.model.type.TagType;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.UpdateResponse;
@@ -99,7 +100,7 @@ public class EpisodeControllerTest {
         episode.setPlannedFrom(TestUtil.YYYYMMDDHHMM.parse("201405011200").getTime());
         episode.setPlannedTo(TestUtil.YYYYMMDDHHMM.parse("201405011300").getTime());
 
-        episode.getText().setContent("ez jobb #kukac de a harom nincs");
+        episode.getText().setContent("ez jobb #kukac de a harom nincs @szemely is van");
 
         //when
         controller.getEntityManager().getTransaction().begin();
@@ -109,13 +110,17 @@ public class EpisodeControllerTest {
         //then
         Episode episodeEntity = controller.getEntityManager().find(Episode.class, createResponse.getId());
         Assert.assertNotNull(episodeEntity.getText());
-        Assert.assertEquals("ez jobb #kukac de a harom nincs", episodeEntity.getText().getContent());
+        Assert.assertEquals("ez jobb #kukac de a harom nincs @szemely is van", episodeEntity.getText().getContent());
 
         Tag tag = controller.getEntityManager().createNamedQuery("tag.byName",Tag.class).setParameter("name", "kukac").getSingleResult();
         Assert.assertEquals(2, tag.getTaggedTexts().size());
 
         tag = controller.getEntityManager().createNamedQuery("tag.byName",Tag.class).setParameter("name", "harom").getSingleResult();
         Assert.assertEquals(0, tag.getTaggedTexts().size());
+
+        tag = controller.getEntityManager().createNamedQuery("tag.byName",Tag.class).setParameter("name", "szemely").getSingleResult();
+        Assert.assertEquals(1, tag.getTaggedTexts().size());
+        Assert.assertEquals(TagType.PERSON, tag.getType());
 
     }
 }

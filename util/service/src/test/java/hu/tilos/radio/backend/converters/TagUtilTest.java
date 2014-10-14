@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.converters;
 
 
+import hu.radio.tilos.model.Tag;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,12 +16,10 @@ public class TagUtilTest {
         TagUtil util = new TagUtil();
 
         //when
-        Set<String> tags = util.getTags(text);
+        Set<Tag> tags = util.getTags(text);
 
         //then
         Assert.assertEquals(2,tags.size());
-        Assert.assertTrue(tags.contains("juk"));
-        Assert.assertTrue(tags.contains("bob"));
 
     }
 

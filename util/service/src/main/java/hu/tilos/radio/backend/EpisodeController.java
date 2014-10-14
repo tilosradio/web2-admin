@@ -115,23 +115,27 @@ public class EpisodeController {
     private void updateTags(Episode entity) {
         if (entity.getText() != null && entity.getText().getContent() != null) {
             try {
-                Set<String> tags = tagUtil.getTags(entity.getText().getContent());
+                Set<Tag> newTags = tagUtil.getTags(entity.getText().getContent());
                 List<Tag> existingTags = new ArrayList(entity.getText().getTags());
                 Set<String> existingTagNames = new HashSet<>();
+                Set<String> newTagNames = new HashSet<>();
                 for (Tag tag : existingTags) {
                     existingTagNames.add(tag.getName());
                 }
+                for (Tag tag : newTags) {
+                    newTagNames.add(tag.getName());
+                }
 
-                //check new tags
-                for (String tag : tags) {
-                    if (!existingTagNames.contains(tag)) {
+                //check new newTagNames
+                for (Tag newTag : newTags) {
+                    if (!existingTagNames.contains(newTag.getName())) {
                         Tag tagEntity = null;
                         try {
-                            tagEntity = entityManager.createNamedQuery("tag.byName", Tag.class).setParameter("name", tag).getSingleResult();
+                            tagEntity = entityManager.createNamedQuery("tag.byName", Tag.class).setParameter("name", newTag.getName()).getSingleResult();
                         } catch (NoResultException ex) {
                             tagEntity = new Tag();
-                            tagEntity.setName(tag);
-                            tagEntity.setType(TagType.GENERIC);
+                            tagEntity.setName(newTag.getName());
+                            tagEntity.setType(newTag.getType());
                             entityManager.persist(tagEntity);
                             entityManager.flush();
                         }
@@ -142,9 +146,9 @@ public class EpisodeController {
                 }
 
 
-                //check removed tags
+                //check removed newTagNames
                 for (Tag oldTag : existingTags) {
-                    if (!tags.contains(oldTag.getName())) {
+                    if (!newTagNames.contains(oldTag.getName())) {
                         //registered but the new text doesn't contain it
                         oldTag.getTaggedTexts().remove(entity.getText());
                         entity.getText().getTags().remove(oldTag);
