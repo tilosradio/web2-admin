@@ -21,6 +21,8 @@ public class EpisodeData {
     private ShowSimple show;
 
     private TextData text;
+
+    private String m3uUrl;
     /**
      * false if generated from scheduling true if comes from real record.
      */
@@ -91,5 +93,11 @@ public class EpisodeData {
         this.text = text;
     }
 
+    public String getM3uUrl() {
+        return m3uUrl;
+    }
 
+    public void setM3uUrl(String m3uUrl) {
+        this.m3uUrl = m3uUrl;
+    }
 }

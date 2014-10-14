@@ -32,6 +32,11 @@ import java.util.Map;
 @Named
 public class MappingFactory {
 
+
+    public static SimpleDateFormat YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
+
+    public static SimpleDateFormat HHMMSS = new SimpleDateFormat("hhmmss");
+
     @Inject
     TagUtil tagUtil;
 
@@ -129,10 +134,27 @@ public class MappingFactory {
                 using(entityChildMapper).map(source.getShow()).setShow(null);
             }
         });
-        modelMapper.addMappings(new PropertyMap<EpisodeData,Episode>(){
+        modelMapper.addMappings(new PropertyMap<EpisodeData, Episode>() {
             @Override
             protected void configure() {
                 using(entityChildMapper).map(source.getShow()).setShow(null);
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<Episode, EpisodeData>() {
+            @Override
+            protected void configure() {
+                using(new Converter<Episode, String>() {
+                    @Override
+                    public String convert(MappingContext<Episode, String> context) {
+                        Episode episode = context.getSource();
+                        return "http://tilos.hu/mp3/tilos-" +
+                                YYYYMMDD.format(episode.getRealFrom()) +
+                                "-" +
+                                HHMMSS.format(episode.getRealFrom()) +
+                                "-" +
+                                HHMMSS.format(episode.getRealTo()) + ".m3u";
+                    }
+                }).map(source).setM3uUrl(null);
             }
         });
 

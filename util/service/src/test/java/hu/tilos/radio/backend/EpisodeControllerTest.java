@@ -43,6 +43,7 @@ public class EpisodeControllerTest {
         //then
         Assert.assertNotNull(episode.getText());
         Assert.assertEquals("Jo musor", episode.getText().getTitle());
+        Assert.assertEquals("http://tilos.hu/mp3/tilos-20140411-080000-100000.m3u",episode.getM3uUrl());
     }
 
 
