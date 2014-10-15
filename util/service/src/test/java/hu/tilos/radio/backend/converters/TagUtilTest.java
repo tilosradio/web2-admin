@@ -19,7 +19,95 @@ public class TagUtilTest {
         Set<Tag> tags = util.getTags(text);
 
         //then
-        Assert.assertEquals(2,tags.size());
+        Assert.assertEquals(2, tags.size());
+
+    }
+
+    @Test
+    public void getTagsColorCode() {
+        //given
+        String text = "ahoj #232323 asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(0, tags.size());
+
+    }
+
+    @Test
+    public void getTagsColorCode2() {
+        //given
+        String text = "ahoj #BBCCDD asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(0, tags.size());
+
+    }
+
+    @Test
+    public void getTagsColorCode4() {
+        //given
+        String text = "ahoj #BBCCDD; asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(0, tags.size());
+
+    }
+
+
+    @Test
+    public void getTagsAnchor() {
+        //given
+        String text = "ahoj http://index.hu#anchor asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(0, tags.size());
+
+    }
+
+    @Test
+    public void getTagsColorCode3() {
+        //given
+        String text = "ahoj #ahojBBCCDD asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(1, tags.size());
+
+    }
+
+
+    @Test
+    public void getTagsSegmented() {
+        //given
+        String text = "ahoj #{Lajos Bela} asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(1, tags.size());
+        Tag tag = tags.iterator().next();
+        Assert.assertEquals("Lajos Bela", tag.getName());
 
     }
 

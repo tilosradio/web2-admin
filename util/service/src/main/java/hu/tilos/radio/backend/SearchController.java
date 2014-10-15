@@ -85,7 +85,7 @@ public class SearchController {
     }
 
     @GET
-    @Path("index")
+    @Path("fixTags")
     public String index() {
         try {
             createIndex();
@@ -260,7 +260,7 @@ public class SearchController {
                 try {
                     w.addDocument(doc);
                 } catch (IOException ex) {
-                    LOG.error("Can't index episode record", ex);
+                    LOG.error("Can't fixTags episode record", ex);
                 }
             }
         }

@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity()
 @Table(name = "textcontent")
-public class TextContent {
+public class TextContent implements EntityWithTag{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

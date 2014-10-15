@@ -112,55 +112,13 @@ public class EpisodeController {
         return new UpdateResponse(entity.getId());
     }
 
-    private void updateTags(Episode entity) {
-        if (entity.getText() != null && entity.getText().getContent() != null) {
-            try {
-                Set<Tag> newTags = tagUtil.getTags(entity.getText().getContent());
-                List<Tag> existingTags = new ArrayList(entity.getText().getTags());
-                Set<String> existingTagNames = new HashSet<>();
-                Set<String> newTagNames = new HashSet<>();
-                for (Tag tag : existingTags) {
-                    existingTagNames.add(tag.getName());
-                }
-                for (Tag tag : newTags) {
-                    newTagNames.add(tag.getName());
-                }
 
-                //check new newTagNames
-                for (Tag newTag : newTags) {
-                    if (!existingTagNames.contains(newTag.getName())) {
-                        Tag tagEntity = null;
-                        try {
-                            tagEntity = entityManager.createNamedQuery("tag.byName", Tag.class).setParameter("name", newTag.getName()).getSingleResult();
-                        } catch (NoResultException ex) {
-                            tagEntity = new Tag();
-                            tagEntity.setName(newTag.getName());
-                            tagEntity.setType(newTag.getType());
-                            entityManager.persist(tagEntity);
-                            entityManager.flush();
-                        }
-                        //maintain both side
-                        tagEntity.getTaggedTexts().add(entity.getText());
-                        entity.getText().getTags().add(tagEntity);
-                    }
-                }
-
-
-                //check removed newTagNames
-                for (Tag oldTag : existingTags) {
-                    if (!newTagNames.contains(oldTag.getName())) {
-                        //registered but the new text doesn't contain it
-                        oldTag.getTaggedTexts().remove(entity.getText());
-                        entity.getText().getTags().remove(oldTag);
-                    }
-                }
-
-            } catch (Exception ex) {
-                LOG.error("Can't create tag for entity " + entity, ex);
-            }
+    public void updateTags(Episode episode) {
+        if (episode.getText() != null && episode.getText().getContent() != null) {
+            Set<Tag> newTags = tagUtil.getTags(episode.getText().getContent());
+            tagUtil.updateTags(entityManager, episode.getText(), newTags);
         }
     }
-
 
     public EntityManager getEntityManager() {
         return entityManager;

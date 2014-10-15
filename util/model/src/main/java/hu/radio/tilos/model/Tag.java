@@ -63,4 +63,26 @@ public class Tag {
     public void setType(TagType type) {
         this.type = type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
+
+        Tag tag = (Tag) o;
+
+        if (id != tag.id) return false;
+        if (!name.equals(tag.name)) return false;
+        if (type != tag.type) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
 }
