@@ -61,16 +61,12 @@ public class DataFixController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataFixController.class);
 
-
-    @Resource
-    UserTransaction transaction;
-
     @GET
     @Path("/tags")
     @Security(role = Role.ADMIN)
+    @Transactional
     public void fixTags() throws NotSupportedException, SystemException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
         LOG.info("Starting to fx tags");
-        transaction.begin();
         List<TextContent> contents = entityManager.createQuery("SELECT t FROM TextContent t WHERE t.content is not null").getResultList();
         for (TextContent text : contents) {
 
@@ -88,7 +84,6 @@ public class DataFixController {
 
             }
         }
-        transaction.commit();
     }
 
 
