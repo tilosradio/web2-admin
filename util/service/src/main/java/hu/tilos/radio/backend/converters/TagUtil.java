@@ -5,10 +5,17 @@ import hu.radio.tilos.model.EntityWithTag;
 import hu.radio.tilos.model.Episode;
 import hu.radio.tilos.model.Tag;
 import hu.radio.tilos.model.type.TagType;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.NodeTraversor;
+import org.jsoup.select.NodeVisitor;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.print.Doc;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +49,19 @@ public class TagUtil {
         patterns.get(TagType.PERSON).add(Pattern.compile(PERSON_COMPLEX));
     }
 
-    public String replaceToHtml(String source) {
+    public boolean doesIncludeTags(String plainText) {
+        for (TagType type : patterns.keySet()) {
+            for (Pattern p : patterns.get(type)) {
+                Matcher m = p.matcher(plainText);
+                if (m.find()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public String htmlize(String source) {
         source = source.replaceAll(GENERIC_SIMPLE, "<a href=\"/tag/$1\"><span class=\"label label-primary\">$1</span></a>");
         source = source.replaceAll(GENERIC_COMPLEX, "<a href=\"/tag/$1\"><span class=\"label label-primary\">$1</span></a>");
         source = source.replaceAll(PERSON_SIMPLE, "<a href=\"/tag/$1\"><span class=\"label label-success\">$1</span></a>");
@@ -52,9 +71,38 @@ public class TagUtil {
         return source;
     }
 
+    public String replaceToHtml(String source) {
+        Document doc = Jsoup.parse(source);
+        doc.outputSettings().prettyPrint(false);
+        final List<TextNode> textNodes = new ArrayList<>();
+        NodeTraversor traversor = new NodeTraversor(new NodeVisitor() {
+            @Override
+            public void head(Node node, int depth) {
+
+            }
+
+            @Override
+            public void tail(Node node, int depth) {
+                if (node instanceof TextNode) {
+                    TextNode text = (TextNode) node;
+                    if (doesIncludeTags(text.text())) {
+                        String replacedText = htmlize(text.text());
+                        text.after(replacedText);
+                        textNodes.add(text);
+                    }
+                }
+            }
+        });
+        traversor.traverse(doc);
+        for (TextNode node : textNodes) {
+            node.remove();
+        }
+        return doc.select("body").html();
+    }
+
     public Set<Tag> getTags(String text) {
         //remove html tags
-        text = text.replaceAll("\\<.*?>","");
+        text = text.replaceAll("\\<.*?>", "");
 
         Set<Tag> tags = new HashSet<>();
         for (TagType type : patterns.keySet()) {

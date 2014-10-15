@@ -124,4 +124,19 @@ public class TagUtilTest {
 
     }
 
+
+    @Test
+    public void replaceToHtmlWithTags() {
+        //given
+        String source = "<p class=\"#valami\">Valami</p> #valami hej ho";
+
+        //when
+        String result = new TagUtil().replaceToHtml(source);
+
+        //then
+        Assert.assertEquals("<p class=\"#valami\">Valami</p> <a href=\"/tag/valami\"><span class=\"label label-primary\">valami</span></a> hej ho", result);
+
+    }
+
+
 }
