@@ -26,7 +26,9 @@ public class DataFixControllerTest {
         //given
 
         //when
+        controller.getEntityManager().getTransaction().begin();
         controller.fixTags();
+        controller.getEntityManager().getTransaction().rollback();
 
         //then
 

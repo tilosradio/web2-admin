@@ -92,4 +92,7 @@ public class DataFixController {
     }
 
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 }
