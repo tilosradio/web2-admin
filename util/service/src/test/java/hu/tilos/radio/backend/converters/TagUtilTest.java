@@ -65,6 +65,20 @@ public class TagUtilTest {
 
     }
 
+    @Test
+    public void getTagsEmbeddedStyle() {
+        //given
+        String text = "<style>\n @fonf-face \n</style>\n asd";
+        TagUtil util = new TagUtil();
+
+        //when
+        Set<Tag> tags = util.getTags(text);
+
+        //then
+        Assert.assertEquals(0, tags.size());
+
+    }
+
 
     @Test
     public void getTagsAnchor() {

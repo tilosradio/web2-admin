@@ -102,8 +102,9 @@ public class TagUtil {
 
     public Set<Tag> getTags(String text) {
         //remove html tags
+        text = Pattern.compile("<style>.*</style>",Pattern.DOTALL).matcher(text).replaceAll("");
         text = text.replaceAll("\\<.*?>", "");
-
+        System.out.println(text);
         Set<Tag> tags = new HashSet<>();
         for (TagType type : patterns.keySet()) {
             for (Pattern p : patterns.get(type)) {
