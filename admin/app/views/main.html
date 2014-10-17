@@ -103,7 +103,7 @@
                             </td>
                             <td>
                                 <span ng-show="episode.plannedFrom == episode.realFrom" class="text-success"><i class="fa fa-check"></i></span>
-                                <span ng-hide="episode.plannedFrom == episode.realFrom" tooltip="Hiányzó adás pozíció" class="text-danger"><i class="fa fa-warning">
+                                <span ng-hide="episode.plannedFrom == episode.realFrom" tooltip="Hiányzó pontos adás kezdet és vég" class="text-danger"><i class="fa fa-warning">
                             </td>
                         </tr>
                         </tbody>
@@ -115,14 +115,14 @@
     <div class="col-lg-6">
         <div class="widget">
             <div class="widget-header">
-                <i class="fa fa-area-chart"></i> Tegnapi hallgatottság
+                <i class="fa fa-area-chart"></i> 24 óra hallgatottsága
                 <a href="https://tilos.hu/upload/stats" class="pull-right">További statisztikák...</a>
 
                 <div class="clearfix"></div>
             </div>
             <div class="widget-body no-padding">
-                <a ng-href="https://tilos.hu/upload/stats/{{yesterday | date:'yyyy-MM-dd'}}.png">
-                    <img ng-src="https://tilos.hu/upload/stats/{{yesterday | date:'yyyy-MM-dd'}}.png" class="img-responsive"/>
+                <a ng-href="http://tilos.hu/status/hu/tilos.hu/icecast_tilos-day.png">
+                    <img ng-src="http://tilos.hu/status/hu/tilos.hu/icecast_tilos-day.png" class="img-responsive"/>
                 </a>
             </div>
         </div>
