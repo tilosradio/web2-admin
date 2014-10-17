@@ -35,7 +35,7 @@ public class MappingFactory {
 
     public static SimpleDateFormat YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
 
-    public static SimpleDateFormat HHMMSS = new SimpleDateFormat("hhmmss");
+    public static SimpleDateFormat HHMMSS = new SimpleDateFormat("HHmmss");
 
     @Inject
     TagUtil tagUtil;
