@@ -18,4 +18,16 @@ public class HTMLSanitizerTest {
         //then
         Assert.assertEquals("<div><p><b>asd</b></p></div>", cleanHtml);
     }
+
+    @Test
+    public void testBold() throws Exception {
+        //given
+        String html = "<img src=\"asd\"/>";
+
+        //when
+        String cleanHtml = new HTMLSanitizer().clean(html);
+
+        //then
+        Assert.assertEquals("<img src=\"asd\" />", cleanHtml);
+    }
 }
