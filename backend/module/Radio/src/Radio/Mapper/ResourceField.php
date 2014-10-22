@@ -23,8 +23,12 @@ class ResourceField extends FieldConverter
 
     protected function  convert($from)
     {
-        $var = $this->baseUrl . $this->context . $from;
-        return $var;
+        var_dump($from);
+        if ($from) {
+            return $this->baseUrl . $this->context . $from;
+        } else {
+            return null;
+        }
     }
 
     /**
