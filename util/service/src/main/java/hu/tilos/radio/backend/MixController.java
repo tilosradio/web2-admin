@@ -72,6 +72,7 @@ public class MixController {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     @Produces("application/json")
     @Security(role = Role.GUEST)
     @GET
@@ -102,6 +103,10 @@ public class MixController {
 
     }
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.ADMIN)
     @POST
@@ -116,6 +121,10 @@ public class MixController {
 
     }
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.ADMIN)
     @Transactional
@@ -130,6 +139,10 @@ public class MixController {
         return new CreateResponse(mix.getId());
     }
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.ADMIN)
     @Transactional

@@ -61,6 +61,10 @@ public class DataFixController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataFixController.class);
 
+    /**
+     *
+     * @exclude
+     */
     @GET
     @Path("/tags")
     @Security(role = Role.ADMIN)

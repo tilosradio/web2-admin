@@ -16,6 +16,10 @@ public class Smoketest {
         return "pong";
     }
 
+    /**
+     *
+     * @exclude
+     */
     @GET
     @Path("test/auth")
     @Security(role = Role.ADMIN)

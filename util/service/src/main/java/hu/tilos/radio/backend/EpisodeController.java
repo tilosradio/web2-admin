@@ -65,6 +65,10 @@ public class EpisodeController {
     }
 
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.AUTHOR)
     @POST
@@ -87,6 +91,10 @@ public class EpisodeController {
 
     }
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.AUTHOR)
     @Transactional

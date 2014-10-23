@@ -35,6 +35,9 @@ public class BookmarkController {
     @Inject
     private EntityManager entityManager;
 
+    /**
+     * Endpoint to get bookmarks of a radioshow.
+     */
     @Produces("application/json")
     @Security(role = Role.GUEST)
     @GET
@@ -57,6 +60,10 @@ public class BookmarkController {
         return response;
     }
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.ADMIN)
     @POST
@@ -71,6 +78,10 @@ public class BookmarkController {
 
     }
 
+    /**
+     *
+     * @exclude
+     */
     @Produces("application/json")
     @Security(role = Role.ADMIN)
     @Transactional
