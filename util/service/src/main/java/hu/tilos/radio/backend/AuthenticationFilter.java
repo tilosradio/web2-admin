@@ -1,16 +1,21 @@
 package hu.tilos.radio.backend;
 
+import com.auth0.jwt.Algorithm;
+import com.auth0.jwt.JwtProxy;
+import com.auth0.jwt.impl.BasicPayloadHandler;
+import com.auth0.jwt.impl.JwtProxyImpl;
 import com.google.gson.Gson;
 import hu.radio.tilos.model.Role;
+import hu.radio.tilos.model.User;
+import hu.tilos.radio.backend.data.Token;
+import hu.tilos.radio.backend.data.UserInfo;
 import hu.tilos.radio.backend.data.UserResponse;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.net.ssl.*;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -44,38 +49,27 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private String serverUrl;
 
     @Inject
-    UserInfo userInfo;
+    Session session;
+
+    @Inject
+    private EntityManager entityManager;
+
+
+    @Inject
+    @ConfigProperty(name = "jwt.secret")
+    private String jwtToken;
+
+    private JwtProxy jwtProxy = new JwtProxyImpl();
+
+    private Gson gson = new Gson();
 
     public AuthenticationFilter() {
-        try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, new TrustManager[]{new TrustAllX509TrustManager()}, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                public boolean verify(String string, SSLSession ssls) {
-                    return true;
-                }
-            });
-        } catch (Exception ex) {
-            LOG.error("Can't turn off SSL checking", ex);
-        }
+        jwtProxy.setPayloadHandler(new BasicPayloadHandler());
+
     }
 
     private String getAuthUrl() {
         return serverUrl;
-    }
-
-    public String getPhpSessionId(HttpServletRequest request) {
-        //TODO: not an admin site
-        if (!getAuthUrl().contains("admin") && !getAuthUrl().contains("tilosa")) {
-            return null;
-        }
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals("PHPSESSID")) {
-                return cookie.getValue();
-            }
-        }
-        return null;
     }
 
     private UserResponse getCurrentUser(String value) {
@@ -104,20 +98,35 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
+        String bearer = servletRequest.getHeader("Bearer");
+        if (bearer != null && bearer.length() > 10) {
+            try {
+                String content = (String) jwtProxy.decode(Algorithm.HS256, bearer, jwtToken);
+                Token token = gson.fromJson(content, Token.class);
+
+                User user = (User) entityManager.createNamedQuery("user.byUsername").setParameter("username", token.getUsername()).getSingleResult();
+
+                UserInfo currentUserInfo = new UserInfo();
+                currentUserInfo.setUsername(token.getUsername());
+                currentUserInfo.setRole(user.getRole());
+                currentUserInfo.setEmail(user.getEmail());
+                currentUserInfo.setId(user.getId());
+
+                session.setCurrentUser(currentUserInfo);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
 
         Method m = resource.getResourceMethod();
         if (m.isAnnotationPresent(Security.class)) {
             Security s = m.getAnnotation(Security.class);
-            if (s.role() != Role.GUEST) {
-                String session = getPhpSessionId((HttpServletRequest) servletRequest);
-                UserResponse user = getCurrentUser(session);
-                if (user == null || (s.role().ordinal() > user.getRole().getId())) {
+            if (s.role() != Role.GUEST && s.role() != Role.UNKNOWN && session.getCurrentUser() != null) {
+                UserInfo user = session.getCurrentUser();
+                if (user == null || (s.role().ordinal() > user.getRole().ordinal())) {
                     requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
                     return;
-                } else {
-                    userInfo.setUsername(user.getUsername());
-                    userInfo.setRole(user.getRole().getId());
                 }
             }
         } else {

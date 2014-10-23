@@ -36,7 +36,7 @@ public class EpisodeController {
     EpisodeUtil episodeUtil;
 
     @Inject
-    UserInfo info;
+    Session session;
 
     @Inject
     TagUtil tagUtil;
