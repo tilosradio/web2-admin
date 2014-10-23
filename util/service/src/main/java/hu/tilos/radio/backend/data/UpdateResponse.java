@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.data;
 
-public class UpdateResponse {
+public class
+        UpdateResponse {
 
     private boolean success;
 

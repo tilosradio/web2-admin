@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @WebServlet(urlPatterns = {"/apidoc", "/apidoc/*"})
-public class ApiServlet extends HttpServlet {
+public class ApiDocServlet extends HttpServlet {
 
-    private static Logger LOG = LoggerFactory.getLogger(ApiServlet.class);
+    private static Logger LOG = LoggerFactory.getLogger(ApiDocServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

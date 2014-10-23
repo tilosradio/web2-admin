@@ -1,5 +1,8 @@
 package hu.tilos.radio.backend.data.types;
 
+import hu.radio.tilos.model.type.ShowStatus;
+import hu.radio.tilos.model.type.ShowType;
+
 public class ShowSimple implements WithId{
 
     private int id;
@@ -8,9 +11,9 @@ public class ShowSimple implements WithId{
 
     private String alias;
 
-    private int type;
+    private ShowType type;
 
-    private int status;
+    private ShowStatus status;
 
     public int getId() {
         return id;
@@ -36,19 +39,19 @@ public class ShowSimple implements WithId{
         this.alias = alias;
     }
 
-    public int getType() {
+    public ShowType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(ShowType type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public ShowStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(ShowStatus status) {
         this.status = status;
     }
 }

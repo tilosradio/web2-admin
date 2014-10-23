@@ -1,5 +1,6 @@
 package hu.tilos.radio.backend.data;
 
+import hu.radio.tilos.model.type.MixType;
 import hu.tilos.radio.backend.data.types.ShowSimple;
 
 public class MixResponse {
@@ -16,7 +17,7 @@ public class MixResponse {
 
     private ShowSimple show;
 
-    private int type;
+    private MixType type;
 
     private String date;
 
@@ -68,11 +69,11 @@ public class MixResponse {
         this.show = show;
     }
 
-    public int getType() {
+    public MixType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(MixType type) {
         this.type = type;
     }
 

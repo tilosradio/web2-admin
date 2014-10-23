@@ -13,9 +13,9 @@ public class SchedulingSimple {
 
     int duration;
 
-    private long validFrom;
+    private Date validFrom;
 
-    private long validTo;
+    private Date validTo;
 
     private long base;
 
@@ -55,19 +55,19 @@ public class SchedulingSimple {
         this.duration = duration;
     }
 
-    public long getValidFrom() {
+    public Date getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(long validFrom) {
+    public void setValidFrom(Date validFrom) {
         this.validFrom = validFrom;
     }
 
-    public long getValidTo() {
+    public Date getValidTo() {
         return validTo;
     }
 
-    public void setValidTo(long validTo) {
+    public void setValidTo(Date validTo) {
         this.validTo = validTo;
     }
 

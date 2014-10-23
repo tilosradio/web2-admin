@@ -3,6 +3,8 @@ package hu.tilos.radio.backend.data.types;
 import hu.tilos.radio.backend.data.types.ShowSimple;
 import hu.tilos.radio.backend.data.types.TextData;
 
+import java.util.Date;
+
 /**
  * Json transfer object for episodes;
  */
@@ -10,13 +12,13 @@ public class EpisodeData {
 
     private int id;
 
-    private long plannedFrom;
+    private Date plannedFrom;
 
-    private long plannedTo;
+    private Date plannedTo;
 
-    private long realFrom;
+    private Date realFrom;
 
-    private long realTo;
+    private Date realTo;
 
     private ShowSimple show;
 
@@ -37,36 +39,36 @@ public class EpisodeData {
         this.id = id;
     }
 
-    public long getPlannedFrom() {
+    public Date getPlannedFrom() {
         return plannedFrom;
     }
 
-    public void setPlannedFrom(long plannedFrom) {
+    public void setPlannedFrom(Date plannedFrom) {
         this.plannedFrom = plannedFrom;
     }
 
-    public long getPlannedTo() {
+    public Date getPlannedTo() {
         return plannedTo;
     }
 
-    public void setPlannedTo(long plannedTo) {
+    public void setPlannedTo(Date plannedTo) {
         this.plannedTo = plannedTo;
     }
 
-    public long getRealFrom() {
+    public Date getRealFrom() {
         return realFrom;
     }
 
-    public void setRealFrom(long realFrom) {
+    public void setRealFrom(Date realFrom) {
         this.realFrom = realFrom;
     }
 
-    public long getRealTo() {
-        return realTo;
+    public void setRealTo(Date realTo) {
+        this.realTo = realTo;
     }
 
-    public void setRealTo(long realTo) {
-        this.realTo = realTo;
+    public Date getRealTo() {
+        return realTo;
     }
 
     public ShowSimple getShow() {

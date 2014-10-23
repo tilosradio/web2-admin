@@ -1,5 +1,8 @@
 package hu.tilos.radio.backend.data.types;
 
+import hu.radio.tilos.model.type.ShowStatus;
+import hu.radio.tilos.model.type.ShowType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,9 +21,9 @@ public class ShowDetailed {
 
     private String description;
 
-    private int type;
+    private ShowType type;
 
-    private int status;
+    private ShowStatus status;
 
     private String statusTxt;
 
@@ -96,19 +99,19 @@ public class ShowDetailed {
         this.description = description;
     }
 
-    public int getType() {
+    public ShowType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(ShowType type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public ShowStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(ShowStatus status) {
         this.status = status;
     }
 

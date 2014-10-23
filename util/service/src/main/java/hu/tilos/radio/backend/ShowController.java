@@ -76,9 +76,9 @@ public class ShowController {
             }
         });
 
-        long now = new Date().getTime();
+        Date now = new Date();
         for (SchedulingSimple ss : detailed.getSchedulings()) {
-            if (ss.getValidFrom() < now && ss.getValidTo() > now)
+            if (ss.getValidFrom().compareTo(now) < 0 && ss.getValidTo().compareTo(now) > 0)
                 ss.setText(schedulingTextUtil.create(ss));
         }
 

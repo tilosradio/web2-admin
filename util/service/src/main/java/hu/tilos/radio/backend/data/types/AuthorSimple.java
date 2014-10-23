@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.data.types;
 
 public class AuthorSimple {
+
     private Integer id;
 
     private String name;

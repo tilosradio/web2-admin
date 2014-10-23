@@ -34,9 +34,9 @@ public class FeedRenderer {
 
     public static String createDownloadURI(EpisodeData episode) {
         return "http://tilos.hu/mp3/tilos-" +
-                YYYYMMDD.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                HHMMSS.format(dateFromEpoch(episode.getRealFrom())) + "-" +
-                HHMMSS.format(dateFromEpoch(episode.getRealTo())) + ".mp3";
+                YYYYMMDD.format(episode.getRealFrom()) + "-" +
+                HHMMSS.format(episode.getRealFrom()) + "-" +
+                HHMMSS.format(episode.getRealTo()) + ".mp3";
     }
 
     private static Date dateFromEpoch(long realTo) {
@@ -74,8 +74,8 @@ public class FeedRenderer {
                     }
 
 
-                    e.setPublished(dateFromEpoch(episode.getRealTo()));
-                    e.setUpdated(dateFromEpoch(episode.getRealTo()));
+                    e.setPublished(episode.getRealTo());
+                    e.setUpdated(episode.getRealTo());
 
                     URL url = new URL(serverUrl + "/episode/" + episode.getShow().getAlias() + "/" + YYYY_PER_MM_PER_DD.format(e.getPublished()));
 

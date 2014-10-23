@@ -50,7 +50,7 @@ public class M3uController {
         Collections.sort(episodes, new Comparator<EpisodeData>() {
             @Override
             public int compare(EpisodeData o1, EpisodeData o2) {
-                return -1 * Long.valueOf(o1.getRealFrom()).compareTo(Long.valueOf(o2.getRealFrom()));
+                return -1 * o1.getRealFrom().compareTo(o2.getRealFrom());
             }
         });
 
@@ -67,8 +67,7 @@ public class M3uController {
         for (EpisodeData episode : episodes) {
             String artist = episode.getShow().getName().replaceAll("-", ", ");
 
-            Date start = new Date();
-            start.setTime(episode.getPlannedFrom());
+            Date start = episode.getPlannedFrom();
 
             String title = "[" + MM_DD.format(start) + " - " + Days.values()[start.getDay()].getHungarian() + " " + HH_MM.format(start) + "]";
             if (episode.getText() != null) {

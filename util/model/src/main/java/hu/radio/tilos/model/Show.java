@@ -1,5 +1,8 @@
 package hu.radio.tilos.model;
 
+import hu.radio.tilos.model.type.ShowStatus;
+import hu.radio.tilos.model.type.ShowType;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,11 +43,11 @@ public class Show {
 
     @Basic
     @Column
-    private int type;
+    private ShowType type;
 
     @Basic
     @Column
-    private int status;
+    private ShowStatus status;
 
     public int getId() {
         return id;
@@ -103,19 +106,19 @@ public class Show {
         this.contributors = contributors;
     }
 
-    public int getType() {
+    public ShowType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(ShowType type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public ShowStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(ShowStatus status) {
         this.status = status;
     }
 

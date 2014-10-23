@@ -65,8 +65,8 @@ public class EpisodeControllerTest {
     public void testCreateEpisode() throws Exception {
         //given
         EpisodeData episode = new EpisodeData();
-        episode.setPlannedFrom(TestUtil.YYYYMMDDHHMM.parse("201405011200").getTime());
-        episode.setPlannedTo(TestUtil.YYYYMMDDHHMM.parse("201405011300").getTime());
+        episode.setPlannedFrom(TestUtil.YYYYMMDDHHMM.parse("201405011200"));
+        episode.setPlannedTo(TestUtil.YYYYMMDDHHMM.parse("201405011300"));
 
         ShowSimple simple = new ShowSimple();
         simple.setId(1);
@@ -97,8 +97,8 @@ public class EpisodeControllerTest {
     public void testUpdateEpisode() throws Exception {
         //given
         EpisodeData episode = controller.get(2);
-        episode.setPlannedFrom(TestUtil.YYYYMMDDHHMM.parse("201405011200").getTime());
-        episode.setPlannedTo(TestUtil.YYYYMMDDHHMM.parse("201405011300").getTime());
+        episode.setPlannedFrom(TestUtil.YYYYMMDDHHMM.parse("201405011200"));
+        episode.setPlannedTo(TestUtil.YYYYMMDDHHMM.parse("201405011300"));
 
         episode.getText().setContent("ez jobb #kukac de a harom nincs @szemely is van");
 

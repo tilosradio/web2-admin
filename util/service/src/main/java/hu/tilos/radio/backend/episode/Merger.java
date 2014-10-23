@@ -13,7 +13,7 @@ public class Merger {
         Collections.sort(result, new Comparator<EpisodeData>() {
             @Override
             public int compare(EpisodeData o1, EpisodeData o2) {
-                int val = Long.valueOf(o1.getPlannedFrom()).compareTo(Long.valueOf(o2.getPlannedFrom()));
+                int val = o1.getPlannedFrom().compareTo(o2.getPlannedFrom());
                 if (val != 0) return val;
                 if (o1.isPersistent() != o2.isPersistent()) {
                     if (o1.isPersistent()) {
@@ -31,7 +31,7 @@ public class Merger {
         Iterator<EpisodeData> it = result.iterator();
         while (it.hasNext()) {
             EpisodeData curr = it.next();
-            if (prev != null && prev.getPlannedFrom() == curr.getPlannedFrom()) {
+            if (prev != null && prev.getPlannedFrom().equals(curr.getPlannedFrom())) {
                 it.remove();
             }
             prev = curr;

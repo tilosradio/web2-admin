@@ -2,29 +2,24 @@ package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.Show;
+import hu.radio.tilos.model.type.ShowType;
 import hu.tilos.radio.backend.data.types.EpisodeData;
 import hu.tilos.radio.backend.episode.EpisodeUtil;
-import net.anzix.jaxrs.atom.*;
+import net.anzix.jaxrs.atom.Feed;
+import net.anzix.jaxrs.atom.Link;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContexts;
 import javax.persistence.Query;
-import javax.sql.DataSource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -71,7 +66,7 @@ public class FeedController {
         Collections.sort(episodes, new Comparator<EpisodeData>() {
             @Override
             public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
-                return Long.compare(episodeData2.getPlannedFrom(), episodeData.getPlannedFrom());
+                return episodeData2.getPlannedFrom().compareTo(episodeData.getPlannedFrom());
             }
         });
 
@@ -95,7 +90,7 @@ public class FeedController {
         } else {
             List<EpisodeData> result = new ArrayList<>();
             for (EpisodeData data : episodeData) {
-                if ((type.equals("talk") && data.getShow().getType() == 1) || (type.equals("music") && data.getShow().getType() == 0)) {
+                if ((type.equals("talk") && data.getShow().getType() == ShowType.SPEECH) || (type.equals("music") && data.getShow().getType() == ShowType.SPEECH)) {
                     result.add(data);
                 }
             }
@@ -146,7 +141,7 @@ public class FeedController {
         Collections.sort(episodeData, new Comparator<EpisodeData>() {
             @Override
             public int compare(EpisodeData episodeData, EpisodeData episodeData2) {
-                return Long.compare(episodeData2.getPlannedFrom(), episodeData.getPlannedFrom());
+                return episodeData2.getPlannedFrom().compareTo(episodeData.getPlannedFrom());
             }
         });
 

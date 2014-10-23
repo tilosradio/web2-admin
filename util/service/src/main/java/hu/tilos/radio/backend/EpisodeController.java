@@ -1,9 +1,10 @@
 package hu.tilos.radio.backend;
 
-import hu.radio.tilos.model.*;
-import hu.radio.tilos.model.type.TagType;
+import hu.radio.tilos.model.Episode;
+import hu.radio.tilos.model.Role;
+import hu.radio.tilos.model.Show;
+import hu.radio.tilos.model.Tag;
 import hu.tilos.radio.backend.converters.TagUtil;
-import hu.tilos.radio.backend.data.BookmarkData;
 import hu.tilos.radio.backend.data.CreateResponse;
 import hu.tilos.radio.backend.data.UpdateResponse;
 import hu.tilos.radio.backend.data.types.EpisodeData;
@@ -14,11 +15,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Path("/api/v1/episode")
 public class EpisodeController {
@@ -66,7 +67,6 @@ public class EpisodeController {
 
 
     /**
-     *
      * @exclude
      */
     @Produces("application/json")
@@ -84,6 +84,12 @@ public class EpisodeController {
             entityManager.persist(entity.getText());
             entityManager.flush();
         }
+        if (entity.getRealFrom() == null) {
+            entity.setRealFrom(entity.getPlannedFrom());
+        }
+        if (entity.getRealTo() == null) {
+            entity.setRealTo(entity.getPlannedTo());
+        }
         updateTags(entity);
         entityManager.persist(entity);
         entityManager.flush();
@@ -92,7 +98,6 @@ public class EpisodeController {
     }
 
     /**
-     *
      * @exclude
      */
     @Produces("application/json")

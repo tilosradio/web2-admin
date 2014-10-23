@@ -72,7 +72,10 @@ public class PersistentEpisodeProvider {
                 useBookmarkForEpisodeText(d, bookmark);
             }
             if (d.getPlannedTo() == d.getRealTo()) {
-                d.setRealTo(d.getPlannedTo() + 30 * 60 * 1000);
+                //todo
+                Date nd = new Date();
+                nd.setTime(d.getPlannedTo().getTime() + 30 * 60 * 1000);
+                d.setRealTo(nd);
             }
             result.add(d);
         }
