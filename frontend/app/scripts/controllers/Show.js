@@ -79,7 +79,7 @@ angular.module('tilosApp')
     });
 
 angular.module('tilosApp')
-    .controller('ShowCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta, $route) {
+    .controller('ShowCtrl', function (Player, $scope, $stateParams, API_SERVER_ENDPOINT, $http, validateUrl, $rootScope, $location, Meta) {
         $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, {cache: true}).success(function (data) {
             $scope.show = data;
             $scope.server = API_SERVER_ENDPOINT;
@@ -87,7 +87,7 @@ angular.module('tilosApp')
             Meta.setDescription(data.definition);
 
             $scope.show.sharecount = 0;
-            $scope.likeURL = validateUrl.getValidUrl('http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F' + tilosHost + '%2Fshow%2F' + $scope.show.alias + '&width&layout=standard&action=like&show_faces=true&share=true');
+            $scope.likeURL = validateUrl.getValidUrl('http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F' + API_SERVER_ENDPOINT+ '%2Fshow%2F' + $scope.show.alias + '&width&layout=standard&action=like&show_faces=true&share=true');
 
             $scope.currentShowPage = 0;
 

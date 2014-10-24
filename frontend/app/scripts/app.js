@@ -41,14 +41,13 @@ tilos.config(function ($routeProvider, $stateProvider, $urlRouterProvider) {
         var $http = $injector.get('$http');
         var API_SERVER_ENDPOINT = $injector.get('API_SERVER_ENDPOINT');
         var path = $location.path();
-        var result = '?';
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/text' + path).success(function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v0/text' + path).success(function () {
             var $state = $injector.get('$state');
             $state.go('page', {id: path.substr(1)});
-        }).error(function (data) {
-            $http.get(API_SERVER_ENDPOINT + '/api/v0/show' + path).success(function (data) {
+        }).error(function () {
+            $http.get(API_SERVER_ENDPOINT + '/api/v0/show' + path).success(function () {
                 $injector.get('$state').go('show.main', {id: path.substr(1)});
-            }).error(function (data) {
+            }).error(function () {
                 $injector.get('$state').go('notfound');
             });
         });
@@ -67,8 +66,6 @@ var server = window.location.protocol + '//' + window.location.hostname;
 if (window.location.port && window.location.port !== '9000') {
     server = server + ':' + window.location.port;
 }
-
-var tilosHost = window.location.hostname;
 
 angular.module('configuration', []).constant('API_SERVER_ENDPOINT', server);
 

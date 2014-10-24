@@ -43,7 +43,7 @@ angular.module('tilosApp').controller('MainCtrl', function ($scope, FeedService,
         myTimeout = $timeout($scope.onTimeout, 1000);
         $scope.counter = '' + days + ' nap, ' + hours + ' óra, ' + minutes + ' perc és ' + seconds + ' másodperc';
     };
-    -
-        $scope.onTimeout();
+
+    $scope.onTimeout();
 
 });

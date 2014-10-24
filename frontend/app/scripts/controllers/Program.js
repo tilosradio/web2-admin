@@ -77,8 +77,6 @@ angular.module('tilosApp').controller('ProgramCtrl', ['$scope', '$routeParams', 
             $scope.gotoDate.setToNoon();
             $scope.getDay($scope.gotoDate.getTimestamp());
         };
-        var from = (tilos.weekStart(new Date()) / 1000);
-        var to = from + 7 * 24 * 60 * 60;
         $scope.program = {};
         var now = new Date();
         now.setToNoon();

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('tilosApp')
-    .controller('SocialCtrl', function ($scope, $http) {
+    .controller('SocialCtrl', function ($scope) {
         $scope.Math = window.Math;
         var server = 'http://tilos.hu';
         //Share a show or article on Facebook, we need the name and definition.
