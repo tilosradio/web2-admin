@@ -1,6 +1,10 @@
 package hu.radio.tilos.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity()
 @Table(name = "author")
@@ -32,6 +36,28 @@ public class Author {
     @Basic
     @Column
     private String email;
+
+    @OneToOne
+    private User user;
+
+    @OneToMany(mappedBy = "author")
+    private List<Contribution> contributions = new ArrayList<Contribution>();
+
+    public List<Contribution> getContributions() {
+        return contributions;
+    }
+
+    public void setContributions(List<Contribution> contributions) {
+        this.contributions = contributions;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getEmail() {
         return email;

@@ -25,7 +25,7 @@
   </table>
 </div>
 <h1 ifAdmin>Összes műsor
-  <a ng-show="user.role.name == 'admin'" class="btn btn-danger" role="btn" ng-href="/new/show">Új műsor</a></h1>
+  <a ng-show="user.role == 'ADMIN'" class="btn btn-danger" role="btn" ng-href="/new/show">Új műsor</a></h1>
 
 <table ifAdmin class="table">
   <tr ng-repeat="show in shows | filter:quicksearch">

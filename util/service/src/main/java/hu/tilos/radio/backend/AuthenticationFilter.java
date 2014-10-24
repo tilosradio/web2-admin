@@ -7,12 +7,14 @@ import hu.tilos.radio.backend.data.UserInfo;
 import hu.tilos.radio.backend.data.UserResponse;
 import hu.tilos.radio.backend.util.JWTEncoder;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -53,6 +55,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Inject
     private JWTEncoder jwtEncoder;
 
+    @Inject
+    ModelMapper modelMapper;
+
+
     public AuthenticationFilter() {
 
     }
@@ -62,6 +68,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     @Override
+    @Transactional()
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String bearer = servletRequest.getHeader("Bearer");
         if (bearer != null && bearer.length() > 10) {
@@ -71,13 +78,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                 User user = (User) entityManager.createNamedQuery("user.byUsername").setParameter("username", token.getUsername()).getSingleResult();
 
-                UserInfo currentUserInfo = new UserInfo();
-                currentUserInfo.setUsername(token.getUsername());
-                currentUserInfo.setRole(user.getRole());
-                currentUserInfo.setEmail(user.getEmail());
-                currentUserInfo.setId(user.getId());
+                UserInfo userInfo = modelMapper.map(user, UserInfo.class);
 
-                session.setCurrentUser(currentUserInfo);
+                session.setCurrentUser(userInfo);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

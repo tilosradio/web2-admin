@@ -24,7 +24,7 @@ import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/api/v1/mix")
+@Path("/api/v1/tag")
 public class TagController {
 
     @Inject

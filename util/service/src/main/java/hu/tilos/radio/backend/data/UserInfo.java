@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.data;
 
 import hu.radio.tilos.model.Role;
+import hu.tilos.radio.backend.data.types.AuthorWithContribution;
 
 public class UserInfo {
 
@@ -11,6 +12,16 @@ public class UserInfo {
     private Role role;
 
     private int id;
+
+    private AuthorWithContribution author;
+
+    public AuthorWithContribution getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AuthorWithContribution author) {
+        this.author = author;
+    }
 
     public String getUsername() {
         return username;

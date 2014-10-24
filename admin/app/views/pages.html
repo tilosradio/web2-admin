@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <h1>Oldal lista <a ng-show="user.role.name == 'admin'" class="btn btn-danger" role="btn" ng-href="/new/page">Új
+    <h1>Oldal lista <a ng-show="user.role== 'ADMIN'" class="btn btn-danger" role="btn" ng-href="/new/page">Új
         oldal</a></h1>
     <table class="table table-striped">
         <thead>
@@ -29,7 +29,7 @@
 
 
             <td>{{page.modified * 1000 | date:'yyyy-MM-dd'}}</td>
-            <td><a ng-show="user && user.role.name == 'admin'" class="btn btn-danger" ng-href="/edit/page/{{page.id}}">Szerkesztés</a>
+            <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-href="/edit/page/{{page.id}}">Szerkesztés</a>
             </td>
         </tr>
         </tbody>
