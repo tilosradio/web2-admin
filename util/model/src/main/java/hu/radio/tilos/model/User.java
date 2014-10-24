@@ -12,7 +12,7 @@ public class User {
     private int id;
 
     @Basic
-    @Column
+    @Column(name = "role_id")
     private Role role;
 
     @Basic

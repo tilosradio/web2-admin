@@ -45,12 +45,15 @@
                 radioshow_id="3"></scheduling>
 
     <bookmark id="1" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00"
-              title="Jo kis beszelgetes 1" content="x1" episode_id="1" selected="1" full_episode="0" karma="0"></bookmark>
+              title="Jo kis beszelgetes 1" content="x1" episode_id="1" selected="1" full_episode="0"
+              karma="0"></bookmark>
     <bookmark id="2" start="2014-04-04 08:13:00" end="2014-04-04 10:13:00"
-              title="Jo kis beszelgetes 2" content="x2" episode_id="1" radioshow_id="1" selected="0" full_episode="0" karma="0"></bookmark>
+              title="Jo kis beszelgetes 2" content="x2" episode_id="1" radioshow_id="1" selected="0" full_episode="0"
+              karma="0"></bookmark>
 
     <mix id="1" type="1" author="asd" title="good mix" file="asd.mp3" date="2013-04-05" show_id="1" category="2"></mix>
-    <mix id="3" type="1" author="asd" title="good mix2" file="asd2.mp3" date="2013-04-05" show_id="1" category="1"></mix>
+    <mix id="3" type="1" author="asd" title="good mix2" file="asd2.mp3" date="2013-04-05" show_id="1"
+         category="1"></mix>
     <mix id="2" type="1" author="asd" title="good mix2" file="asd2.mp3" category="1"></mix>
     <tag id="1" name="kukac" type="0"></tag>
     <tag id="2" name="asd" type="0"></tag>
@@ -59,7 +62,8 @@
     <tag_textcontent textcontent_id="2" tag_id="1"></tag_textcontent>
     <tag_textcontent textcontent_id="2" tag_id="3"></tag_textcontent>
     <tag_textcontent textcontent_id="1" tag_id="2"></tag_textcontent>
-
-    <user id="1" username="bela" email="bela@bela.hu" password="22679322a29a62da3c2558eac2ec5fe3d055db61" salt="d25541250d47c49f20b5243f95dbbd91e4db3d0d"></user>
+    <role id="3" name="author"></role>
+    <user id="1" role_id="3" username="bela" email="bela@bela.hu" password="22679322a29a62da3c2558eac2ec5fe3d055db61"
+          salt="d25541250d47c49f20b5243f95dbbd91e4db3d0d"></user>
 
 </dataset>

@@ -1,21 +1,15 @@
 package hu.tilos.radio.backend;
 
-import com.auth0.jwt.Algorithm;
-import com.auth0.jwt.ClaimSet;
-import com.auth0.jwt.JwtProxy;
-import com.auth0.jwt.impl.BasicPayloadHandler;
-import com.auth0.jwt.impl.JwtProxyImpl;
 import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.User;
 import hu.tilos.radio.backend.data.LoginData;
 import hu.tilos.radio.backend.data.Token;
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import hu.tilos.radio.backend.util.JWTEncoder;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,15 +29,8 @@ public class AuthController {
     private EntityManager entityManager;
 
     @Inject
-    @ConfigProperty(name = "jwt.secret")
-    private String jwtToken;
+    private JWTEncoder jwtEncoder;
 
-    private JwtProxy jwtProxy = new JwtProxyImpl();
-
-    public AuthController() {
-        jwtProxy.setPayloadHandler(new BasicPayloadHandler());
-
-    }
 
     @Path("/login")
     @Produces("application/json")
@@ -57,10 +44,10 @@ public class AuthController {
             if (toSHA1(loginData.getPassword() + user.getSalt()).equals(user.getPassword())) {
                 Token t = new Token();
                 t.setUsername(loginData.getUsername());
-                ClaimSet cs = new ClaimSet();
+                t.setRole(user.getRole());
 
                 try {
-                    return Response.ok(jwtProxy.encode(Algorithm.HS256, t, jwtToken, cs)).build();
+                    return Response.ok(jwtEncoder.encode(t)).build();
                 } catch (Exception e) {
                     throw new RuntimeException("Can't encode the token", e);
                 }

@@ -1,15 +1,11 @@
 package hu.tilos.radio.backend;
-
-import com.auth0.jwt.Algorithm;
-import com.auth0.jwt.JwtProxy;
-import com.auth0.jwt.impl.BasicPayloadHandler;
-import com.auth0.jwt.impl.JwtProxyImpl;
 import com.google.gson.Gson;
 import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.User;
 import hu.tilos.radio.backend.data.Token;
 import hu.tilos.radio.backend.data.UserInfo;
 import hu.tilos.radio.backend.data.UserResponse;
+import hu.tilos.radio.backend.util.JWTEncoder;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,17 +50,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Inject
     private EntityManager entityManager;
 
-
     @Inject
-    @ConfigProperty(name = "jwt.secret")
-    private String jwtToken;
-
-    private JwtProxy jwtProxy = new JwtProxyImpl();
-
-    private Gson gson = new Gson();
+    private JWTEncoder jwtEncoder;
 
     public AuthenticationFilter() {
-        jwtProxy.setPayloadHandler(new BasicPayloadHandler());
 
     }
 
@@ -72,37 +61,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         return serverUrl;
     }
 
-    private UserResponse getCurrentUser(String value) {
-        try {
-            if (value == null) {
-                return null;
-            }
-            URL myUrl = new URL(getAuthUrl() + "/api/v0/user/me");
-            URLConnection connection = myUrl.openConnection();
-            connection.setRequestProperty("Cookie", "PHPSESSID=" + value);
-            connection.connect();
-            String responseTxt = new Scanner(connection.getInputStream()).useDelimiter("//Z").next();
-            if (responseTxt.equals("[]")) {
-                return null;
-            }
-            UserResponse response = new Gson().fromJson(responseTxt, UserResponse.class);
-            return response;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String bearer = servletRequest.getHeader("Bearer");
         if (bearer != null && bearer.length() > 10) {
             try {
-                String content = (String) jwtProxy.decode(Algorithm.HS256, bearer, jwtToken);
-                Token token = gson.fromJson(content, Token.class);
+
+                Token token = jwtEncoder.decode(bearer);
 
                 User user = (User) entityManager.createNamedQuery("user.byUsername").setParameter("username", token.getUsername()).getSingleResult();
 

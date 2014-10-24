@@ -1,7 +1,7 @@
 /**
  * Master Controller
  */
-angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cookieStore, $http, API_SERVER_ENDPOINT, $rootScope, $location) {
+angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cookieStore, $http, API_SERVER_ENDPOINT, $rootScope, $location, localStorageService) {
     /**
      * Sidebar Toggle & Cookie Control
      *
@@ -43,10 +43,9 @@ angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cook
     };
 
     $scope.logout = function () {
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/auth/sign_out').success(function (data) {
-            delete $rootScope.user;
-            $location.path('/login');
-        });
+        delete $rootScope.user;
+        localStorageService.remove('jwt');
+        $location.path('/login');
     };
 
 });

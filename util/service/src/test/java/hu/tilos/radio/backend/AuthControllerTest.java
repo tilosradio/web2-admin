@@ -1,12 +1,12 @@
 package hu.tilos.radio.backend;
 
-import com.auth0.jwt.Algorithm;
-import com.auth0.jwt.ClaimSet;
-import com.auth0.jwt.JwtProxy;
-import com.auth0.jwt.impl.BasicPayloadHandler;
-import com.auth0.jwt.impl.JwtProxyImpl;
+
+import com.google.gson.Gson;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.MACSigner;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.LoginData;
+import hu.tilos.radio.backend.data.Token;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Assert;
@@ -29,20 +29,6 @@ public class AuthControllerTest {
         TestUtil.initTestData();
     }
 
-    @Test
-    public void testJwt() throws Exception {
-        //given
-        String secret = "veryeasy";
-        JwtProxy proxy = new JwtProxyImpl();
-        proxy.setPayloadHandler(new BasicPayloadHandler());
-
-        //when
-        String token = proxy.encode(Algorithm.HS256, "asd", secret, new ClaimSet());
-
-        //then
-        Object decode = proxy.decode(Algorithm.HS256, token, secret);
-        Assert.assertEquals("asd", decode);
-    }
 
     @Test
     public void testLogin() throws Exception {

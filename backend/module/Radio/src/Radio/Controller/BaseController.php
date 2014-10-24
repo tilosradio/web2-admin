@@ -2,16 +2,13 @@
 
 namespace Radio\Controller;
 
+use Radio\Entity\Role;
+use Radio\Provider\EntityManager;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractController;
-use Zend\Mvc\Controller\AbstractRestfulController;
-use Radio\Provider\EntityManager;
-use Zend\View\Model\JsonModel;
-use Zend\Mvc\MvcEvent;
-use Radio\Permissions\RoleAssertion;
-use Radio\Permissions\Acl;
-use Radio\Entity\Role;
 use Zend\Mvc\Exception;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Model\JsonModel;
 
 
 /**
@@ -19,6 +16,8 @@ use Zend\Mvc\Exception;
  */
 class BaseController extends AbstractController
 {
+
+//    protected $eventIdentifier = "RadioAdmin\Api\Controller";
 
     use EntityManager;
 
@@ -33,7 +32,6 @@ class BaseController extends AbstractController
      * @var string
      */
     protected $identifierName = 'id';
-
 
     public function findEntityObject($type, $id)
     {
@@ -171,11 +169,22 @@ class BaseController extends AbstractController
 
     function checkRouteAccess(MvcEvent $event)
     {
+        $headers = $event->getRequest()->getHeaders();
+
+        $user = null;
+        if ($headers->has('Bearer')) {
+            $config = $this->getServiceLocator()->get('config');
+            $decoded = (array)\JWT::decode($headers->get("Bearer")->getFieldValue(), $config['jwttoken']);
+            $user = new \Radio\Entity\User();
+            $user->setUsername($decoded);
+            $user->setRole($this->getRoles()[$decoded['role']]);
+        }
+
         $serviceManager = $this->getServiceLocator();
-        $authService = $serviceManager->get('doctrine.authenticationservice.orm_default');
-        // identify the user
-        $user = $authService->hasIdentity() ? $authService->getIdentity() : null;
+
+
         $role = empty($user) ? Role::getDefault() : $user->getRole();
+
         // get requested resource
         $routeMatch = $event->getRouteMatch();
         $permission = $routeMatch->getParam("permission");
@@ -251,6 +260,43 @@ class BaseController extends AbstractController
     public function getIdentifierName()
     {
         return $this->identifierName;
+    }
+
+    public function getRoles()
+    {
+        $roles = [];
+
+        $unknown = new \Radio\Entity\Role();
+        $unknown->setName("unknown");
+        $unknown->setId(0);
+        $roles['UNKNOWN'] = $unknown;
+
+        $guest = new \Radio\Entity\Role();
+        $guest->setName("guest");
+        $guest->setId(1);
+        $guest->setParent($unknown);
+        $roles['GUEST'] = $guest;
+
+        $user = new \Radio\Entity\Role();
+        $user->setName("user");
+        $user->setId(2);
+        $user->setParent($guest);
+        $roles['USER'] = $user;
+
+        $author = new \Radio\Entity\Role();
+        $author->setName("author");
+        $author->setId(3);
+        $author->setParent($user);
+        $roles['AUTHOR'] = $author;
+
+        $admin = new \Radio\Entity\Role();
+        $admin->setName("admin");
+        $admin->setId(4);
+        $admin->setParent($author);
+        $roles['ADMIN'] = $admin;
+
+        return $roles;
+
     }
 
 }
