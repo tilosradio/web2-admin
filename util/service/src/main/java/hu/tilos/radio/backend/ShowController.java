@@ -36,6 +36,14 @@ public class ShowController {
     @Inject
     private ModelMapper modelMapper;
 
+    /**
+     * Detailed information about one radioshow.
+     *
+     * Integer based if also could be used as an alias.
+     *
+     * @param alias Alias of the radioshow (eg. 3-utas)
+     * @return
+     */
     @Produces("application/json")
     @Path("/{alias}")
     @Security(role = Role.GUEST)

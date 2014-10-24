@@ -84,8 +84,6 @@ public class SearchController {
 
     }
 
-    @GET
-    @Path("fixTags")
     public String index() {
         try {
             createIndex();
@@ -122,6 +120,13 @@ public class SearchController {
     }
 
 
+    /**
+     * @exclude
+     * @param search
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     */
     @Path(value = "query")
     @GET
     @Produces("application/json")

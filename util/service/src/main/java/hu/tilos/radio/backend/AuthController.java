@@ -32,6 +32,10 @@ public class AuthController {
     private JWTEncoder jwtEncoder;
 
 
+    /**
+     *
+     * @exclude
+     */
     @Path("/login")
     @Produces("application/json")
     @Security(role = Role.GUEST)

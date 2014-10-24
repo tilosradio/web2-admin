@@ -17,9 +17,19 @@ public class ApiDocServlet extends HttpServlet {
     private static Logger LOG = LoggerFactory.getLogger(ApiDocServlet.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String relativeUri = req.getRequestURI().substring("/apidoc".length());
-        if ("".equals(relativeUri) || "/".equals(relativeUri)) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+        String relativeUri = request.getRequestURI().substring("/apidoc".length());
+        if ("".equals(relativeUri)) {
+            resp.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            String uri = request.getScheme() + "://" +
+                    request.getServerName() +
+                    request.getRequestURI() +
+                    (request.getQueryString() != null ? "?" + request.getQueryString() : "");
+
+            resp.setHeader("Location", uri + "/");
+            return;
+        }
+        if ("/".equals(relativeUri)) {
             relativeUri = "/index.html";
         }
         InputStream swaggerResource = getClass().getResourceAsStream("/apidocs" + relativeUri);
