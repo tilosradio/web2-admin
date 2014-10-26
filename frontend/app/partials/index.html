@@ -4,13 +4,14 @@
 
 <section class="col-md-pull-3 col-md-6 main" role="main">
 
-  <div ng-show="lead"  class="panel panel-default">
-    <div class="panel panel-default">
+  <div ng-show="lead.formatted"  class="panel panel-default">
+
       <div class="panel-heading">
          <b>{{lead.title}}</b>        
       </div>
-      <div class="panel-body" ng-bind-html="leadtxt">
+      <div class="panel-body" ng-bind-html="lead.formatted">
       </div>
+
   </div>
 
   <div ng-show="next.length" class="program-guides">
