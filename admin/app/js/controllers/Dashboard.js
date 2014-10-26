@@ -32,10 +32,10 @@ angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cook
 
     });
 
-    $scope.toggleSidebar = function () {
+    $scope.toggleSidebar = function ($event) {
         $scope.toggle = !$scope.toggle;
-
         $cookieStore.put('toggle', $scope.toggle);
+        $event.preventDefault();
     };
 
     window.onresize = function () {

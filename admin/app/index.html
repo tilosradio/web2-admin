@@ -101,10 +101,12 @@
 
     <div id="sidebar-wrapper"  ng-show="user">
         <ul class="sidebar">
-            <li class="sidebar-main">
-                <a  ng-click="toggleSidebar()">
-                    Nyitólap
+            <li class="sidebar-main"->
+
+                <a href="/">Nyitólap
+                <span  ng-click="toggleSidebar($event)">
                     <span class="menu-icon glyphicon glyphicon-transfer"></span>
+                </span>
                 </a>
             </li>
             <li class="sidebar-title"><span>SAJÁT MŰSOROK</span></li>
