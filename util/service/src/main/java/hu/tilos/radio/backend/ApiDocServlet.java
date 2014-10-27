@@ -1,8 +1,10 @@
 package hu.tilos.radio.backend;
 
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,13 +18,17 @@ public class ApiDocServlet extends HttpServlet {
 
     private static Logger LOG = LoggerFactory.getLogger(ApiDocServlet.class);
 
+    @Inject
+    @ConfigProperty(name = "server.url")
+    private String serverUrl;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
         String relativeUri = request.getRequestURI().substring("/apidoc".length());
         if ("".equals(relativeUri)) {
             resp.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             String uri = request.getScheme() + "://" +
-                    request.getServerName() +
+                    serverUrl +
                     request.getRequestURI() +
                     (request.getQueryString() != null ? "?" + request.getQueryString() : "");
 
@@ -50,4 +56,5 @@ public class ApiDocServlet extends HttpServlet {
             resp.getOutputStream().write(buffer, 0, read);
         }
     }
+
 }
