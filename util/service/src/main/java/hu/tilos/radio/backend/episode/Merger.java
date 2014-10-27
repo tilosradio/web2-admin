@@ -31,11 +31,22 @@ public class Merger {
         Iterator<EpisodeData> it = result.iterator();
         while (it.hasNext()) {
             EpisodeData curr = it.next();
-            if (prev != null && prev.getPlannedFrom().equals(curr.getPlannedFrom())) {
+            if (prev != null && equalData(prev.getPlannedFrom(), curr.getPlannedFrom())) {
                 it.remove();
             }
             prev = curr;
         }
         return result;
+    }
+
+    /**
+     * Equal works even between Date and timestamp.
+     *
+     * @param plannedFrom1
+     * @param plannedFrom2
+     * @return
+     */
+    private boolean equalData(Date plannedFrom1, Date plannedFrom2) {
+        return plannedFrom1.equals(plannedFrom2) || plannedFrom2.equals(plannedFrom1);
     }
 }
