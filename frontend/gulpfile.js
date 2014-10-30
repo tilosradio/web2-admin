@@ -30,7 +30,8 @@ gulp.task('scripts', function() {
 	"app/bower_components/angular-sanitize/angular-sanitize.js",
 	"app/bower_components/textAngular/textAngular.js",
 	"app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js",
-    "app/bower_components/angular-ui-router/release/angular-ui-router.js"
+    "app/bower_components/angular-ui-router/release/angular-ui-router.js",
+    "app/bower_components/angular-local-storage/dist/angular-local-storage.js"
 	])
    .pipe(concat('angular.js'))
    .pipe(gulp.dest(distDir + "/www/scripts"));
