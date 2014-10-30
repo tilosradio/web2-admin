@@ -4,6 +4,7 @@
     author_url*,
     bookmark*,
     change_password*,
+    comment*,
     contribution*,
     episode*,
     listener_stat*,
@@ -56,7 +57,7 @@
     start CDATA #REQUIRED
     end CDATA #REQUIRED
     title CDATA #REQUIRED
-    content CDATA #REQUIRED
+    content CDATA #IMPLIED
     full_episode CDATA #REQUIRED
     karma CDATA #IMPLIED
     selected CDATA #REQUIRED
@@ -70,11 +71,24 @@
     created CDATA #REQUIRED
 >
 
+<!ELEMENT comment EMPTY>
+<!ATTLIST comment
+    id CDATA #REQUIRED
+    comment CDATA #REQUIRED
+    created CDATA #IMPLIED
+    moment CDATA #IMPLIED
+    type CDATA #REQUIRED
+    identifier CDATA #REQUIRED
+    status CDATA #REQUIRED
+    author_id CDATA #REQUIRED
+    parent_id CDATA #IMPLIED
+>
+
 <!ELEMENT contribution EMPTY>
 <!ATTLIST contribution
     id CDATA #REQUIRED
-    radioshow_id CDATA #IMPLIED
-    author_id CDATA #IMPLIED
+    radioshow_id CDATA #REQUIRED
+    author_id CDATA #REQUIRED
     nick CDATA #REQUIRED
 >
 
@@ -183,11 +197,11 @@
     title CDATA #REQUIRED
     type CDATA #REQUIRED
     format CDATA #REQUIRED
-    content CDATA #REQUIRED
-    created CDATA #REQUIRED
-    modified CDATA #REQUIRED
-    author CDATA #REQUIRED
-    alias CDATA #REQUIRED
+    content CDATA #IMPLIED
+    created CDATA #IMPLIED
+    modified CDATA #IMPLIED
+    author CDATA #IMPLIED
+    alias CDATA #IMPLIED
 >
 
 <!ELEMENT url EMPTY>

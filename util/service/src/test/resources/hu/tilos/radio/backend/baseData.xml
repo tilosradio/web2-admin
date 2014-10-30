@@ -33,6 +33,8 @@
     <episode id="1" radioshow_id="1" plannedFrom="2014-04-04 08:00:00" plannedTo="2014-04-04 10:00:00"
              realTo="2014-04-04 10:00:00" realFrom="2014-04-04 08:00:00"></episode>
 
+
+
     <scheduling id="1" validFrom="2014-04-15 10:00:00" validTo="2014-06-10 10:00:00" hourFrom="8" minFrom="0"
                 duration="120"
                 weekType="1" base="2014-04-15 10:00:00" weekDay="5" radioshow_id="1"></scheduling>
@@ -70,5 +72,10 @@
           salt="d25541250d47c49f20b5243f95dbbd91e4db3d0d"></user>
 
     <change_password id="1" token="sadasd" created="2009-12-12 12:23:00" user_id="1"></change_password>
+
+
+    <comment id="1" comment="mi ez a fos zene" type="0" identifier="1" status="1" author_id="1"></comment>
+    <comment id="2" comment="mi ez a fos zene2" type="0" identifier="1" status="1" author_id="1"></comment>
+    <comment id="3" comment="mi ez a fos zene3" parent_id="2" type="0" identifier="1" status="1" author_id="1"></comment>
 
 </dataset>
