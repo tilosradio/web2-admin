@@ -21,6 +21,16 @@ public class MixSimple {
 
     private boolean withContent;
 
+    private ShowSimple show;
+
+    public ShowSimple getShow() {
+        return show;
+    }
+
+    public void setShow(ShowSimple show) {
+        this.show = show;
+    }
+
     public boolean isWithContent() {
         return withContent;
     }

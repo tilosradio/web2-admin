@@ -5,12 +5,10 @@ import hu.radio.tilos.model.type.MixCategory;
 import hu.radio.tilos.model.type.MixType;
 import hu.tilos.radio.backend.converters.MappingFactory;
 import hu.tilos.radio.backend.data.CreateResponse;
-import hu.tilos.radio.backend.data.EntitySelector;
 import hu.tilos.radio.backend.data.types.MixData;
-import hu.tilos.radio.backend.data.MixResponse;
-
 import hu.tilos.radio.backend.data.types.MixSimple;
 import hu.tilos.radio.backend.data.types.ShowSimple;
+import org.hamcrest.CustomMatcher;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.junit.Assert;
@@ -23,6 +21,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(CdiRunner.class)
 @AdditionalClasses({MappingFactory.class, TestUtil.class})
@@ -39,7 +41,7 @@ public class MixControllerTest {
     }
 
     @Before
-    public void resetDatabase(){
+    public void resetDatabase() {
         TestUtil.initTestData();
     }
 
@@ -72,6 +74,21 @@ public class MixControllerTest {
 
         //then
         Assert.assertEquals(3, responses.size());
+        assertThat(responses, hasItem(new CustomMatcher<MixSimple>("Mix with show") {
+
+            @Override
+            public boolean matches(Object item) {
+                try {
+                    MixSimple mix = (MixSimple) item;
+                    assertThat(item, notNullValue());
+                    assertThat(mix.getShow(), notNullValue());
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+        }));
+
     }
 
     @Test
@@ -118,7 +135,7 @@ public class MixControllerTest {
 
         Mix mix = em.find(Mix.class, response.getId());
         Assert.assertEquals("lajos", mix.getAuthor());
-        Assert.assertEquals(1,mix.getShow().getId());
+        Assert.assertEquals(1, mix.getShow().getId());
         em.close();
     }
 
@@ -133,7 +150,7 @@ public class MixControllerTest {
 
         req.setTitle("this Is the title");
         req.setDate("2014-10-23");
-        Assert.assertEquals(MixType.SPEECH,req.getType());
+        Assert.assertEquals(MixType.SPEECH, req.getType());
         req.setType(MixType.MUSIC);
         //req.setShow(new EntitySelector(2));
 

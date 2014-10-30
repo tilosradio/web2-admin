@@ -20,6 +20,7 @@
         <th>File</th>
         <th>Típus</th>
         <th>Kategória</th>
+        <th>Műsor</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,7 @@
         <td><a ng-href="{{mix.link}}">{{mix.file}}</a></td>
         <td>{{mix.type}}</td>
         <td>{{mix.category}}</td>
+        <td><a ng-show="mix.show" ng-href="/show/{{mix.show.alias}}">{{mix.show.name}}</a></td>
     </tr>
     </tbody>
 </table>
