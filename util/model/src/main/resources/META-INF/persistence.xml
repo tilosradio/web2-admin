@@ -16,6 +16,8 @@
         <class>hu.radio.tilos.model.Bookmark</class>
         <class>hu.radio.tilos.model.User</class>
         <class>hu.radio.tilos.model.Tag</class>
+        <class>hu.radio.tilos.model.Comment</class>
+
 
     </persistence-unit>
 
