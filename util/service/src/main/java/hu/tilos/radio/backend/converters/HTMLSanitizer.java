@@ -90,7 +90,6 @@ public class HTMLSanitizer {
             .allowAttributes("lang").matching(Pattern.compile("[a-zA-Z]{2,20}"))
             .globally()
             .allowAttributes("title").matching(HTML_TITLE).globally()
-            .allowStyling()
             .allowAttributes("align").matching(ALIGN).onElements("p")
             .allowAttributes("for").matching(HTML_ID).onElements("label")
             .allowAttributes("color").matching(COLOR_NAME_OR_COLOR_CODE)
