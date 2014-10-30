@@ -107,9 +107,11 @@ public class TestUtil {
             initSchema();
             JdbcDatabaseTester tester = new JdbcDatabaseTester(
                     properties.getProperty("jdbc.driver"),
-                    properties.getProperty("jdbc.url"),
+                    properties.getProperty("jdbc.url")+"?sessionVariables=FOREIGN_KEY_CHECKS=0",
                     properties.getProperty("jdbc.user"),
                     properties.getProperty("jdbc.password"));
+
+            tester.getConnection().getConnection();
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
 
             tester.getConnection().getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new MySqlDataTypeFactory());
