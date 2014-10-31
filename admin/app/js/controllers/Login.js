@@ -50,6 +50,7 @@ angular.module('tilosAdmin')
 
             }).error(function (data) {
                 $scope.loginerror = "Login error";
+                localStorageService.remove('jwt');
             });
 
         }
