@@ -1,5 +1,6 @@
 package hu.tilos.radio.backend.data;
 
+import hu.radio.tilos.model.type.CommentStatus;
 import hu.radio.tilos.model.type.CommentType;
 
 import java.util.ArrayList;
@@ -21,6 +22,16 @@ public class CommentData {
     private UserLink author;
 
     private Date created;
+
+    private CommentStatus status;
+
+    public CommentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CommentStatus status) {
+        this.status = status;
+    }
 
     public int getId() {
         return id;

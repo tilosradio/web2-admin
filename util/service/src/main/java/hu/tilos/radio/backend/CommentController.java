@@ -2,6 +2,7 @@ package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Comment;
 import hu.radio.tilos.model.Role;
+import hu.radio.tilos.model.type.CommentStatus;
 import hu.radio.tilos.model.type.CommentType;
 import hu.tilos.radio.backend.converters.TagUtil;
 import hu.tilos.radio.backend.data.CommentData;
@@ -44,9 +45,11 @@ public class CommentController {
     @Security(role = Role.GUEST)
     @Produces("application/json")
     public List<CommentData> list(@PathParam("type") CommentType type, @PathParam("identifier") int id) {
-        Query namedQuery = entityManager.createNamedQuery("comment.byTypeAndIdentifier");
+        Query namedQuery = entityManager.createNamedQuery("comment.byTypeIdentifierStatusAuthor");
         namedQuery.setParameter("type", type);
         namedQuery.setParameter("identifier", id);
+        namedQuery.setParameter("status", CommentStatus.ACCEPTED);
+        namedQuery.setParameter("author", session.getCurrentUser());
         List<Comment> comments = namedQuery.getResultList();
 
         Map<Integer, CommentData> commentsById = new HashMap<>();

@@ -1,19 +1,15 @@
 <div class="comment-container clearfix">
     <div class="content-container">
-        <div ng-include=" '/partials/comment-edit.html' " ng-show="comment.editing"></div>
-        <div class="comment" ng-hide="comment.editing">
-            <div class="stats">
-                <span class="user">{{comment.author.username}}</span>
-                <time class="timeago"
-                      datetime="{{comment.created}}">
-                    {{comment.created | date:'medium'}}
-                </time>
-                <a href="" ng-click="commentReply(comment)">reply</a>
-            </div>
-            <p class="body">{{comment.comment}}</p>
+        <div class="stats">
+            <span class="user label label-primary">{{comment.author.username}}</span>
+            <time class="timeago" datetime="{{comment.created}}">
+                {{comment.created | date:'medium'}}
+            </time>
+            <a href="" ng-click="commentReply(comment)">Válasz erre...</a>
+            <span ng-show="comment.status == 'NEW'" class="label pull-right label-warning">Jóváhagyásra vár</span>
         </div>
-        <div ng-include="'/partials/comment-reply.html'"
-             ng-show="comment.replying"></div>
+        <p class="body">{{comment.comment}}</p>
+        <div ng-include="'/partials/comment-reply.html'" ng-show="comment.replying"></div>
     </div>
     <div class="comment clearfix"
          ng-repeat="comment in comment.children"

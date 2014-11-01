@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity()
 @Table(name = "comment")
-@NamedQuery(name = "comment.byTypeAndIdentifier", query = "SELECT c FROM Comment c WHERE c.type = :type AND c.identifier = :identifier")
+@NamedQuery(name = "comment.byTypeIdentifierStatusAuthor", query = "SELECT c FROM Comment c WHERE c.type = :type AND c.identifier = :identifier AND (c.status = :status OR c.author = :author) ORDER BY c.created")
 public class Comment {
 
     @Id

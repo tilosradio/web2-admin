@@ -43,8 +43,10 @@ public class CommentControllerTest {
     }
 
     @Test
+    @InRequestScope
     public void list() {
         //given
+        session.setCurrentUser(entityManager.find(User.class, 1));
 
         //when
         List<CommentData> list = controller.list(CommentType.EPISODE, 1);
