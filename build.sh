@@ -2,7 +2,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir -p $DIR/build
 npm install
-bower update
+./node_modules/bower/bin/bower update
 gulp build
 cd dist
 touch $DIR/build/admin.zip
