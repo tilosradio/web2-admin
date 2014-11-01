@@ -2,6 +2,7 @@ package hu.tilos.radio.backend;
 
 import hu.radio.tilos.model.Role;
 import hu.tilos.radio.backend.data.UserInfo;
+import org.modelmapper.ModelMapper;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -23,12 +24,15 @@ public class UserController {
     @Inject
     Session session;
 
+    @Inject
+    ModelMapper mapper;
+
     @Path("/me")
     @Produces("application/json")
     @Security(role = Role.GUEST)
     @GET
     public UserInfo me() {
-        return session.getCurrentUser();
+        return mapper.map(session.getCurrentUser(), UserInfo.class);
     }
 
 

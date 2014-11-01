@@ -26,16 +26,33 @@ tilos.factory('Meta', function ($rootScope) {
     };
 });
 
-tilos.run(function ($rootScope, Meta) {
+tilos.run(function ($rootScope, Meta, localStorageService, $http, API_SERVER_ENDPOINT) {
     $rootScope.$on('$locationChangeStart', function () {
         Meta.setTitle('');
         Meta.setDescription('');
 
     });
 
+    if (localStorageService.get("jwt")) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/user/me').success(function (data) {
+            $rootScope.user = data;
+        });
+    }
+
 });
 
-tilos.config(function ($routeProvider, $stateProvider, $urlRouterProvider) {
+tilos.config(function ($routeProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+    $httpProvider.interceptors.push(function ($q, localStorageService) {
+        return {
+            'request': function (config) {
+                var jwt = localStorageService.get('jwt');
+                if (jwt) {
+                    config.headers.Bearer = jwt;
+                }
+                return config;
+            }
+        };
+    });
 
     $urlRouterProvider.otherwise(function ($injector, $location) {
         var $http = $injector.get('$http');

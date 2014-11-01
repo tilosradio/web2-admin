@@ -3,12 +3,12 @@
 angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
-            controller: 'LoginCtrl',
+            controller: 'LoginCtrl'
         }
     );
     $routeProvider.when('/password_reminder', {
             templateUrl: 'views/reminder.html',
-            controller: 'PasswordReminderCtrl',
+            controller: 'PasswordReminderCtrl'
         }
     );
 

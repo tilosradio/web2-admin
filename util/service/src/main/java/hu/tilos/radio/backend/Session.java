@@ -1,5 +1,6 @@
 package hu.tilos.radio.backend;
 
+import hu.radio.tilos.model.User;
 import hu.tilos.radio.backend.data.UserInfo;
 
 import javax.enterprise.context.RequestScoped;
@@ -7,13 +8,13 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class Session {
 
-    private UserInfo currentUser;
+    private User currentUser;
 
-    public UserInfo getCurrentUser() {
+    public User getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(UserInfo currentUser) {
+    public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
 }

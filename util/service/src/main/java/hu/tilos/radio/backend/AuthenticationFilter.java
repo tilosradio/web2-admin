@@ -1,10 +1,8 @@
 package hu.tilos.radio.backend;
-import com.google.gson.Gson;
+
 import hu.radio.tilos.model.Role;
 import hu.radio.tilos.model.User;
 import hu.tilos.radio.backend.data.Token;
-import hu.tilos.radio.backend.data.UserInfo;
-import hu.tilos.radio.backend.data.UserResponse;
 import hu.tilos.radio.backend.util.JWTEncoder;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.modelmapper.ModelMapper;
@@ -23,10 +21,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Scanner;
 
 /**
  * Workaround to syncrhoize PHP and java based authorization.
@@ -78,9 +72,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                 User user = (User) entityManager.createNamedQuery("user.byUsername").setParameter("username", token.getUsername()).getSingleResult();
 
-                UserInfo userInfo = modelMapper.map(user, UserInfo.class);
-
-                session.setCurrentUser(userInfo);
+                session.setCurrentUser(user);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -90,8 +82,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         Method m = resource.getResourceMethod();
         if (m.isAnnotationPresent(Security.class)) {
             Security s = m.getAnnotation(Security.class);
-            if (s.role() != Role.GUEST && s.role() != Role.UNKNOWN && session.getCurrentUser() != null) {
-                UserInfo user = session.getCurrentUser();
+            if (s.role() != Role.GUEST && s.role() != Role.UNKNOWN ) {
+                User user = session.getCurrentUser();
                 if (user == null || (s.role().ordinal() > user.getRole().ordinal())) {
                     requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
                     return;

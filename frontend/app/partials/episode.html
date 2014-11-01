@@ -8,9 +8,17 @@
 
   <span ng-bind-html="episode.text.formatted"></span>
 
+    <div id="comments" class="tab-pane"
+         ng-show="isLoggedIn()"
+         commentable="episode.id"
+         commentable-type="EPISODE"
+         src="billCommentsPath"
+         logged-in="true" ></div>
+
 </section>
 <aside class="col-md-3">
 
 
   <div ng-include src="'partials/sidebar_right.html'"></div>
+
 </aside>

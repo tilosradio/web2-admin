@@ -1,9 +1,7 @@
 package hu.tilos.radio.backend.converters;
 
-import hu.radio.tilos.model.Author;
-import hu.radio.tilos.model.Episode;
-import hu.radio.tilos.model.Mix;
-import hu.radio.tilos.model.TextContent;
+import hu.radio.tilos.model.*;
+import hu.tilos.radio.backend.data.UserLink;
 import hu.tilos.radio.backend.data.types.*;
 import org.dozer.CustomConverter;
 import org.dozer.DozerBeanMapper;
@@ -19,7 +17,6 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -112,6 +109,12 @@ public class MappingFactory {
             @Override
             protected void configure() {
                 using(sounds).map().setLink(source.getFile());
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<User, UserLink>() {
+            @Override
+            protected void configure() {
+
             }
         });
         modelMapper.addMappings(new PropertyMap<MixData, Mix>() {

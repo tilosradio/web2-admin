@@ -1,0 +1,21 @@
+<div class="comment-container clearfix">
+    <div class="content-container">
+        <div ng-include=" '/partials/comment-edit.html' " ng-show="comment.editing"></div>
+        <div class="comment" ng-hide="comment.editing">
+            <div class="stats">
+                <span class="user">{{comment.author.username}}</span>
+                <time class="timeago"
+                      datetime="{{comment.created}}">
+                    {{comment.created | date:'medium'}}
+                </time>
+                <a href="" ng-click="commentReply(comment)">reply</a>
+            </div>
+            <p class="body">{{comment.comment}}</p>
+        </div>
+        <div ng-include="'/partials/comment-reply.html'"
+             ng-show="comment.replying"></div>
+    </div>
+    <div class="comment clearfix"
+         ng-repeat="comment in comment.children"
+         ng-include=" '/partials/comment.html' "></div>
+</div>
