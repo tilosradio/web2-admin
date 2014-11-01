@@ -8,7 +8,7 @@
             <a href="" ng-click="commentReply(comment)">Válasz erre...</a>
             <span ng-show="comment.status == 'NEW'" class="label pull-right label-warning">Jóváhagyásra vár</span>
         </div>
-        <p class="body">{{comment.comment}}</p>
+        <p class="body" ng-bind-html="comment.comment"></p>
         <div ng-include="'/partials/comment-reply.html'" ng-show="comment.replying"></div>
     </div>
     <div class="comment clearfix"

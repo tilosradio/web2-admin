@@ -11,7 +11,6 @@ import org.hamcrest.Matchers;
 import org.jglue.cdiunit.AdditionalClasses;
 import org.jglue.cdiunit.CdiRunner;
 import org.jglue.cdiunit.InRequestScope;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +53,7 @@ public class CommentControllerTest {
         //then
         assertThat(list.size(), equalTo(2));
         assertThat(list.get(0).getAuthor(), Matchers.notNullValue());
+        assertThat(list.get(0).getComment(), equalTo("mi ez a fos zene"));
     }
 
     @Test

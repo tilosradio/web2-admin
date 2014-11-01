@@ -1,6 +1,7 @@
 package hu.tilos.radio.backend.converters;
 
 import hu.radio.tilos.model.*;
+import hu.tilos.radio.backend.data.CommentData;
 import hu.tilos.radio.backend.data.UserLink;
 import hu.tilos.radio.backend.data.types.*;
 import org.dozer.CustomConverter;
@@ -39,6 +40,9 @@ public class MappingFactory {
 
     @Inject
     HTMLSanitizer sanitizer;
+
+    @Inject
+    StrictHTMLSanitizer strictSanitizer;
 
     @Inject
     EntityManager manager;
@@ -160,7 +164,18 @@ public class MappingFactory {
                 }).map(source).setM3uUrl(null);
             }
         });
+        modelMapper.addMappings(new PropertyMap<Comment, CommentData>() {
+            @Override
+            protected void configure() {
+                using(new Converter<String, String>() {
 
+                    @Override
+                    public String convert(MappingContext<String, String> context) {
+                        return strictSanitizer.clean(context.getSource().replaceAll("\n", "<br/>"));
+                    }
+                }).map(source.getComment()).setComment(null);
+            }
+        });
         return modelMapper;
 
     }
