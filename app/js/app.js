@@ -89,7 +89,7 @@ angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SER
     };
 
     var freeAccess = function (url) {
-        return (/.*password_reset(\?.*)?/g.exec(url) || endsWith(url, '/password_reminder') || endsWith(url, '/login'));
+        return (/.*password_reset(\?.*)?/g.exec(url) || endsWith(url, '/password_reminder') || endsWith(url, '/login')  || endsWith(url, '/logout'));
     };
 
     $rootScope.$on('$locationChangeStart', function (evt, next) {
@@ -106,7 +106,7 @@ angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SER
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         if (!('user' in $rootScope)) {
             // no logged user, we should be going to #login
-            if (next.templateUrl == "views/login.html" || next.templateUrl == "views/reset.html" || next.templateUrl == "views/reminder.html") {
+            if (next.templateUrl == "views/login.html" || next.templateUrl == "views/reset.html" || next.templateUrl == "views/reminder.html" ||  next.templateUrl == "views/logout.html") {
                 // already going to #login, no redirect needed
             } else {
                 // not going to #login, we should redirect now

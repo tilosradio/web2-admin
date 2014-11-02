@@ -95,24 +95,6 @@ gulp.task('assets', function () {
 });
 
 
-gulp.task('php', function () {
-    gulp.src([
-        '../backend/init_autoloader.php',
-        '../backend/config/**/*',
-        '../backend/data/**/*',
-        '../backend/module/Radio/**/*',
-        '../backend/module/RadioAdmin/**/*',
-        '../backend/module/RadioCommon/**/*',
-        '../backend/vendor/**/*'], {base: '../backend'})
-        .pipe(gulp.dest(distDir + '/'));
-
-    gulp.src([
-        '../backend/www/admin.php'])
-        .pipe(gulp.dest(distDir + '/www'));
-
-
-});
-
 
 gulp.task('bower_components', function () {
     gulp.src(['app/bower_components/**/*'], {base: 'app'})
@@ -131,7 +113,7 @@ gulp.task('build', ['clean'], function () {
 });
 
 gulp.task('default', function () {
-    gulp.start('copy-assets', 'copy-htmls', 'usemin', 'php', 'bower_components', 'cachedir');
+    gulp.start('copy-assets', 'copy-htmls', 'usemin', 'bower_components', 'cachedir');
 });
 
 
@@ -142,7 +124,6 @@ gulp.task('watch', ['build'], function () {
     });
 
     gulp.watch(["app/**/*"], ['default']);
-    gulp.watch(["../backend/**/*"], ['php']);
 });
 
 gulp.task('connect', function () {
