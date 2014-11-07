@@ -30,6 +30,8 @@
     <link rel="stylesheet" type="text/css" href="less/dashboard/sidebar.less">
     <link rel="stylesheet" type="text/css" href="less/dashboard/widgets.less">
     <link rel="stylesheet" type="text/css" href="less/dashboard/hamburg.less">
+    <link rel="stylesheet" type="text/css" href="less/dashboard/admin.less">
+
     <!-- endbuild -->
 
     <!-- SCRIPTS -->
@@ -86,6 +88,7 @@
     <script type="text/javascript" src="js/controllers/User.js"></script>
     <script type="text/javascript" src="js/controllers/Dashboard.js"></script>
     <script type="text/javascript" src="js/controllers/Logout.js"></script>
+    <script type="text/javascript" src="js/controllers/Comment.js"></script>
     <script type="text/javascript" src="js/util/DateFormatUtils.js"></script>
 
     <script type="text/javascript" src="js/directives/auth.js"></script>
@@ -101,7 +104,7 @@
 
 </head>
 <body>
-<div ng-controller="DashboardCtrl" id="page-wrapper" ng-class="{'active': toggle}" ng-cloak>
+<div ng-controller="DashboardCtrl" id="page-wrapper" ng-class="{'active': toggle && user}" ng-cloak>
 
     <!-- Sidebar -->
 
@@ -137,6 +140,10 @@
 
             <li class="sidebar-list">
                 <a ng-href="/pages">Oldalak<span class="menu-icon fa fa-quote-right"></span></a>
+            </li>
+
+            <li class="sidebar-list">
+                <a ng-href="/comments">Hozzászólások<span class="menu-icon fa fa-comment"></span></a>
             </li>
 
             <li class="sidebar-title"><span>SEGÍTSÉG</span></li>

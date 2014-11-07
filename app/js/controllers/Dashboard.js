@@ -29,7 +29,6 @@ angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cook
         else {
             $scope.toggle = false;
         }
-
     });
 
     $scope.toggleSidebar = function ($event) {

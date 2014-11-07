@@ -1,0 +1,28 @@
+<h1>Hozzászólások</h1>
+
+<div class="alert alert-warning">
+    A hozzászólás rendszert egyelőre még teszteljük. A tilos.hu honlapon a belépett (http://tilos.hu/login) felhasználók láthatják az adásnaplókhoz fűzött hozzászólásokat.
+    Minden hozzászólás moderált.
+</div>
+
+<div class="comments-container">
+    <div data-ng-repeat="comment in comments" class="panel panel-default">
+        <div class="panel-heading">
+            {{comment.author.username}} ({{comment.created | date:'medium'}})
+            <span ng-show="comment.status == 'NEW'"
+                  class="label pull-right label-warning">Jóváhagyásra vár
+            </span>
+        </div>
+
+        <div class="panel-body">
+            <div ng-bind-html="comment.comment"></div>
+            <button ng-show="comment.status == 'NEW'" ng-click="approve(comment.id)"
+                    class="comments-approve-button btn btn-danger btn-sm">Jóváhagy
+            </button>
+            <button ng-click="delete(comment.id)"
+                    class="comments-approve-button btn btn-danger btn-sm">Kidob
+            </button>
+        </div>
+    </div>
+
+</div>
