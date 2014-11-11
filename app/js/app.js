@@ -59,30 +59,7 @@ angular.module('tilosAdmin').config(['$provide', function ($provide) {
 
 }]);
 
-angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SERVER_ENDPOINT) {
-
-//  $rootScope.textAngularOpts = {
-//    toolbar: [
-//      ['h2', 'h3','p'],
-//      ['bold', 'italics'],
-//      ['ol', 'ul'],
-//      ['insertLink','insertImage'],
-//      ['html']
-//
-//    ]
-//  };
-//  $rootScope.textAngularTools = {
-//    h2: {
-//      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>cím</button>"
-//    },
-//    h3: {
-//      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>alcím</button>"
-//    },
-//    p: {
-//      display: "<button type='button' ng-click='action()' ng-class='displayActiveToolClass(active)'>normál</button>"
-//    }
-//  };
-
+angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SERVER_ENDPOINT, localStorageService) {
 
     var endsWith = function (str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
@@ -104,15 +81,27 @@ angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SER
     });
 
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if (!('user' in $rootScope)) {
+        if ('user' in $rootScope) {
+          if ($rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'AUTHOR') {
+            //hi friends
+            return;
+          } else {
+            localStorageService.remove('jwt');
+            window.location.href = 'http://tilos.hu';
+          }
+        }
+
             // no logged user, we should be going to #login
-            if (next.templateUrl == "views/login.html" || next.templateUrl == "views/reset.html" || next.templateUrl == "views/reminder.html" ||  next.templateUrl == "views/logout.html") {
+            if (next.templateUrl == "views/login.html" ||
+              next.templateUrl == "views/reset.html" ||
+              next.templateUrl == "views/reminder.html" ||
+              next.templateUrl == "views/logout.html") {
                 // already going to #login, no redirect needed
             } else {
                 // not going to #login, we should redirect now
                 $location.path("/login");
             }
-        }
+
     });
 
     $rootScope.initialPath = $location.path();
