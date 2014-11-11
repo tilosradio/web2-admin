@@ -16,9 +16,9 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
         templateUrl: 'views/shows.html',
         controller: 'ShowListCtrl',
         resolve: {
-            list: function ($route, Shows) {
-                return Shows.query({id: $route.current.params.id});
-            },
+            list: function ($route, API_SERVER_ENDPOINT, $http) {
+              return $http.get(API_SERVER_ENDPOINT + '/api/v1/show?status=all');
+            }
         }});
     $routeProvider.when('/edit/show/:id', {
         templateUrl: 'views/show-form.html',
@@ -26,7 +26,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
         resolve: {
             data: function ($route, Shows) {
                 return Shows.get({id: $route.current.params.id});
-            },
+            }
         }});
     $routeProvider.when('/new/show', {
         templateUrl: 'views/show-form.html',
@@ -100,10 +100,10 @@ angular.module('tilosAdmin')
     });
 
 angular.module('tilosAdmin')
-    .controller('ShowListCtrl', ['$scope', 'list', function ($scope, list) {
-        $scope.shows = list;
+    .controller('ShowListCtrl', function ($scope, list) {
+        $scope.shows = list.data;
 
-    }]);
+    });
 
 'use strict';
 

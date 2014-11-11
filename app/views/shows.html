@@ -30,5 +30,7 @@
 <table ifAdmin class="table">
   <tr ng-repeat="show in shows | filter:quicksearch">
     <td><a ng-href="/show/{{show.id}}">{{show.name}}</a></td>
+    <td>{{show.status}}</td>
+    <td>{{show.type}}</td>
   </tr>
 </table>
