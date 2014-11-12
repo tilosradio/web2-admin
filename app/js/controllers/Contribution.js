@@ -17,7 +17,7 @@ angular.module('tilosAdmin').controller('ContributionNewCtrl', function (API_SER
   $http.get(API_SERVER_ENDPOINT + "/api/v0/author").success(function (data) {
     $scope.authors = data;
   });
-  $http.get(API_SERVER_ENDPOINT + "/api/v0/show").success(function (data) {
+  $http.get(API_SERVER_ENDPOINT + "/api/v1/show?status=all").success(function (data) {
     $scope.shows = data;
   });
   $scope.save = function () {
