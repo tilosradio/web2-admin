@@ -54,7 +54,7 @@ angular.module('tilosAdmin')
         Authors.save($scope.author, function (data) {
           var id = data.data.id;
           var httpCache = $cacheFactory.get('$http');
-          httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/author/' + id);
+          httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/author/' + id);
           $location.path('/author/' + id);
         });
 
@@ -66,9 +66,9 @@ angular.module('tilosAdmin')
       function ($location, $scope, $routeParams, server, $http, $cacheFactory, data) {
         $scope.author = data;
         $scope.save = function () {
-          $http.put(server + '/api/v0/author/' + $routeParams.id, $scope.author).success(function (data) {
+          $http.put(server + '/api/v1/author/' + $routeParams.id, $scope.author).success(function (data) {
             var httpCache = $cacheFactory.get('$http');
-            httpCache.remove(server + '/api/v0/author/' + $scope.author.id);
+            httpCache.remove(server + '/api/v1/author/' + $scope.author.id);
             $location.path('/author/' + $scope.author.id);
             $scope.error = "";
           }).error(function (data) {
@@ -85,7 +85,7 @@ angular.module('tilosAdmin')
 ;
 
 angular.module('tilosAdmin').factory('Authors', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-  return $resource(server + '/api/v0/author/:id', null, {
+  return $resource(server + '/api/v1/author/:id', null, {
     'update': { method: 'PUT'}
   });
 }]);
