@@ -6,7 +6,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
         controller: 'ShowCtrl',
         resolve: {
             data: function ($route, Shows, API_SERVER_ENDPOINT, $http) {
-                return $http.get(API_SERVER_ENDPOINT + "/api/v0/show/" + $route.current.params.id);
+                return $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $route.current.params.id);
             },
             schedulingList: function ($route, Schedulings, API_SERVER_ENDPOINT, $http) {
                 return $http.get(API_SERVER_ENDPOINT + "/api/v0/show/" + $route.current.params.id + "/schedulings");
@@ -145,10 +145,10 @@ angular.module('tilosAdmin')
             ]
             $scope.show = data;
             $scope.save = function () {
-                $http.put(server + '/api/v0/show/' + $routeParams.id, $scope.show).success(function (data) {
+                $http.put(server + '/api/v1/show/' + $routeParams.id, $scope.show).success(function (data) {
                     var httpCache = $cacheFactory.get('$http');
-                    httpCache.remove(server + '/api/v0/show/' + $scope.show.id);
-                    httpCache.remove(server + '/api/v0/show');
+                    httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
+                    httpCache.remove(server + '/api/v1/show');
                     $location.path('/show/' + $scope.show.id);
                 });
 
@@ -158,7 +158,7 @@ angular.module('tilosAdmin')
 ;
 
 angular.module('tilosAdmin').factory('Shows', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-    return $resource(server + '/api/v0/show/:id', null, {
+    return $resource(server + '/api/v1/show/:id', null, {
         'update': { method: 'PUT'}
     });
 }]);
