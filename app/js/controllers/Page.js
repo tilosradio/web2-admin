@@ -32,7 +32,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
 
 angular.module('tilosAdmin')
     .controller('TextListCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $scope) {
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/text/page/list').success(function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/text/page').success(function (data) {
             $scope.pages = data;
         });
 
@@ -44,10 +44,9 @@ angular.module('tilosAdmin')
     .controller('TextEditCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Texts, $cacheFactory, data) {
         $scope.text = data;
         $scope.save = function () {
-            $http.put(API_SERVER_ENDPOINT + '/api/v0/text/' + $scope.text.id, $scope.text).success(function (data) {
+            $http.put(API_SERVER_ENDPOINT + '/api/v1/text/page/' + $scope.text.id, $scope.text).success(function (data) {
                 var httpCache = $cacheFactory.get('$http');
-                httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/text/' + $scope.text.id);
-                httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/show');
+                httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/text/page/' + $scope.text.id);
                 $location.path('/page/' + $scope.text.id);
             });
         }
@@ -58,8 +57,8 @@ angular.module('tilosAdmin')
     .controller('TextNewCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Texts) {
         $scope.text = {};
         $scope.save = function () {
-            $http.post(API_SERVER_ENDPOINT + '/api/v0/text', $scope.text).success(function (data) {
-                $location.path('/page/' + data.data.id);
+            $http.post(API_SERVER_ENDPOINT + '/api/v1/text/page', $scope.text).success(function (data) {
+                $location.path('/page/' + data.id);
             });
         }
     }
@@ -75,7 +74,7 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin').factory('Texts', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-    return $resource(server + '/api/v0/text/:id', null, {
+    return $resource(server + '/api/v1/text/page/:id', null, {
         'update': { method: 'PUT'}
     });
 }]);

@@ -7,10 +7,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
         resolve: {
             data: function ($route, Shows, API_SERVER_ENDPOINT, $http) {
                 return $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $route.current.params.id);
-            },
-            schedulingList: function ($route, Schedulings, API_SERVER_ENDPOINT, $http) {
-                return $http.get(API_SERVER_ENDPOINT + "/api/v0/show/" + $route.current.params.id + "/schedulings");
-            },
+            }
         }});
     $routeProvider.when('/shows', {
         templateUrl: 'views/shows.html',
@@ -34,19 +31,18 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
     });
 }]);
 angular.module('tilosAdmin')
-    .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, schedulingList, Schedulings, Contributions, Shows, Urls) {
+    .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Schedulings, Contributions, Shows, Urls) {
         data = data.data;
         $scope.show = data;
 
         $scope.server = API_SERVER_ENDPOINT;
-        $scope.schedulings = schedulingList.data;
         $scope.now = new Date().getTime();
 
         $scope.currentShowPage = 0;
         $scope.deleteScheduling = function (id) {
             Schedulings.remove({'id': id});
-            $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id + "/schedulings").success(function (data) {
-                $scope.schedulings = data;
+            $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+                $scope.show = data;
             });
         }
         $scope.deleteUrl = function (id) {
@@ -92,7 +88,7 @@ angular.module('tilosAdmin')
 
         $scope.deleteContribution = function (id) {
             Contributions.remove({id: id}, function () {
-                $scope.show = Shows.get({id: $scope.show.id});
+                $location.path("/show" + $scope.show.id);
 
             });
         };

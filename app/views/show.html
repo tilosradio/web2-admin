@@ -26,9 +26,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="scheduling in schedulings">
-            <td>{{scheduling.validFrom * 1000| date:yyy-MM-dd}}</td>
-            <td>{{scheduling.validTo * 1000 | date:yyyy-MM-dd}}</td>
+        <tr ng-repeat="scheduling in show.schedulings">
+            <td>{{scheduling.validFrom| date:yyy-MM-dd}}</td>
+            <td>{{scheduling.validTo| date:yyyy-MM-dd}}</td>
             <td>{{scheduling.weekDay | weekDayName}}</td>
             <td>{{scheduling.hourFrom}}:{{scheduling.minFrom}}</td>
             <td>{{scheduling.duration}}&nbsp;perc</td>

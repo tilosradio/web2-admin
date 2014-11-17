@@ -35,26 +35,26 @@ angular.module('tilosAdmin')
       data.$promise.then(
           function (data) {
             $scope.$watch('scheduling.validFrom', function (date) {
-              $scope.validFromDate = dateFilter(new Date(date * 1000), 'yyyy-MM-dd')
+              $scope.validFromDate = dateFilter(new Date(date), 'yyyy-MM-dd')
             });
 
             $scope.$watch('validFromDate', function (dateString) {
-              $scope.scheduling.validFrom = new Date(dateString).getTime() / 1000;
+              $scope.scheduling.validFrom = new Date(dateString).getTime();
             });
 
             $scope.$watch('scheduling.validTo', function (date) {
-              $scope.validToDate = dateFilter(new Date(date * 1000), 'yyyy-MM-dd')
+              $scope.validToDate = dateFilter(new Date(date), 'yyyy-MM-dd')
             });
 
             $scope.$watch('validToDate', function (dateString) {
-              $scope.scheduling.validTo = new Date(dateString).getTime() / 1000;
+              $scope.scheduling.validTo = new Date(dateString).getTime();
             });
             $scope.$watch('scheduling.base', function (date) {
-              $scope.baseDate = dateFilter(new Date(date * 1000), 'yyyy-MM-dd')
+              $scope.baseDate = dateFilter(new Date(date), 'yyyy-MM-dd')
             });
 
             $scope.$watch('baseDate', function (dateString) {
-              $scope.scheduling.base = new Date(dateString).getTime() / 1000;
+              $scope.scheduling.base = new Date(dateString).getTime();
             });
 
 
@@ -74,28 +74,28 @@ angular.module('tilosAdmin')
 
 
       $scope.$watch('scheduling.validFrom', function (date) {
-        $scope.validFromDate = dateFilter(new Date(date * 1000), 'yyyy-MM-dd')
+        $scope.validFromDate = dateFilter(new Date(date), 'yyyy-MM-dd')
       });
 
       $scope.$watch('validFromDate', function (dateString) {
-        $scope.scheduling.validFrom = new Date(dateString).getTime() / 1000;
+        $scope.scheduling.validFrom = new Date(dateString).getTime();
       });
 
       $scope.$watch('scheduling.validTo', function (date) {
-        $scope.validToDate = dateFilter(new Date(date * 1000), 'yyyy-MM-dd')
+        $scope.validToDate = dateFilter(new Date(date), 'yyyy-MM-dd')
       });
 
       $scope.$watch('validToDate', function (dateString) {
-        $scope.scheduling.validTo = new Date(dateString).getTime() / 1000;
+        $scope.scheduling.validTo = new Date(dateString).getTime();
       });
 
 
       $scope.$watch('scheduling.base', function (date) {
-        $scope.baseDate = dateFilter(new Date(date * 1000), 'yyyy-MM-dd')
+        $scope.baseDate = dateFilter(new Date(date), 'yyyy-MM-dd')
       });
 
       $scope.$watch('baseDate', function (dateString) {
-        $scope.scheduling.base = new Date(dateString).getTime() / 1000;
+        $scope.scheduling.base = new Date(dateString).getTime();
       });
 
       $scope.save = function () {
@@ -113,7 +113,7 @@ angular.module('tilosAdmin').filter('weekDayName', function () {
   };
 });
 angular.module('tilosAdmin').factory('Schedulings', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-  return $resource(server + '/api/v0/scheduling/:id', null, {
+  return $resource(server + '/api/v1/scheduling/:id', null, {
     'update': { method: 'PUT'}
   });
 }]);

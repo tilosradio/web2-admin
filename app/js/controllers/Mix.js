@@ -72,7 +72,7 @@ angular.module('tilosAdmin')
         $scope.mixType = enumMixType;
         $scope.mixCategory = enumMixCategory;
         $scope.mix = {};
-        $http.get(API_SERVER_ENDPOINT + '/api/v0/show', {'cache': true}).success(function (data) {
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/show', {'cache': true}).success(function (data) {
             $scope.shows = data;
         });
         $scope.types = [

@@ -4,7 +4,7 @@ angular.module('tilosAdmin').config(function ($routeProvider) {
 
   $routeProvider.when('/new/contribution', {
     templateUrl: 'views/contribution-form.html',
-    controller: 'ContributionNewCtrl',
+    controller: 'ContributionNewCtrl'
 
 
   });
@@ -14,7 +14,7 @@ angular.module('tilosAdmin').config(function ($routeProvider) {
 
 angular.module('tilosAdmin').controller('ContributionNewCtrl', function (API_SERVER_ENDPOINT, $scope, $http, Contributions, $location) {
   $scope.contribution = {};
-  $http.get(API_SERVER_ENDPOINT + "/api/v0/author").success(function (data) {
+  $http.get(API_SERVER_ENDPOINT + "/api/v1/author").success(function (data) {
     $scope.authors = data;
   });
   $http.get(API_SERVER_ENDPOINT + "/api/v1/show?status=all").success(function (data) {
