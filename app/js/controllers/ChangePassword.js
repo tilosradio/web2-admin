@@ -14,15 +14,16 @@ angular.module('tilosAdmin')
         $scope.error = "Az email vagy a token paraméter hiányzik";
       }
       $scope.reset = function () {
-        $http.post(server + '/api/v0/auth/password_reset', $scope.newpassword).success(function (data) {
-          if (data.success) {
+        $http.post(server + '/api/v1/auth/password_reset', $scope.newpassword).success(function (data) {
             $scope.error = "";
             $scope.message = data.message;
-          } else {
-            $scope.error = "Password reset error";
-          }
+
         }).error(function (data) {
-              $scope.error = data.error;
+          if (data.message) {
+            $scope.error = data.message;
+          } else {
+            $scope.error= "Unknown error"
+          }
             });
       };
     }]);

@@ -18,19 +18,14 @@ angular.module("tilosAdmin").controller("PasswordReminderCtrl", function ($scope
     $scope.reminderdata = {};
 
     $scope.reminder = function () {
-
-
-        $http.post(server + '/api/v0/auth/password_reset', $scope.reminderdata).success(function (data) {
-            if (data.success) {
-                $scope.message = data.message;
-            } else {
-                $scope.remindererror = "Password reset error";
-            }
+        $http.post(server + '/api/v1/auth/password_reset', $scope.reminderdata).success(function (data) {
+           $scope.message = data.message;
+           $scope.remindererror = "";
         }).error(function (data) {
-            if (data.error) {
-                $scope.remindererror = data.error;
+            if (data.message) {
+                $scope.remindererror = data.message;
             } else {
-                $scope.reminderror = "Unknown error"
+                $scope.remindererror = "Unknown error"
             }
         });
     };
