@@ -45,10 +45,12 @@ angular.module('tilosAdmin')
                 $scope.show = data;
             });
         }
+
         $scope.deleteUrl = function (id) {
-            Urls.remove({'id': id, 'showId': $scope.show.id});
+          $http.delete(API_SERVER_ENDPOINT + '/api/v1/url/' + id).success(function (data) {
             $scope.show = Shows.get({id: $scope.show.id});
-        }
+          });
+        };
 
 
         var to = new Date().getTime();

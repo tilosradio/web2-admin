@@ -61,9 +61,9 @@
         </thead>
         <tbody>
         <tr ng-repeat="url in show.urls">
-            <td><a ng-href="{{url.url}}">{{url.url}}</a></td>
+            <td><a ng-href="{{url.address}}">{{url.address}}</a></td>
             <td ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
-                                                       ng-href="/edit/url/{{url.id}}/{{show.id}}">Szerkesztés</a></td>
+                                                       ng-href="/edit/url/{{show.id}}/{{url.id}}">Szerkesztés</a></td>
             <td
                     ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
                                                            ng-confirm-click

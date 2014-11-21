@@ -52,7 +52,7 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin').factory('Urls', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
-  return $resource(server + '/api/v0/url/:id', null, {
+  return $resource(server + '/api/v1/url/:id', null, {
     'update': { method: 'PUT'}
   });
 }]);
