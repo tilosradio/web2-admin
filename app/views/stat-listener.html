@@ -1,0 +1,11 @@
+<table class="table">
+  <tr data-ng-repeat="listener in listeners">
+    <td>{{listener.episode.show.name }}</td>
+    <td>{{listener.episode.plannedFrom | date:'yyyy-MM-dd HH:mm'}}</td>
+    <td>{{listener.episode.plannedTo | date:'yyyy-MM-dd HH:mm'}}</td>
+    <td>{{listener.episode.text.title}}</td>
+    <td>{{listener.mean}}</td>
+    <td>{{listener.min}}</td>
+    <td>{{listener.max}}</td>
+  </tr>
+</table>
