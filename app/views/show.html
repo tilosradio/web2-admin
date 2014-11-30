@@ -81,7 +81,7 @@
 
     <p>
     <ul ng-repeat="contributor in show.contributors">
-        <li>{{contributor.nick}} (<a ng-href="/author/{{contributor.author.id}}">{{contributor.author.name}}</a>) <a
+        <li><a ng-href="/author/{{contributor.author.id}}">{{contributor.nick}}</a> <a
                 ng-confirm-click ng-show="user.role== 'ADMIN'" class="btn btn-danger"
                 ng-click="deleteContribution(contributor.id)">Törlés</a></li>
     </ul>
@@ -98,11 +98,11 @@
     </ul>
     <div class="panel panel-default episode-box" ng-repeat="episode in show.episodes">
         <div class="panel-heading">
-            <a ng-show="episode.id" ng-href="/episode/{{episode.id}}"><b>
+            <a ng-show="episode.persistent" ng-href="/episode/{{episode.id}}"><b>
                 {{episode.plannedFrom | date: 'yyyy.MM.dd'}}
                 <span ng-if="episode.text">{{episode.text.title}}</span>
             </b></a>
-      <span ng-hide="episode.id">
+      <span ng-hide="episode.persistent">
       <b>
           {{episode.plannedFrom | date: 'yyyy.MM.dd'}}&nbsp;&nbsp;
           <if-show-admin show="show">

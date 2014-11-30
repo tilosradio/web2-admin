@@ -108,20 +108,20 @@ angular.module('tilosAdmin')
 angular.module('tilosAdmin')
     .controller('ShowNewCtrl', function ($location, $scope, $routeParams, $http, $cacheFactory, Shows, API_SERVER_ENDPOINT) {
         $scope.types = [
-            {id: 1, 'name': "Beszélgetős"},
-            {id: 0, 'name': "Zenés"}
+            {id: 'SPEECH', 'name': "Beszélgetős"},
+            {id: "MUSIC", 'name': "Zenés"}
         ]
         $scope.statuses = [
-            {id: 0, 'name': "Tervezett"},
-            {id: 1, 'name': "Aktív"},
-            {id: 2, 'name': "Archív"},
-            {id: 3, 'name': "Legenda"}
+            {id: 'PLANNED', 'name': "Tervezett"},
+            {id: 'ACTIVE', 'name': "Aktív"},
+            {id: 'OLD', 'name': "Archív"},
+            {id: 'LEGEND', 'name': "Legenda"}
         ]
         $scope.show = {};
         $scope.save = function () {
 
             Shows.save($scope.show, function (data) {
-                var id = data.data.id;
+                var id = data.id;
                 $location.path('/show/' + id);
             });
 
@@ -131,16 +131,16 @@ angular.module('tilosAdmin')
 angular.module('tilosAdmin')
     .controller('ShowEditCtrl', ['$location', '$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http', '$cacheFactory', 'data',
         function ($location, $scope, $routeParams, server, $http, $cacheFactory, data) {
-            $scope.types = [
-                {id: 1, 'name': "Beszélgetős"},
-                {id: 0, 'name': "Zenés"}
-            ]
-            $scope.statuses = [
-                {id: 0, 'name': "Tervezett"},
-                {id: 1, 'name': "Aktív"},
-                {id: 2, 'name': "Archív"},
-                {id: 3, 'name': "Legenda"}
-            ]
+          $scope.types = [
+            {id: 'SPEECH', 'name': "Beszélgetős"},
+            {id: "MUSIC", 'name': "Zenés"}
+          ]
+          $scope.statuses = [
+            {id: 'PLANNED', 'name': "Tervezett"},
+            {id: 'ACTIVE', 'name': "Aktív"},
+            {id: 'OLD', 'name': "Archív"},
+            {id: 'LEGEND', 'name': "Legenda"}
+          ]
             $scope.show = data;
             $scope.save = function () {
                 $http.put(server + '/api/v1/show/' + $routeParams.id, $scope.show).success(function (data) {
