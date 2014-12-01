@@ -75,3 +75,9 @@ input.ng-invalid {
   background-color: #EFEFEF;
   border: 1px solid;
 }
+
+.dropdown-toggle{
+display: none;
+@media all and (min-width: $screen-sm){
+display: block;
+}
