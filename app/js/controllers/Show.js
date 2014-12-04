@@ -31,7 +31,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
     });
 }]);
 angular.module('tilosAdmin')
-    .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Schedulings, Contributions, Shows, Urls) {
+    .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Schedulings, Contributions, Shows, Urls, ngDialog) {
         data = data.data;
         $scope.show = data;
 
@@ -88,14 +88,48 @@ angular.module('tilosAdmin')
             $location.path('/new/episode');
         };
 
-        $scope.deleteContribution = function (id) {
-            Contributions.remove({id: id}, function () {
-                $location.path("/show" + $scope.show.id);
-
-            });
+        $scope.deleteContribution = function (contribution) {
+          $http.delete(API_SERVER_ENDPOINT + '/api/int/contribution?show=' + $scope.show.id+'&author='+contribution.author.id).success(function (data) {
+            $location.path('/show/' + $scope.show.id);
+          });
+          $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+            $scope.show.contributors = data.contributors;
+          });
         };
 
+
+
+        $scope.newContribution = function () {
+          ngDialog.open({
+            template: 'views/contribution-form.html',
+            controller: 'ContributionNewCtrl',
+            scope: $scope
+          });
+
+        };
+
+
     });
+
+angular.module('tilosAdmin').controller('ContributionNewCtrl', function (API_SERVER_ENDPOINT, $scope, $http, Contributions, $location, $cacheFactory) {
+  $scope.contribution = {};
+  $http.get(API_SERVER_ENDPOINT + "/api/v1/author").success(function (data) {
+    $scope.authors = data;
+  });
+  $scope.save = function () {
+    $scope.contribution.show = {"id":$scope.show.id};
+    $http.post(server + '/api/int/contribution', $scope.contribution).success(function (data) {
+      var httpCache = $cacheFactory.get('$http');
+      httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
+      httpCache.remove(server + '/api/v1/author/' + $scope.contribution.author.id);
+      httpCache.remove(server + '/api/v1/show');
+      $location.path('/show/' + $scope.show.id);
+      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+        $scope.show.contributors = data.contributors;
+      });
+    });
+  }
+});
 
 angular.module('tilosAdmin')
     .controller('ShowListCtrl', function ($scope, list) {

@@ -8,7 +8,8 @@ angular.module('tilosAdmin', [
     'ngRoute',
     'configuration',
     'textAngular',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'ngDialog'
 ])
     .config(function ($routeProvider, $locationProvider, $httpProvider) {
         $httpProvider.interceptors.push(function ($q, localStorageService) {
