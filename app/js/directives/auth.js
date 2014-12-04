@@ -2,7 +2,7 @@ angular.module("tilosAdmin").directive('ifAdmin', function ($rootScope) {
   return {
     restrict: 'A',
     link: function (scope, element, attributes) {
-      if ($rootScope.user && $rootScope.user.role.name == 'admin') {
+      if ($rootScope.user && $rootScope.user.role == 'ADMIN') {
         element.removeClass('ng-hide');
       }
     }
@@ -19,7 +19,7 @@ angular.module("tilosAdmin").directive('ifAuthorAdmin', function ($rootScope, $q
       xxx: "=author"
     },
     link: function (scope, element, attributes) {
-      if ($rootScope.user && $rootScope.user.role.name == 'admin') {
+      if ($rootScope.user && $rootScope.user.role == 'ADMIN') {
         return;
       }
       scope.xxx.$promise.then(function (author) {
@@ -45,7 +45,7 @@ angular.module("tilosAdmin").directive('ifShowAdmin', function ($rootScope, $q) 
       xxx: "=show"
     },
     link: function (scope, element, attributes) {
-      if ($rootScope.user && $rootScope.user.role.name == 'admin') {
+      if ($rootScope.user && $rootScope.user.role == 'ADMIN') {
         return;
       }
       $q.when(scope.xxx).then(function (show) {

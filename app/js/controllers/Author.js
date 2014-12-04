@@ -52,7 +52,7 @@ angular.module('tilosAdmin')
       $scope.save = function () {
 
         Authors.save($scope.author, function (data) {
-          var id = data.data.id;
+          var id = data.id;
           var httpCache = $cacheFactory.get('$http');
           httpCache.remove(API_SERVER_ENDPOINT + '/api/v1/author/' + id);
           $location.path('/author/' + id);
@@ -64,6 +64,7 @@ angular.module('tilosAdmin')
 angular.module('tilosAdmin')
     .controller('AuthorEditCtrl', ['$location', '$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http', '$cacheFactory', 'data',
       function ($location, $scope, $routeParams, server, $http, $cacheFactory, data) {
+        $scope.edit = true;
         $scope.author = data;
         $scope.save = function () {
           $http.put(server + '/api/v1/author/' + $routeParams.id, $scope.author).success(function (data) {
