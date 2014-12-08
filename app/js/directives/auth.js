@@ -71,3 +71,32 @@ angular.module("tilosAdmin").directive('ifShowAdmin', function ($rootScope, $q) 
     }
   };
 });
+
+angular.module("tilosAdmin").directive('ifAllowed', function ($rootScope, $q) {
+  return {
+    restrict: 'E',
+    transclude: true,
+    template: '<span ng-transclude ></span>',
+    scope: {
+      xxx: '=permission'
+    },
+    link: function (scope, element, attributes) {
+      //if ($rootScope.user && $rootScope.user.role == 'ADMIN') {
+      //  return;
+      //}
+      $q.when(scope.xxx).then(function (perm) {
+        var perms = $rootScope.user.permissions;
+        for (var i = 0; i < perms.length; i++) {
+          if (perms[i] == permission) {
+            return;
+          }
+        }
+        element.addClass('ng-hide');
+
+
+      });
+
+
+    }
+  };
+});

@@ -38,17 +38,6 @@ angular.module('tilosAdmin')
       }
     }]);
 
-angular.module('tilosAdmin')
-    .controller('UrlNewCtrl', ['$scope', 'Urls', '$location', '$routeParams', function ($scope, resource, $location, $routeParams) {
-     $scope.url = {};
-     $scope.save = function () {
-        $scope.url.showId = $routeParams.show;
-        resource.save({show: $routeParams.show}, $scope.url, function (data) {
-          $location.path('/show/' + $routeParams.show);
-        });
-      }
-    }]);
-
 
 
 angular.module('tilosAdmin').factory('Urls', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {

@@ -70,6 +70,16 @@ angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SER
         return (/.*password_reset(\?.*)?/g.exec(url) || endsWith(url, '/password_reminder') || endsWith(url, '/login')  || endsWith(url, '/logout'));
     };
 
+    $rootScope.access = function(permission) {
+      var perms = $rootScope.user.permissions;
+      for (var i = 0; i < perms.length; i++) {
+        if (perms[i] == permission) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     $rootScope.$on('$locationChangeStart', function (evt, next) {
         if (!('user' in $rootScope)) {
             if (!freeAccess(next)) {

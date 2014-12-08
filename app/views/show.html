@@ -49,25 +49,20 @@
 
 
 <section>
-    <h2>Linkek <a ng-show="user.role== 'ADMIN'" class="btn btn-warning" ng-href="/new/url/{{show.id}}">Új</a></h2>
+    <h2>Linkek <a ng-show="access('/show/' + show.id)" class="btn btn-warning" ng-click="newUrl()">Új</a></h2>
 
     <table class="table">
         <thead>
         <tr>
             <th>Link</th>
-            <th></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="url in show.urls">
-            <td><a ng-href="{{url.address}}">{{url.address}}</a></td>
-            <td ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
-                                                       ng-href="/edit/url/{{show.id}}/{{url.id}}">Szerkesztés</a></td>
-            <td
-                    ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
+            <td><a ng-href="{{url.address}}">{{url.address}}</a>
+                    <a ng-show="access('/show/' + show.id)" class="btn btn-danger"
                                                            ng-confirm-click
-                                                           ng-click="deleteUrl(url.id)">Törlés</a></td>
+                                                           ng-click="deleteUrl($index)">Törlés</a>
         </tr>
         </tbody>
     </table>
