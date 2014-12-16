@@ -120,6 +120,70 @@ angular.module('tilosAdmin')
         httpCache.remove(server + '/api/v1/show');
       });
     };
+
+    $scope.newScheduling = function () {
+      ngDialog.open({
+        template: 'views/scheduling-form.html',
+        controller: 'SchedulingNewCtrl',
+        scope: $scope
+      });
+    };
+
+    $scope.deleteScheduling = function (index) {
+      $scope.show.schedulings.splice(index, 1);
+      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $scope.show.id, $scope.show).success(function (data) {
+        var httpCache = $cacheFactory.get('$http');
+        httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
+        httpCache.remove(server + '/api/v1/show');
+      });
+    };
+  });
+
+
+angular.module('tilosAdmin')
+  .controller('SchedulingNewCtrl', function ($scope, dateFilter, $location, $routeParams, $http, API_SERVER_ENDPOINT, $cacheFactory) {
+    $scope.scheduling = {};
+
+
+    $scope.$watch('scheduling.validFrom', function (date) {
+      $scope.validFromDate = dateFilter(new Date(date), 'yyyy-MM-dd')
+    });
+
+    $scope.$watch('validFromDate', function (dateString) {
+      $scope.scheduling.validFrom = new Date(dateString).getTime();
+    });
+
+    $scope.$watch('scheduling.validTo', function (date) {
+      $scope.validToDate = dateFilter(new Date(date), 'yyyy-MM-dd')
+    });
+
+    $scope.$watch('validToDate', function (dateString) {
+      $scope.scheduling.validTo = new Date(dateString).getTime();
+    });
+
+
+    $scope.$watch('scheduling.base', function (date) {
+      $scope.baseDate = dateFilter(new Date(date), 'yyyy-MM-dd')
+    });
+
+    $scope.$watch('baseDate', function (dateString) {
+      $scope.scheduling.base = new Date(dateString).getTime();
+    });
+
+    $scope.save = function () {
+      var newShow = JSON.parse(JSON.stringify($scope.show))
+      newShow.schedulings.push($scope.scheduling);
+      newShow.episodes = [];
+      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + newShow.id, newShow).success(function (data) {
+        var httpCache = $cacheFactory.get('$http');
+        httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
+        httpCache.remove(server + '/api/v1/show');
+        $scope.closeThisDialog();
+        $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+          $scope.show.urls = data.urls;
+        });
+      });
+    }
   });
 
 
