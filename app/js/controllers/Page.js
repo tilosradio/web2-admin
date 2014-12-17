@@ -43,6 +43,11 @@ angular.module('tilosAdmin')
 angular.module('tilosAdmin')
     .controller('TextEditCtrl', function ($http, $routeParams, API_SERVER_ENDPOINT, $location, $scope, Texts, $cacheFactory, data) {
         $scope.text = data;
+        data.$promise.then(function(page){
+          if (page.format == 'legacy' || page.format == 'default') {
+            page.content = toMarkdown(page.content);
+          }
+        });
         $scope.save = function () {
             $http.put(API_SERVER_ENDPOINT + '/api/v1/text/page/' + $scope.text.id, $scope.text).success(function (data) {
                 var httpCache = $cacheFactory.get('$http');

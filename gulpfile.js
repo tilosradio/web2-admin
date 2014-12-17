@@ -65,22 +65,8 @@ gulp.task('usemin', function() {
 
 
 gulp.task('scripts', function () {
-    gulp.src(["app/js/**/*.js"])
-        .pipe(jshint('../.jshintrc'))
-        .pipe(jshint.reporter('default'))
-        .pipe(concat('tilos.js'))
-        .pipe(gulp.dest(distDir + "/www/scripts"));
-
-    gulp.src([
-        "app/bower_components/angular/angular.js",
-        "app/bower_components/angular-route/angular-route.js",
-        "app/bower_components/angular-cookies/angular-cookies.js",
-        "app/bower_components/angular-resource/angular-resource.js",
-        "app/bower_components/angular-sanitize/angular-sanitize.js",
-        "app/bower_components/textAngular/textAngular.js"
-    ])
-        .pipe(concat('angular.js'))
-        .pipe(gulp.dest(distDir + "/www/scripts"));
+    gulp.src(["app/js/lib/*.js"])
+        .pipe(gulp.dest('dist/www/js'));
 });
 
 
@@ -113,7 +99,7 @@ gulp.task('build', ['clean'], function () {
 });
 
 gulp.task('default', function () {
-    gulp.start('copy-assets', 'copy-htmls', 'usemin', 'bower_components', 'cachedir');
+    gulp.start('copy-assets', 'copy-htmls', 'usemin', 'bower_components', 'cachedir', 'scripts');
 });
 
 

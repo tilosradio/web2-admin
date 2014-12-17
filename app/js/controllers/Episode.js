@@ -60,6 +60,9 @@ angular.module('tilosAdmin')
 
         $http.get(server + '/api/v1/episode/' + id).success(function (data) {
             $scope.episode = data;
+            if (data.text && (data.text.format == 'legacy' || data.text.format == 'default')) {
+              data.text.content = toMarkdown(data.text.content);
+            }
             $scope.episode.show = {id: $scope.episode.show.id}
             $scope.episode.id = id;
             if (!$scope.episode.text || $scope.episode.text.length == 0) {
