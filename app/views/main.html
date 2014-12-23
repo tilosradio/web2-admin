@@ -4,8 +4,8 @@
             <div class="widget-header">
                 <i class="fa fa-tasks"></i> Admin hírek
             </div>
-            <div class="widget-body no-padding">
-                <div class="message"><b>2014.12.06.</b>A tilos oldal folyamatosan épül. <a href="https://tilos.hu/page/uj-admin">Az újdonságokról itt olvashatsz bővebben.</a></div>
+            <div class="widget-body no-padding" data-ng-repeat="item in news">
+                <div class="message"><b>{{item.created | date:'yyyy-MM-dd'}}:</b> {{item.title}} <a ng-href="/text/adminnews/{{item.id}}">Bővebben...</a></div>
             </div>
         </div>
     </div>

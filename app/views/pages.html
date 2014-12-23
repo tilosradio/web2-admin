@@ -11,25 +11,24 @@
         </div>
     </div>
 
-    <h1>Oldal lista <a ng-show="user.role== 'ADMIN'" class="btn btn-danger" role="btn" ng-href="/new/page">Új
-        oldal</a></h1>
+    <h1>{{type}} lista <a ng-show="user.role== 'ADMIN'" class="btn btn-danger" role="btn" ng-href="/new/text/{{type}}">Új {{type}}</a></h1>
     <table class="table table-striped">
         <thead>
         <tr>
 
             <th>Cím</th>
-            <th>Módosítva</th>
+            <th>Létrehozva</th>
             <th>Szerkesztés</th>
 
         </tr>
         </thead>
         <tbody>
         <tr data-ng-repeat="page in pages | filter: quicksearch">
-            <td><a ng-href="/page/{{page.id}}">{{page.title}}</a></td>
+            <td><a ng-href="/text/{{type}}/{{page.id}}">{{page.title}}</a></td>
 
 
-            <td>{{page.modified * 1000 | date:'yyyy-MM-dd'}}</td>
-            <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-href="/edit/page/{{page.id}}">Szerkesztés</a>
+            <td>{{page.created | date:'yyyy-MM-dd'}}</td>
+            <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-href="/edit/{{type}}/{{page.id}}">Szerkesztés</a>
             </td>
         </tr>
         </tbody>

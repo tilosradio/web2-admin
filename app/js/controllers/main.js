@@ -5,6 +5,9 @@ angular.module('tilosAdmin')
         $http.get(API_SERVER_ENDPOINT + '/api/v1/stat/summary', {cache: true}).success(function (data) {
             $scope.stat = data;
         });
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/text/adminnews?limit=3', {cache: true}).success(function (data) {
+          $scope.news = data;
+        });
         var now = new Date();
         var result = [];
         var promise = null;
