@@ -1,9 +1,7 @@
 <div>
   <h1>{{author.name}}
-    <if-author-admin author="author">
-      <a class="btn btn-danger" role="btn" ng-href="/edit/author/{{author.id}}">Szerkesztés</a>
-    </if-author-admin>
-    </h1>
+    <a class="btn btn-danger" ng-show="access('/author/' + author.id)" role="btn" ng-href="/edit/author/{{author.id}}">Szerkesztés</a>
+  </h1>
 
   <div ng-bind-html="author.introduction"></div>
 
