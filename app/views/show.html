@@ -33,8 +33,7 @@
             <td>{{scheduling.hourFrom}}:{{scheduling.minFrom}}</td>
             <td>{{scheduling.duration}}&nbsp;perc</td>
             <td>{{scheduling.weekType}}&nbsp;hetente</td>
-            <td ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
-                                                       ng-href="/edit/scheduling/{{show.id}}/{{scheduling.id}}">Szerkesztés</a>
+            <td ng-show="user.role== 'ADMIN'"><a class="btn btn-danger" ng-click="editScheduling(scheduling.id)">Szerkesztés</a>
             </td>
             <td
                     ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"

@@ -28,47 +28,6 @@ angular.module('tilosAdmin')
       $scope.scheduling = scheduling;
 
     }]);
-angular.module('tilosAdmin')
-    .controller('SchedulingEditCtrl', ['$scope', 'data', 'Schedulings', 'dateFilter', '$location', '$routeParams', function ($scope, data, resource, dateFilter, $location, $routeParams) {
-      $scope.scheduling = data;
-
-      data.$promise.then(
-          function (data) {
-            $scope.$watch('scheduling.validFrom', function (date) {
-              $scope.validFromDate = dateFilter(new Date(date), 'yyyy-MM-dd')
-            });
-
-            $scope.$watch('validFromDate', function (dateString) {
-              $scope.scheduling.validFrom = new Date(dateString).getTime();
-            });
-
-            $scope.$watch('scheduling.validTo', function (date) {
-              $scope.validToDate = dateFilter(new Date(date), 'yyyy-MM-dd')
-            });
-
-            $scope.$watch('validToDate', function (dateString) {
-              $scope.scheduling.validTo = new Date(dateString).getTime();
-            });
-            $scope.$watch('scheduling.base', function (date) {
-              $scope.baseDate = dateFilter(new Date(date), 'yyyy-MM-dd')
-            });
-
-            $scope.$watch('baseDate', function (dateString) {
-              $scope.scheduling.base = new Date(dateString).getTime();
-            });
-
-
-          }
-      );
-
-      $scope.save = function () {
-        resource.update({show: $routeParams.show, id: $scope.scheduling.id}, $scope.scheduling, function (data) {
-          $location.path('/show/' + $routeParams.show);
-        });
-      }
-    }]);
-
-
 
 angular.module('tilosAdmin').filter('weekDayName', function () {
   return function (input) {

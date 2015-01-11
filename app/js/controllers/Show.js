@@ -122,9 +122,21 @@ angular.module('tilosAdmin')
     };
 
     $scope.newScheduling = function () {
+      $scope.scheduling = {};
+      $scope.schedulingIndex = $scope.show.schedulings.length;
       ngDialog.open({
         template: 'views/scheduling-form.html',
-        controller: 'SchedulingNewCtrl',
+        controller: 'SchedulingEditCtrl',
+        scope: $scope
+      });
+    };
+
+    $scope.editScheduling = function (index) {
+      $scope.scheduling = JSON.parse(JSON.stringify($scope.show.schedulings[index]));
+      $scope.schedulingIndex = index;
+      ngDialog.open({
+        template: 'views/scheduling-form.html',
+        controller: 'SchedulingEditCtrl',
         scope: $scope
       });
     };
@@ -141,47 +153,27 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin')
-  .controller('SchedulingNewCtrl', function ($scope, dateFilter, $location, $routeParams, $http, API_SERVER_ENDPOINT, $cacheFactory) {
-    $scope.scheduling = {};
-
-
-    $scope.$watch('scheduling.validFrom', function (date) {
-      $scope.validFromDate = dateFilter(new Date(date), 'yyyy-MM-dd')
-    });
-
-    $scope.$watch('validFromDate', function (dateString) {
-      $scope.scheduling.validFrom = new Date(dateString).getTime();
-    });
-
-    $scope.$watch('scheduling.validTo', function (date) {
-      $scope.validToDate = dateFilter(new Date(date), 'yyyy-MM-dd')
-    });
-
-    $scope.$watch('validToDate', function (dateString) {
-      $scope.scheduling.validTo = new Date(dateString).getTime();
-    });
-
-
-    $scope.$watch('scheduling.base', function (date) {
-      $scope.baseDate = dateFilter(new Date(date), 'yyyy-MM-dd')
-    });
-
-    $scope.$watch('baseDate', function (dateString) {
-      $scope.scheduling.base = new Date(dateString).getTime();
-    });
-
+  .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $routeParams, $http, API_SERVER_ENDPOINT, $cacheFactory, $route) {
+    $scope.validFromDate = new Date().format("yyyy-mm-dd");
+    $scope.validToDate = new Date("2020-01-01").format("yyyy-mm-dd");
+    ;
+    $scope.baseDate = $scope.validFromDate;
     $scope.save = function () {
+      $scope.scheduling.validFrom = new Date($scope.validFromDate);
+      $scope.scheduling.validTo = new Date($scope.validToDate);
+      $scope.scheduling.base = new Date($scope.baseDate);
       var newShow = JSON.parse(JSON.stringify($scope.show))
-      newShow.schedulings.push($scope.scheduling);
+      if (!newShow.schedulings) {
+        newShow.schedulings = {}
+      }
+      newShow.schedulings[$scope.schedulingIndex] = $scope.scheduling;
       newShow.episodes = [];
-      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + newShow.id, newShow).success(function (data) {
+      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $scope.show.id, newShow).success(function (data) {
         var httpCache = $cacheFactory.get('$http');
         httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
         httpCache.remove(server + '/api/v1/show');
         $scope.closeThisDialog();
-        $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
-          $scope.show.urls = data.urls;
-        });
+        $route.reload();
       });
     }
   });

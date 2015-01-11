@@ -126,5 +126,5 @@ dateFormat.i18n = {
 
 // For convenience...
 Date.prototype.format = function (mask, utc) {
-    return dateFormat(this, mask, utc);
+    return dateFormat(this, mask, utc)(this, mask, utc);
 };
