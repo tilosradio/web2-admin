@@ -158,7 +158,7 @@
 
             <li class="sidebar-title"><span>TILOS tartalom</span></li>
 
-            <li class="sidebar-list ng-hide" if-admin>
+            <li class="sidebar-list" ng-show="user.role == 'ADMIN'">
                 <a ng-href="/comments">Hozzászólások<span class="menu-icon fa fa-comment"></span></a>
             </li>
 
@@ -174,15 +174,15 @@
                 <a ng-href="/mixes">Mixek<span class="menu-icon fa fa-music"></span></a>
             </li>
 
-            <li class="sidebar-list ng-hide" if-admin>
+            <li class="sidebar-list" ng-show="user.role == 'ADMIN'">
                 <a ng-href="/text/page">Oldalak<span class="menu-icon fa fa-quote-right"></span></a>
             </li>
 
-            <li class="sidebar-list ng-hide" if-admin>
+            <li class="sidebar-list" ng-show="user.role == 'ADMIN'">
               <a ng-href="/text/news">Hírek<span class="menu-icon fa fa-quote-right"></span></a>
             </li>
 
-            <li class="sidebar-list ng-hide" if-admin>
+            <li class="sidebar-list ng-hide" ng-show="user.role == 'ADMIN'">
               <a ng-href="/text/adminnews">Admin hírek<span class="menu-icon fa fa-quote-right"></span></a>
             </li>
 
