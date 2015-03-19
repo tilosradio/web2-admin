@@ -17,7 +17,7 @@ angular.module('tilosAdmin', [
                 'request': function (config) {
                     var jwt = localStorageService.get("jwt");
                     if (jwt) {
-                        config.headers.Bearer = jwt;
+                        config.headers.Authorization = "Bearer " + jwt.access_token;
                     }
                     return config;
                 }
