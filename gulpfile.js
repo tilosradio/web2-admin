@@ -11,6 +11,7 @@ var wrap = require('gulp-wrap');
 var watch = require('gulp-watch');
 var series = require('stream-series');
 var inject = require('gulp-inject');
+var rev = require('gulp-rev');
 var angularFilesort = require('gulp-angular-filesort');
 
 var paths = {
@@ -33,8 +34,18 @@ gulp.task('copy-images', function () {
 });
 
 gulp.task('copy-fonts', function () {
-  return gulp.src(paths.fonts)
+  gulp.src(paths.fonts)
     .pipe(gulp.dest('dist/www/fonts'));
+  gulp.src([
+      'app/bower_components/font-awesome/fonts/*.*'],
+    {base: 'app/bower_components/font-awesome'})
+    .pipe(gulp.dest(distDir + '/www'));
+
+  gulp.src([
+      'app/bower_components/bootstrap/dist/fonts/*.*'],
+    {base: 'app/bower_components/bootstrap/dist/'})
+    .pipe(gulp.dest(distDir + '/www'));
+
 });
 
 gulp.task('copy-htmls', function () {
@@ -52,11 +63,13 @@ gulp.task('index', function () {
     'app/bower_components/ngDialog/css/ngDialog.css',
     'app/bower_components/ngDialog/css/ngDialog-theme-default.css'
   ]).pipe(concat('vendors.css'))
+    .pipe(rev())
     .pipe(gulp.dest('dist/www/css/'));
 
   var tiloscss = gulp.src('app/less/**/*.less')
     .pipe(concat('tilos.less'))
     .pipe(less())
+    .pipe(rev())
     .pipe(gulp.dest('dist/www/css/'))
 
 
@@ -79,6 +92,7 @@ gulp.task('index', function () {
   var tilosjs = gulp.src('app/js/**/*.js')
     .pipe(angularFilesort())
     .pipe(concat('tilos.js'))
+    .pipe(rev())
     .pipe(gulp.dest('dist/www/js/'));
   ;
 
@@ -98,28 +112,6 @@ gulp.task('watch', function () {
   gulp.watch([paths.images], ['copy-images']);
   gulp.watch([paths.fonts], ['copy-fonts']);
   gulp.watch([paths.bower_fonts], ['copy-bower_fonts']);
-});
-
-gulp.task('assets', function () {
-  gulp.src([
-      'app/template/**/*',
-      'app/images/**/*',
-      'app/styles/fonts/**',
-      'app/jplayer/**/*'],
-    {base: 'app'})
-    .pipe(gulp.dest(distDir + '/www'));
-
-  gulp.src([
-      'app/bower_components/font-awesome/fonts/*.*'],
-    {base: 'app/bower_components/font-awesome'})
-    .pipe(gulp.dest(distDir + '/www'));
-
-  gulp.src([
-      'app/bower_components/bootstrap/dist/fonts/*.*'],
-    {base: 'app/bower_components/bootstrap/dist/'})
-    .pipe(gulp.dest(distDir + '/www'));
-
-
 });
 
 
