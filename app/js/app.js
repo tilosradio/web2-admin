@@ -73,7 +73,7 @@ angular.module('tilosAdmin').run(function ($rootScope, $location, $http, API_SER
     $rootScope.access = function(permission) {
       var perms = $rootScope.user.permissions;
       for (var i = 0; i < perms.length; i++) {
-        if (perms[i] == permission) {
+        if (permission.search(perms[i]) == 0) {
           return true;
         }
       }

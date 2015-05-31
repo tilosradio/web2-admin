@@ -16,7 +16,7 @@ angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider)
   });
 
 
-  $routeProvider.when('/edit/:type/:id', {
+  $routeProvider.when('/edit/text/:type/:id', {
     templateUrl: 'views/page-form.html',
     controller: 'TextEditCtrl',
     resolve: {
