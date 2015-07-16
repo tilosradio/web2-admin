@@ -93,7 +93,6 @@ angular.module('tilosAdmin')
         scope: $scope
       });
     };
-
     $scope.deleteContribution = function (contribution) {
       $http.delete(API_SERVER_ENDPOINT + '/api/int/contribution?show=' + $scope.show.id + '&author=' + contribution.author.id).success(function (data) {
         $location.path('/show/' + $scope.show.id);
@@ -156,12 +155,11 @@ angular.module('tilosAdmin')
   .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $routeParams, $http, API_SERVER_ENDPOINT, $cacheFactory, $route) {
     $scope.validFromDate = new Date().format("yyyy-mm-dd");
     $scope.validToDate = new Date("2020-01-01").format("yyyy-mm-dd");
-    ;
     $scope.baseDate = $scope.validFromDate;
     $scope.save = function () {
-      $scope.scheduling.validFrom = new Date($scope.validFromDate);
-      $scope.scheduling.validTo = new Date($scope.validToDate);
-      $scope.scheduling.base = new Date($scope.baseDate);
+      $scope.scheduling.validFrom = new Date($scope.validFromDate).getTime();
+      $scope.scheduling.validTo = new Date($scope.validToDate).getTime();
+      $scope.scheduling.base = new Date($scope.baseDate).getTime();
       var newShow = JSON.parse(JSON.stringify($scope.show))
       if (!newShow.schedulings) {
         newShow.schedulings = {}
