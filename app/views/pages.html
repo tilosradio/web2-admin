@@ -19,6 +19,7 @@
             <th>Cím</th>
             <th>Létrehozva</th>
             <th>Szerkesztés</th>
+            <th>Törlés</th>
 
         </tr>
         </thead>
@@ -26,9 +27,9 @@
         <tr data-ng-repeat="page in pages | filter: quicksearch">
             <td><a ng-href="/text/{{type}}/{{page.id}}">{{page.title}}</a></td>
 
-
             <td>{{page.created | date:'yyyy-MM-dd'}}</td>
             <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-href="/edit/text/{{type}}/{{page.id}}">Szerkesztés</a>
+            <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-click="delete(type,page.id)">Törlés</a>
             </td>
         </tr>
         </tbody>

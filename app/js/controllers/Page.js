@@ -40,6 +40,14 @@ angular.module('tilosAdmin')
       $scope.pages = data;
     });
 
+    $scope.delete = function(type, id) {
+      $http.delete(API_SERVER_ENDPOINT + '/api/v1/text/' + type + '/' + id).success(function (data) {
+        alert("Text is deleted");
+        $http.get(API_SERVER_ENDPOINT + '/api/v1/text/' + $routeParams.type).success(function (data) {
+          $scope.pages = data;
+        });
+      });
+    }
   }
 );
 
