@@ -1,38 +1,42 @@
 'use strict';
 
-angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider) {
-  $routeProvider.when('/show/:id', {
-    templateUrl: 'views/show.html',
+angular.module('tilosAdmin').config(function ($stateProvider) {
+  $stateProvider.state('show', {
+    url: '/show/:id',
+    templateUrl: 'show/show.html',
     controller: 'ShowCtrl',
     resolve: {
-      data: function ($route, Shows, API_SERVER_ENDPOINT, $http) {
-        return $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $route.current.params.id);
+      data: function ($stateParams, Shows, API_SERVER_ENDPOINT, $http) {
+        return $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $stateParams.id);
       }
     }
   });
-  $routeProvider.when('/shows', {
-    templateUrl: 'views/shows.html',
+  $stateProvider.state('shows', {
+    url: '/shows',
+    templateUrl: 'show/shows.html',
     controller: 'ShowListCtrl',
     resolve: {
-      list: function ($route, API_SERVER_ENDPOINT, $http) {
+      list: function (API_SERVER_ENDPOINT, $http) {
         return $http.get(API_SERVER_ENDPOINT + '/api/v1/show?status=all');
       }
     }
   });
-  $routeProvider.when('/edit/show/:id', {
-    templateUrl: 'views/show-form.html',
+  $stateProvider.state('showEdit', {
+    url: '/edit/show/:id',
+    templateUrl: 'show/show-form.html',
     controller: 'ShowEditCtrl',
     resolve: {
-      data: function ($route, Shows) {
-        return Shows.get({id: $route.current.params.id});
+      data: function ($stateParams, Shows) {
+        return Shows.get({id: $stateParams.id});
       }
     }
   });
-  $routeProvider.when('/new/show', {
-    templateUrl: 'views/show-form.html',
+  $stateProvider.state('showNew', {
+    url: '/new/show',
+    templateUrl: 'show/show-form.html',
     controller: 'ShowNewCtrl',
   });
-}]);
+});
 
 angular.module('tilosAdmin')
   .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Schedulings, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
@@ -88,7 +92,7 @@ angular.module('tilosAdmin')
 
     $scope.newContribution = function () {
       ngDialog.open({
-        template: 'views/contribution-form.html',
+        template: 'show/contribution-form.html',
         controller: 'ContributionNewCtrl',
         scope: $scope
       });
@@ -105,7 +109,7 @@ angular.module('tilosAdmin')
 
     $scope.newUrl = function () {
       ngDialog.open({
-        template: 'views/url-form.html',
+        template: 'show/url-form.html',
         controller: 'UrlNewCtrl',
         scope: $scope
       });
@@ -124,7 +128,7 @@ angular.module('tilosAdmin')
       $scope.scheduling = {};
       $scope.schedulingIndex = $scope.show.schedulings.length;
       ngDialog.open({
-        template: 'views/scheduling-form.html',
+        template: 'show/scheduling-form.html',
         controller: 'SchedulingEditCtrl',
         scope: $scope
       });
@@ -134,7 +138,7 @@ angular.module('tilosAdmin')
       $scope.scheduling = JSON.parse(JSON.stringify($scope.show.schedulings[index]));
       $scope.schedulingIndex = index;
       ngDialog.open({
-        template: 'views/scheduling-form.html',
+        template: 'show/scheduling-form.html',
         controller: 'SchedulingEditCtrl',
         scope: $scope
       });
@@ -152,7 +156,7 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin')
-  .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $routeParams, $http, API_SERVER_ENDPOINT, $cacheFactory, $route) {
+  .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $stateProvider, $http, API_SERVER_ENDPOINT, $cacheFactory) {
     $scope.validFromDate = new Date().format("yyyy-mm-dd");
     $scope.validToDate = new Date("2020-01-01").format("yyyy-mm-dd");
     $scope.baseDate = $scope.validFromDate;
@@ -171,7 +175,6 @@ angular.module('tilosAdmin')
         httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
         httpCache.remove(server + '/api/v1/show');
         $scope.closeThisDialog();
-        $route.reload();
       });
     }
   });
@@ -224,8 +227,7 @@ angular.module('tilosAdmin')
 
 'use strict';
 
-angular.module('tilosAdmin')
-  .controller('ShowNewCtrl', function ($location, $scope, $routeParams, $http, $cacheFactory, Shows, API_SERVER_ENDPOINT) {
+angular.module('tilosAdmin').controller('ShowNewCtrl', function ($location, $scope, $stateProvider, $http, $cacheFactory, Shows) {
     $scope.types = [
       {id: 'SPEECH', 'name': "Beszélgetős"},
       {id: "MUSIC", 'name': "Zenés"}
@@ -238,7 +240,6 @@ angular.module('tilosAdmin')
     ]
     $scope.show = {};
     $scope.save = function () {
-
       Shows.save($scope.show, function (data) {
         var id = data.id;
         $location.path('/show/' + id);
@@ -248,8 +249,7 @@ angular.module('tilosAdmin')
   });
 
 angular.module('tilosAdmin')
-  .controller('ShowEditCtrl', ['$location', '$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http', '$cacheFactory', 'data',
-    function ($location, $scope, $routeParams, server, $http, $cacheFactory, data) {
+  .controller('ShowEditCtrl', function ($location, $scope, $stateProvider, API_SERVER_ENDPOINT, $http, $cacheFactory, data) {
       $scope.types = [
         {id: 'SPEECH', 'name': "Beszélgetős"},
         {id: "MUSIC", 'name': "Zenés"}
@@ -262,7 +262,7 @@ angular.module('tilosAdmin')
       ]
       $scope.show = data;
       $scope.save = function () {
-        $http.put(server + '/api/v1/show/' + $routeParams.id, $scope.show).success(function (data) {
+        $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateProvider.id, $scope.show).success(function (data) {
           var httpCache = $cacheFactory.get('$http');
           httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
           httpCache.remove(server + '/api/v1/show');
@@ -271,8 +271,7 @@ angular.module('tilosAdmin')
 
       }
     }
-  ])
-;
+  );
 
 angular.module('tilosAdmin').factory('Shows', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
   return $resource(server + '/api/v1/show/:id', null, {

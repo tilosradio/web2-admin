@@ -1,6 +1,3 @@
-/**
- * Master Controller
- */
 angular.module('tilosAdmin').controller('DashboardCtrl', function ($scope, $cookieStore, $http, API_SERVER_ENDPOINT, $rootScope, $location, localStorageService) {
     /**
      * Sidebar Toggle & Cookie Control

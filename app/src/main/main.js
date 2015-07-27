@@ -1,5 +1,14 @@
 'use strict';
 
+angular.module('tilosAdmin').config(function ($stateProvider) {
+  $stateProvider.state('main', {
+      url: '/',
+      templateUrl: 'main/main.html',
+      controller: 'MainCtrl'
+    }
+  );
+});
+
 angular.module('tilosAdmin')
     .controller('MainCtrl', function ($scope, $http, API_SERVER_ENDPOINT, $rootScope, $location) {
         $http.get(API_SERVER_ENDPOINT + '/api/v1/stat/summary', {cache: true}).success(function (data) {

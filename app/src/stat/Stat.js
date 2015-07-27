@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('tilosAdmin').config(function ($routeProvider) {
-  $routeProvider.when('/stat/listener', {
-    templateUrl: 'views/stat-listener.html',
+angular.module('tilosAdmin').config(function ($stateProvider) {
+  $stateProvider.state('statListener', {
+    url: '/stat/listener',
+    templateUrl: 'stat/stat-listener.html',
     controller: 'StatListenerCtrl'
   });
 });

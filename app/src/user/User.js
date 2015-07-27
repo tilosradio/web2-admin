@@ -1,21 +1,24 @@
 'use strict';
 
-angular.module('tilosAdmin').config(function ($routeProvider) {
-  $routeProvider.when('/user/:id', {
-    templateUrl: 'views/user.html',
+angular.module('tilosAdmin').config(function ($stateProvider) {
+  $stateProvider.state('user', {
+    url: '/user/:id',
+    templateUrl: 'user/user.html',
     controller: 'UserCtrl'
   });
-  $routeProvider.when('/edit/user/:id', {
-    templateUrl: 'views/user-form.html',
+  $stateProvider.state('userEdit', {
+    url: '/edit/user/:id',
+    templateUrl: 'user/user-form.html',
     controller: 'UserEditCtrl',
     resolve: {
-      data: function ($route, Users) {
-        return Users.get({id: $route.current.params.id});
+      data: function ($stateParams, Users) {
+        return Users.get({id: $stateParams.id});
       },
     }
   });
-  $routeProvider.when('/userlist', {
-    templateUrl: 'views/userlist.html',
+  $stateProvider.state('users', {
+    url: '/userlist',
+    templateUrl: 'user/userlist.html',
     controller: 'UserListCtrl'
   });
 });
@@ -30,10 +33,10 @@ angular.module('tilosAdmin')
   });
 
 angular.module('tilosAdmin')
-  .controller('UserEditCtrl', function ($location, $scope, $routeParams, API_SERVER_ENDPOINT, $http, $cacheFactory, data, $rootScope) {
+  .controller('UserEditCtrl', function ($location, $scope, $stateParams, API_SERVER_ENDPOINT, $http, $cacheFactory, data, $rootScope) {
     $scope.user = data;
     $scope.save = function () {
-      $http.put(API_SERVER_ENDPOINT + '/api/v0/user/' + $routeParams.id, $scope.user).success(function (data) {
+      $http.put(API_SERVER_ENDPOINT + '/api/v0/user/' + $stateParams.id, $scope.user).success(function (data) {
         var httpCache = $cacheFactory.get('$http');
         httpCache.remove(API_SERVER_ENDPOINT + '/api/v0/user/' + $scope.user.id);
         $http.get(API_SERVER_ENDPOINT + '/api/v0/user/me').success(function (data) {

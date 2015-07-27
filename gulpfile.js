@@ -13,10 +13,11 @@ var series = require('stream-series');
 var inject = require('gulp-inject');
 var rev = require('gulp-rev');
 var angularFilesort = require('gulp-angular-filesort');
+var templateCache = require('gulp-angular-templatecache');
 
 var paths = {
-  js: 'app/js/**/*.*',
-  templates: 'app/views/*.*',
+  js: 'app/src/**/*.js',
+  templates: 'app/src/**/*.html',
   fonts: 'app/fonts/**.*',
   images: 'app/img/**/*.*',
   styles: 'app/less/**/*.less',
@@ -47,6 +48,7 @@ gulp.task('copy-fonts', function () {
     .pipe(gulp.dest(distDir + '/www'));
 
 });
+
 
 gulp.task('copy-htmls', function () {
   gulp.src([paths.templates],
@@ -82,24 +84,36 @@ gulp.task('index', function () {
     'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
     'app/bower_components/angular-resource/angular-resource.js',
     'app/bower_components/angular-local-storage/dist/angular-local-storage.js',
-    'app/bower_components/angular-route/angular-route.js',
+    'app/bower_components/angular-ui-router/release/angular-ui-router.js',
     'app/bower_components/ngDialog/js/ngDialog.min.js',
     'app/bower_components/textAngular/dist/textAngular.min.js',
     'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
     'app/bower_components/textAngular/dist/textAngular-sanitize.min.js'])
     .pipe(gulp.dest('dist/www/js/'));
 
-  var tilosjs = gulp.src('app/js/**/*.js')
+  var tilosjs = gulp.src(paths.js)
     .pipe(angularFilesort())
     .pipe(concat('tilos.js'))
     .pipe(rev())
     .pipe(gulp.dest('dist/www/js/'));
-  ;
+
+  var options = {
+    module: 'tilosAdmin',
+    filename: 'tilos-templates.js',
+    transformUrl: function(url) {
+      return url;
+    }};
+
+  var templates = gulp.src(paths.templates)
+    .pipe(templateCache(options))
+    .pipe(rev())
+    .pipe(gulp.dest('dist/www/js'));
 
   gulp.src('app/index.html')
     .pipe(inject(vendorjs, {name: 'vendor', ignorePath: 'dist/www'}))
     .pipe(inject(vendorcss, {name: 'vendor', ignorePath: 'dist/www'}))
     .pipe(inject(tilosjs, {name: 'tilos', ignorePath: 'dist/www'}))
+    .pipe(inject(templates, {name: 'tilos-template', ignorePath: 'dist/www'}))
     .pipe(inject(tiloscss, {name: 'tilos', ignorePath: 'dist/www'}))
     .pipe(gulp.dest('dist/www/'));
 })

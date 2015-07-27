@@ -16,7 +16,8 @@
   <!-- endinject -->
   <!-- tilos:js -->
   <!-- endinject -->
-
+  <!-- tilos-template:js -->
+  <!-- endinject -->
 </head>
 <body>
 <div ng-controller="DashboardCtrl" id="page-wrapper" ng-class="{'active': toggle && user}" ng-cloak>
@@ -182,7 +183,7 @@
 
       <!-- End Header Bar -->
       <!-- Main Content -->
-      <section class="content" ng-view></section>
+      <section class="content" ui-view></section>
     </div>
     <!-- End Page Content -->
   </div>

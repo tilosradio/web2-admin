@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('tilosAdmin').config(function ($routeProvider) {
-  $routeProvider.when('/comments', {
-    templateUrl: 'views/comments.html',
+angular.module('tilosAdmin').config(function ($stateProvider) {
+  $stateProvider.state('comments', {
+    url: '/comments',
+    templateUrl: 'comment/comments.html',
     controller: 'CommentsCtrl'
   });
 });

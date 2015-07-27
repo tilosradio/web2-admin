@@ -1,52 +1,53 @@
 'use strict';
 
-angular.module('tilosAdmin').config(['$routeProvider', function ($routeProvider) {
-  $routeProvider.when('/author/:id', {
-    templateUrl: 'views/author.html',
+angular.module('tilosAdmin').config(function ($stateProvider) {
+  $stateProvider.state('author', {
+    url: '/author/:id',
+    templateUrl: 'author/author.html',
     controller: 'AuthorCtrl',
     resolve: {
-      data: function ($route, Authors) {
-        return Authors.get({id: $route.current.params.id});
+      data: function ($stateParams, Authors) {
+        return Authors.get({id: $stateParams.id});
       },
     }});
-  $routeProvider.when('/authors', {
-    templateUrl: 'views/authors.html',
+
+  $stateProvider.state('authors',{
+    url:'/authors',
+    templateUrl: 'author/authors.html',
     controller: 'AuthorListCtrl',
     resolve: {
-      list: function ($route, Authors) {
+      list: function (Authors) {
         return Authors.query();
       },
     }});
-  $routeProvider.when('/edit/author/:id', {
-    templateUrl: 'views/author-form.html',
+
+  $stateProvider.state('authorEdit',{
+    url:'/edit/author/:id',
+    templateUrl: 'author/author-form.html',
     controller: 'AuthorEditCtrl',
     resolve: {
-      data: function ($route, Authors) {
-        return Authors.get({id: $route.current.params.id});
+      data: function ($stateParams, Authors) {
+        return Authors.get({id: $stateParams.id});
       },
     }});
-  $routeProvider.when('/new/author', {
-    templateUrl: 'views/author-form.html',
+
+  $stateProvider.state('authorNew',{
+    url:'/new/author',
+    templateUrl: 'author/author-form.html',
     controller: 'AuthorNewCtrl',
-
   });
-}]);
+});
 
-angular.module('tilosAdmin')
-    .controller('AuthorCtrl', function ($scope, data) {
+angular.module('tilosAdmin').controller('AuthorCtrl', function ($scope, data) {
       $scope.author = data;
     });
 
-angular.module('tilosAdmin')
-    .controller('AuthorListCtrl', ['$scope', 'list', function ($scope, list) {
+angular.module('tilosAdmin').controller('AuthorListCtrl', ['$scope', 'list', function ($scope, list) {
       $scope.authors = list;
-
     }]);
 
-'use strict';
-
 angular.module('tilosAdmin')
-    .controller('AuthorNewCtrl', function ($location, $scope, $routeParams, $http, $cacheFactory, Authors, API_SERVER_ENDPOINT) {
+    .controller('AuthorNewCtrl', function ($location, $scope, $stateParams, $http, $cacheFactory, Authors, API_SERVER_ENDPOINT) {
       $scope.author = {};
       $scope.author.introduction = "";
       $scope.save = function () {
@@ -62,12 +63,11 @@ angular.module('tilosAdmin')
     });
 
 angular.module('tilosAdmin')
-    .controller('AuthorEditCtrl', ['$location', '$scope', '$routeParams', 'API_SERVER_ENDPOINT', '$http', '$cacheFactory', 'data',
-      function ($location, $scope, $routeParams, server, $http, $cacheFactory, data) {
+    .controller('AuthorEditCtrl', function ($location, $scope, $stateParams, API_SERVER_ENDPOINT, $http, $cacheFactory, data) {
         $scope.edit = true;
         $scope.author = data;
         $scope.save = function () {
-          $http.put(server + '/api/v1/author/' + $routeParams.id, $scope.author).success(function (data) {
+          $http.put(API_SERVER_ENDPOINT + '/api/v1/author/' + $stateParams.id, $scope.author).success(function (data) {
             var httpCache = $cacheFactory.get('$http');
             httpCache.remove(server + '/api/v1/author/' + $scope.author.id);
             $location.path('/author/' + $scope.author.id);
@@ -82,8 +82,7 @@ angular.module('tilosAdmin')
 
         }
       }
-    ])
-;
+    );
 
 angular.module('tilosAdmin').factory('Authors', ['API_SERVER_ENDPOINT', '$resource', function (server, $resource) {
   return $resource(server + '/api/v1/author/:id', null, {
