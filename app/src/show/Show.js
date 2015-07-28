@@ -249,7 +249,7 @@ angular.module('tilosAdmin').controller('ShowNewCtrl', function ($location, $sco
   });
 
 angular.module('tilosAdmin')
-  .controller('ShowEditCtrl', function ($location, $scope, $stateProvider, API_SERVER_ENDPOINT, $http, $cacheFactory, data) {
+  .controller('ShowEditCtrl', function ($location, $scope, $stateParams, API_SERVER_ENDPOINT, $http, $cacheFactory, data) {
       $scope.types = [
         {id: 'SPEECH', 'name': "Beszélgetős"},
         {id: "MUSIC", 'name': "Zenés"}
@@ -262,7 +262,7 @@ angular.module('tilosAdmin')
       ]
       $scope.show = data;
       $scope.save = function () {
-        $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateProvider.id, $scope.show).success(function (data) {
+        $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $stateParams.id, $scope.show).success(function (data) {
           var httpCache = $cacheFactory.get('$http');
           httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
           httpCache.remove(server + '/api/v1/show');
