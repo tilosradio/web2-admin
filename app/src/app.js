@@ -73,10 +73,16 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
       event.preventDefault();
 
       $http.get(API_SERVER_ENDPOINT + "/api/v1/user/me").success(function (data) {
-        $rootScope.user = data;
-        $rootScope.stateChangeBypass = true;
-        $state.go(toState, toParams);
+        if (data.role == 'ADMIN' || data.role == 'AUTHOR') {
+          $rootScope.user = data;
+          $rootScope.stateChangeBypass = true;
+          $state.go(toState, toParams);
+        }
       });
+    } else {
+      if ($rootScope.user.role != 'ADMIN' && $rootScope.user.role != 'AUTHOR') {
+        $rootScope.user = null;
+      }
     }
 
   });
