@@ -78,6 +78,8 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
           $rootScope.stateChangeBypass = true;
           $state.go(toState, toParams);
         }
+      }).error(function(){
+        $state.go('login');
       });
     } else {
       if ($rootScope.user.role != 'ADMIN' && $rootScope.user.role != 'AUTHOR') {
@@ -95,15 +97,15 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
     //    return (/.*password_reset(\?.*)?/g.exec(url) || endsWith(url, '/password_reminder') || endsWith(url, '/login')  || endsWith(url, '/logout'));
     //};
 
-    //$rootScope.access = function(permission) {
-    //  var perms = $rootScope.user.permissions;
-    //  for (var i = 0; i < perms.length; i++) {
-    //    if (permission.search(perms[i]) == 0) {
-    //      return true;
-    //    }
-    //  }
-    //  return false;
-    //}
+    $rootScope.access = function(permission) {
+      var perms = $rootScope.user.permissions;
+      for (var i = 0; i < perms.length; i++) {
+        if (permission.search(perms[i]) == 0) {
+          return true;
+        }
+      }
+      return false;
+    }
 
     //$rootScope.$on('$locationChangeStart', function (evt, next) {
     //    if (!('user' in $rootScope)) {

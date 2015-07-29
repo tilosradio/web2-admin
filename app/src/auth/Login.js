@@ -33,7 +33,7 @@ angular.module("tilosAdmin").controller("PasswordReminderCtrl", function ($scope
   };
 });
 angular.module('tilosAdmin')
-  .controller('LoginCtrl', function ($rootScope, $scope, $location, API_SERVER_ENDPOINT, $http, localStorageService) {
+  .controller('LoginCtrl', function ($rootScope, $scope, $state, $location, API_SERVER_ENDPOINT, $http, localStorageService) {
     $scope.logindata = {};
     $scope.login = function () {
       var data = {};
@@ -42,7 +42,7 @@ angular.module('tilosAdmin')
         $scope.loginerror = "";
         $http.get(server + '/api/v1/user/me').success(function (data) {
           $rootScope.user = data;
-          $location.path('/index');
+          $state.go('main');
         });
 
       }).error(function (data) {
