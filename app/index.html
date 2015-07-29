@@ -37,7 +37,7 @@
       <li class="sidebar-title"><span>SAJÁT MŰSOROK</span></li>
 
       <li class="sidebar-list" data-ng-repeat="contribution in user.author.contributions">
-        <a ng-href="/show/{{contribution.show.id}}/">{{contribution.show.name}}<span
+        <a ng-href="/show/{{contribution.show.id}}">{{contribution.show.name}}<span
           class="menu-icon fa fa-gear"></span></a>
       </li>
 
@@ -60,7 +60,7 @@
       </li>
 
       <li class="sidebar-list">
-        <a ng-href="http://tilos.hu/upload/stats">Napi statisztika<span
+        <a ng-href="https://upload.tilos.hu/stats/2015/">Napi statisztika<span
           class="menu-icon fa fa-external-link"></span></a>
       </li>
 
@@ -128,54 +128,17 @@
       <div class="row header" ng-show="user">
         <div class="col-xs-12">
           <div class="user pull-right">
-            <div class="item dropdown">
-              <a href="#" class="dropdown-toggle">
-                <img src="img/avatar.jpg">
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li class="dropdown-header">
-                  {{user.username}}
-                </li>
-                <li class="divider"></li>
-                <li class="link">
-                  <a ng-href="/user/me">
-                    Felhasználó
-                  </a>
-                </li>
-                <li class="link">
-                  <a href="/author/{{user.author.id}}">
-                    Műsorszerkesztő profil
-                  </a>
-                </li>
-                <li class="divider"></li>
-                <li class="link">
-                  <a ng-click="logout()">
-                    Kijelentkezés
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="item dropdown">
-              <a href="#" class="dropdown-toggle">
-                <i class="fa fa-bell-o"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li class="dropdown-header">
-                  Értesítések
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="#">Nincs új értesítés</a>
-                </li>
-              </ul>
-            </div>
+
           </div>
           <div class="meta">
             <div class="page">
               Tilos Rádió
             </div>
             <div class="breadcrumb-links">
-              Adminisztráció
+              <a href="/user/me">{{user.username}}</a>
+              <a ng-click="logout()">
+                Kijelentkezés
+              </a>
             </div>
           </div>
         </div>
