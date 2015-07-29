@@ -9,11 +9,14 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
 });
 
 angular.module('tilosAdmin').controller('StatListenerCtrl', function ($scope, $http, API_SERVER_ENDPOINT, $location) {
-  var query = "";
-  if (($location.search()).from && ($location.search()).to) {
-    query = "?from=" + ($location.search()).from + "&to=" + ($location.search()).to;
-  }
-  $http.get(API_SERVER_ENDPOINT + "/api/v1/stat/listener" + query).success(function (data) {
-    $scope.listeners = data;
-  });
+  $scope.from = new Date();
+  $scope.to = new Date();
+  $scope.from.setTime($scope.to.getTime() - 1000 * 60 * 60 * 24 * 7);
+
+  $scope.calculate = function () {
+    $http.get(API_SERVER_ENDPOINT + "/api/v1/stat/listener?from=" + $scope.from.getTime() + "&to=" + $scope.to.getTime()).success(function (data) {
+      $scope.listeners = data;
+    });
+  };
+
 });

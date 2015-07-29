@@ -1,3 +1,6 @@
+<input type="date" ng-model="from" placeholder="yyyy-MM-dd"/>
+<input type="date" ng-model="to" placeholder="yyyy-MM-dd"/>
+<input type="button" value="calculate" ng-click="calculate()"/>
 <table class="table">
   <tr data-ng-repeat="listener in listeners">
     <td>{{listener.episode.show.name }}</td>
