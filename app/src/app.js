@@ -64,7 +64,7 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 
-    if($rootScope.stateChangeBypass || toState.name === 'login') {
+    if($rootScope.stateChangeBypass || toState.name === 'login' || toState.name === 'passwordReminder' || toState.name === 'logout') {
       $rootScope.stateChangeBypass = false;
       return;
     }
@@ -88,14 +88,6 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
     }
 
   });
-
-    //var endsWith = function (str, suffix) {
-    //    return str.indexOf(suffix, str.length - suffix.length) !== -1;
-    //};
-
-    //var freeAccess = function (url) {
-    //    return (/.*password_reset(\?.*)?/g.exec(url) || endsWith(url, '/password_reminder') || endsWith(url, '/login')  || endsWith(url, '/logout'));
-    //};
 
     $rootScope.access = function(permission) {
       var perms = $rootScope.user.permissions;
