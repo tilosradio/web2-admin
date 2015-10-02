@@ -10,9 +10,6 @@ server {
 
         include variables.conf;
 
-	# Make site accessible from http://localhost/
-	server_name $hostname;
-	
 	# Disable sendfile as per https://docs.vagrantup.com/v2/synced-folders/virtualbox.html
 	sendfile off;
 
