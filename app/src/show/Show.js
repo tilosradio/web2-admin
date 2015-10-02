@@ -156,7 +156,7 @@ angular.module('tilosAdmin')
 
 
 angular.module('tilosAdmin')
-  .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $stateProvider, $http, API_SERVER_ENDPOINT, $cacheFactory) {
+  .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $http, API_SERVER_ENDPOINT, $cacheFactory) {
     $scope.validFromDate = new Date().format("yyyy-mm-dd");
     $scope.validToDate = new Date("2020-01-01").format("yyyy-mm-dd");
     $scope.baseDate = $scope.validFromDate;
@@ -227,7 +227,7 @@ angular.module('tilosAdmin')
 
 'use strict';
 
-angular.module('tilosAdmin').controller('ShowNewCtrl', function ($location, $scope, $stateProvider, $http, $cacheFactory, Shows) {
+angular.module('tilosAdmin').controller('ShowNewCtrl', function ($location, $scope, $http, $cacheFactory, Shows) {
     $scope.types = [
       {id: 'SPEECH', 'name': "Beszélgetős"},
       {id: "MUSIC", 'name': "Zenés"}
