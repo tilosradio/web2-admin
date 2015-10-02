@@ -22,7 +22,7 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 80, host: 8081
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -66,9 +66,9 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
      sudo apt-get update
-     sudo apt-get install -y nginx ruby-sass mc
+     sudo apt-get install -y nginx ruby-sass mc git
      rm -rf /etc/nginx/*
-     cp /tilos/nginx/vagrant/* /etc/nginx
+     cp /tilos/nginx/vagrant/* /etc/nginx/
      cp /tilos/nginx/tilos-admin.conf /etc/nginx/
      nginx -s reload
   SHELL
