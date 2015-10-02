@@ -1,0 +1,24 @@
+
+server {
+	listen 80;
+
+	root /tilos/dist/www;
+	index index.html index.htm;
+
+        error_log /host/error.log;
+        access_log /host/access.log;
+
+        include variables.conf;
+
+	# Make site accessible from http://localhost/
+	server_name $hostname;
+	
+	# Disable sendfile as per https://docs.vagrantup.com/v2/synced-folders/virtualbox.html
+	sendfile off;
+
+        include tilos-admin.conf;
+
+
+}
+
+

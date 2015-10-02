@@ -2,12 +2,12 @@ FROM tilos/nginx
 
 WORKDIR /host
 
-ADD nginx/run /etc/service/nginx/
+ADD nginx/docker/run /etc/service/nginx/
 RUN chmod +x /etc/service/nginx/run
 RUN rm /etc/nginx/sites-enabled/default
-ADD nginx/default /etc/nginx/sites-available/
+ADD nginx/docker/default /etc/nginx/sites-available/
 ADD nginx/tilos-admin.conf /etc/nginx/
-ADD nginx/variables.tpl /etc/nginx/
+ADD nginx/docker/variables.tpl /etc/nginx/
 
 ADD dist/www /host/www
 
