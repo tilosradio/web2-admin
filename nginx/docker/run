@@ -1,3 +1,4 @@
 #!/bin/bash
-cat /etc/nginx/variables.tpl | sed "s/__BACKEND__PORT__/${BACKEND_PORT_8080_TCP_PORT}/g" | sed "s/__BACKEND__HOST__/${BACKEND_PORT_8080_TCP_ADDR}/g" | sed "s/__HOSTNAME__/${HOSTNAME}/g" > /etc/nginx/variables.conf
+export BACKEND_HOST=$(/sbin/ip route|awk '/default/ { print $3 }')
+cat /etc/nginx/variables.tpl | sed "s/__BACKEND__PORT__/${BACKEND_PORT}/g" | sed "s/__BACKEND__HOST__/${BACKEND_HOST}/g" | sed "s/__HOSTNAME__/${HOSTNAME}/g" > /etc/nginx/variables.conf
 /usr/sbin/nginx
