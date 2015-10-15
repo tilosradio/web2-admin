@@ -1,4 +1,4 @@
-FROM tilos/nginx
+FROM tilosradio/nginx
 
 WORKDIR /host
 
