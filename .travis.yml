@@ -1,0 +1,18 @@
+language: node_js
+
+sudo: required
+
+services:
+   - docker
+
+node_js:
+  - "iojs"
+
+before_install:
+   - gem install sass
+
+script:
+   - ./build.sh
+   
+after_success:
+   - ./docker.sh
