@@ -9,3 +9,4 @@ touch $DIR/build/admin.zip
 rm $DIR/build/admin.zip
 zip -r $DIR/build/admin.zip *
 cd $DIR
+git show -s HEAD > dist/version.txt

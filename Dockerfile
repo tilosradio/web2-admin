@@ -10,6 +10,6 @@ ADD nginx/tilos-admin.conf /etc/nginx/
 ADD nginx/docker/variables.tpl /etc/nginx/
 
 ADD dist/www /host/www
-
+ADD dist/version.txt /host/version.txt
 
 
