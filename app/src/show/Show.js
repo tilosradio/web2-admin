@@ -39,7 +39,8 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
 });
 
 angular.module('tilosAdmin')
-  .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Schedulings, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
+  .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
+    $scope.weekDays = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
     data = data.data;
     $scope.show = data;
 
@@ -47,13 +48,12 @@ angular.module('tilosAdmin')
     $scope.now = new Date().getTime();
 
     $scope.currentShowPage = 0;
-    $scope.deleteScheduling = function (id) {
-      Schedulings.remove({'id': id});
+
+    $scope.refresh = function() {
       $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
         $scope.show = data;
       });
-    }
-
+    };
 
     var to = new Date().getTime();
     var from = to - ( 6 * 30 * 24 * 3600 * 1000);
@@ -175,6 +175,7 @@ angular.module('tilosAdmin')
         httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
         httpCache.remove(server + '/api/v1/show');
         $scope.closeThisDialog();
+        $scope.refresh();
       });
     }
   });
