@@ -1,0 +1,20 @@
+<section>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Linkek</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="url in show.urls">
+            <td><a ng-href="{{url.address}}">{{url.address}}</a>
+                    <a ng-show="access('/show/' + show.id)" class="btn btn-danger"
+                                                           ng-confirm-click
+                                                           ng-click="deleteUrl($index)">Törlés</a>
+        </tr>
+        </tbody>
+    </table>
+
+  <a ng-show="access('/show/' + show.id)" class="btn btn-warning" ng-click="newUrl()">Új link felvitele</a>
+</section>

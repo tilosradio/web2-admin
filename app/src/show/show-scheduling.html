@@ -1,0 +1,35 @@
+<section>
+  <table class="table">
+    <thead>
+    <tr>
+      <td>érv kezdet</td>
+      <td>érv vége</td>
+      <td>nap</td>
+      <td>kezdés</td>
+      <td>időtartam</td>
+      <td>periódus</td>
+      <td ng-show="user.role== 'ADMIN'"></td>
+      <td ng-show="user.role== 'ADMIN'"></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="(key,scheduling) in show.schedulings">
+      <td>{{scheduling.validFrom| date:yyy-MM-dd}}</td>
+      <td>{{scheduling.validTo| date:yyyy-MM-dd}}</td>
+      <td>{{scheduling.weekDay | weekDayName}}</td>
+      <td>{{scheduling.hourFrom}}:{{scheduling.minFrom}}</td>
+      <td>{{scheduling.duration}}&nbsp;perc</td>
+      <td>{{scheduling.weekType}}&nbsp;hetente</td>
+      <td ng-show="user.role== 'ADMIN'"><a class="btn btn-danger" ng-click="editScheduling(key)">Szerkesztés</a>
+      </td>
+      <td
+        ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
+                                         ng-confirm-click
+                                         ng-click="deleteScheduling(key)">Törlés</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <a ng-show="user.role== 'ADMIN'" class="btn btn-warning" ng-click="newScheduling()">Új időpont</a>
+
+</section>
+

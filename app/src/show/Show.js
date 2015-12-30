@@ -3,13 +3,42 @@
 angular.module('tilosAdmin').config(function ($stateProvider) {
   $stateProvider.state('show', {
     url: '/show/:id',
+    abstract: true,
     templateUrl: 'show/show.html',
-    controller: 'ShowCtrl',
     resolve: {
       data: function ($stateParams, Shows, API_SERVER_ENDPOINT, $http) {
         return $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $stateParams.id);
       }
+    },
+    controller: function(data, $scope) {
+      data = data.data;
+      $scope.show = data;
+
     }
+  });
+  $stateProvider.state('show.episodes', {
+    url: '',
+    templateUrl: 'show/show-episodes.html',
+    controller: 'ShowEpisode'
+  });
+  $stateProvider.state('show.scheduling', {
+    url: '/scheduling',
+    templateUrl: 'show/show-scheduling.html',
+    controller: 'ShowScheduling'
+  });
+  $stateProvider.state('show.description', {
+    url: '/description',
+    templateUrl: 'show/show-description.html'
+  });
+  $stateProvider.state('show.contribution', {
+    url: '/contribution',
+    templateUrl: 'show/show-contribution.html',
+    controller: 'ShowContribution'
+  });
+  $stateProvider.state('show.urls', {
+    url: '/urls',
+    templateUrl: 'show/show-links.html',
+    controller: 'ShowUrls'
   });
   $stateProvider.state('shows', {
     url: '/shows',
@@ -39,31 +68,10 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
 });
 
 angular.module('tilosAdmin')
-  .controller('ShowCtrl', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
-    $scope.weekDays = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+  .controller('ShowEpisode', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location) {
+
     data = data.data;
     $scope.show = data;
-
-    $scope.server = API_SERVER_ENDPOINT;
-    $scope.now = new Date().getTime();
-
-    $scope.currentShowPage = 0;
-
-    $scope.refresh = function() {
-      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
-        $scope.show = data;
-      });
-    };
-
-    var to = new Date().getTime();
-    var from = to - ( 6 * 30 * 24 * 3600 * 1000);
-    $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + '&end=' + to).success(function (data) {
-      data.sort(function (a, b) {
-        return b.plannedFrom - a.plannedFrom
-      });
-      $scope.show.episodes = data;
-    });
-
 
     $scope.prev = function () {
       $scope.currentShowPage--;
@@ -90,39 +98,24 @@ angular.module('tilosAdmin')
       $location.path('/new/episode');
     };
 
-    $scope.newContribution = function () {
-      ngDialog.open({
-        template: 'show/contribution-form.html',
-        controller: 'ContributionNewCtrl',
-        scope: $scope
+    var to = new Date().getTime();
+    var from = to - ( 6 * 30 * 24 * 3600 * 1000);
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + '&end=' + to).success(function (data) {
+      data.sort(function (a, b) {
+        return b.plannedFrom - a.plannedFrom
       });
-    };
-    $scope.deleteContribution = function (contribution) {
-      $http.delete(API_SERVER_ENDPOINT + '/api/int/contribution?show=' + $scope.show.id + '&author=' + contribution.author.id).success(function (data) {
-        $location.path('/show/' + $scope.show.id);
-      });
-      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
-        $scope.show.contributors = data.contributors;
-      });
-    };
+      $scope.show.episodes = data;
+    });
 
 
-    $scope.newUrl = function () {
-      ngDialog.open({
-        template: 'show/url-form.html',
-        controller: 'UrlNewCtrl',
-        scope: $scope
-      });
-    };
+  });
 
-    $scope.deleteUrl = function (index) {
-      $scope.show.urls.splice(index, 1);
-      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $scope.show.id, $scope.show).success(function (data) {
-        var httpCache = $cacheFactory.get('$http');
-        httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
-        httpCache.remove(server + '/api/v1/show');
-      });
-    };
+angular.module('tilosAdmin')
+  .controller('ShowScheduling', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
+    $scope.weekDays = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+
+    data = data.data;
+    $scope.show = data;
 
     $scope.newScheduling = function () {
       $scope.scheduling = {};
@@ -152,6 +145,94 @@ angular.module('tilosAdmin')
         httpCache.remove(server + '/api/v1/show');
       });
     };
+  });
+angular.module('tilosAdmin')
+  .controller('ShowContribution', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
+
+    data = data.data;
+    $scope.show = data;
+
+    $scope.newContribution = function () {
+      ngDialog.open({
+        template: 'show/contribution-form.html',
+        controller: 'ContributionNewCtrl',
+        scope: $scope
+      });
+    };
+    $scope.deleteContribution = function (contribution) {
+      $http.delete(API_SERVER_ENDPOINT + '/api/int/contribution?show=' + $scope.show.id + '&author=' + contribution.author.id).success(function (data) {
+        $location.path('/show/' + $scope.show.id);
+      });
+      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+        $scope.show.contributors = data.contributors;
+      });
+    };
+
+  });
+
+angular.module('tilosAdmin')
+  .controller('ShowUrls', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
+
+    data = data.data;
+    $scope.show = data;
+
+    $scope.newUrl = function () {
+      ngDialog.open({
+        template: 'show/url-form.html',
+        controller: 'UrlNewCtrl',
+        scope: $scope
+      });
+    };
+
+    $scope.deleteUrl = function (index) {
+      $scope.show.urls.splice(index, 1);
+      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $scope.show.id, $scope.show).success(function (data) {
+        var httpCache = $cacheFactory.get('$http');
+        httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
+        httpCache.remove(server + '/api/v1/show');
+      });
+    };
+
+
+  });
+
+
+angular.module('tilosAdmin')
+  .controller('ShowCtrlOld', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, Contributions, Shows, Urls, ngDialog, $cacheFactory) {
+    $scope.weekDays = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+    data = data.data;
+    $scope.show = data;
+
+    $scope.server = API_SERVER_ENDPOINT;
+    $scope.now = new Date().getTime();
+
+    $scope.currentShowPage = 0;
+
+    $scope.refresh = function () {
+      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+        $scope.show = data;
+      });
+    };
+
+
+    $scope.newUrl = function () {
+      ngDialog.open({
+        template: 'show/url-form.html',
+        controller: 'UrlNewCtrl',
+        scope: $scope
+      });
+    };
+
+    $scope.deleteUrl = function (index) {
+      $scope.show.urls.splice(index, 1);
+      $http.put(API_SERVER_ENDPOINT + '/api/v1/show/' + $scope.show.id, $scope.show).success(function (data) {
+        var httpCache = $cacheFactory.get('$http');
+        httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
+        httpCache.remove(server + '/api/v1/show');
+      });
+    };
+
+
   });
 
 
@@ -229,25 +310,25 @@ angular.module('tilosAdmin')
 'use strict';
 
 angular.module('tilosAdmin').controller('ShowNewCtrl', function ($location, $scope, $http, $cacheFactory, Shows) {
-    $scope.types = [
-      {id: 'SPEECH', 'name': "Beszélgetős"},
-      {id: "MUSIC", 'name': "Zenés"}
-    ]
-    $scope.statuses = [
-      {id: 'PLANNED', 'name': "Tervezett"},
-      {id: 'ACTIVE', 'name': "Aktív"},
-      {id: 'OLD', 'name': "Archív"},
-      {id: 'LEGEND', 'name': "Legenda"}
-    ]
-    $scope.show = {};
-    $scope.save = function () {
-      Shows.save($scope.show, function (data) {
-        var id = data.id;
-        $location.path('/show/' + id);
-      });
+  $scope.types = [
+    {id: 'SPEECH', 'name': "Beszélgetős"},
+    {id: "MUSIC", 'name': "Zenés"}
+  ]
+  $scope.statuses = [
+    {id: 'PLANNED', 'name': "Tervezett"},
+    {id: 'ACTIVE', 'name': "Aktív"},
+    {id: 'OLD', 'name': "Archív"},
+    {id: 'LEGEND', 'name': "Legenda"}
+  ]
+  $scope.show = {};
+  $scope.save = function () {
+    Shows.save($scope.show, function (data) {
+      var id = data.id;
+      $location.path('/show/' + id);
+    });
 
-    };
-  });
+  };
+});
 
 angular.module('tilosAdmin')
   .controller('ShowEditCtrl', function ($location, $scope, $stateParams, API_SERVER_ENDPOINT, $http, $cacheFactory, data) {

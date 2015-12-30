@@ -1,0 +1,52 @@
+<section>
+  <ul class="pager">
+    <li class="cursorPointer"><a ng-click="prev()">&larr; Korábbi adások</a></li>
+    <li class="cursorPointer"><a ng-click="next()">Későbbi adások &rarr;</a></li>
+  </ul>
+  <table class="episode-box table">
+    <thead>
+    <tr>
+      <th class="col-sm-1">Dátum</th>
+      <th class="col-sm-8 text-left">Adás</th>
+      <th class="col-sm-2">Hallgatottság</th>
+      <th class="col-sm-1">Link</th>
+    </thead>
+    </tr>
+    <tr ng-repeat="episode in show.episodes">
+      <td>
+        {{episode.plannedFrom | date: 'yyyy.MM.dd'}}
+      </td>
+      <td>
+        <a ng-show="episode.persistent" ng-href="/episode/{{episode.id}}"><b>
+          <span ng-if="episode.text">{{episode.text.title}}</span>
+        </b></a>
+        <span ng-hide="episode.persistent">
+          <b>
+            <if-show-admin show="show">
+              <a ng-hide="episode.plannedFrom > now" class="btn btn-sm btn-danger" role="button"
+                 ng-click="newEpisode(episode)">Adásnapló létrehozás</a>
+              <a ng-show="episode.plannedFrom > now" class="btn btn-sm btn-danger" role="button"
+                 ng-click="newEpisode(episode)">Műsorajánló létrehozása</a>
+            </if-show-admin>
+          </b>
+      </span>
+      </td>
+      <td>
+        <span ng-show="episode.statListeners.mean > 0">
+          {{episode.statListeners.mean}}&nbsp;(+{{episode.statListeners.max-episode.statListeners.mean}}/-{{episode.statListeners.mean-episode.statListeners.min}})
+        </span>
+      </td>
+      <td>
+        &nbsp;
+        <a ng-show="episode.m3uUrl" class="pull-right listen-show" ng-href="{{episode.m3uUrl}}" target="_self">
+          <i class="icon-volume-up"></i> Meghallgat
+        </a>
+      </td>
+    </tr>
+  </table>
+
+  <ul class="pager">
+    <li class="cursorPointer"><a ng-click="prev()">&larr; Korábbi adások</a></li>
+    <li class="cursorPointer"><a ng-click="next()">Későbbi adások &rarr;</a></li>
+  </ul>
+</section>

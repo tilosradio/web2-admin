@@ -1,0 +1,7 @@
+<section>
+  <div class="alert alert-info" ng-bind-html="show.definition"></div>
+    <div ng-bind-html="show.description"></div>
+    <if-show-admin show="show">
+      <a class="btn btn-danger" role="btn" ng-href="/edit/show/{{show.id}}">Szerkesztés</a>
+    </if-show-admin>
+</section>

@@ -1,0 +1,14 @@
+
+<section>
+
+    <p>
+    <ul ng-repeat="contributor in show.contributors">
+        <li><a ng-href="/author/{{contributor.author.alias}}">{{contributor.nick}}</a> <a
+                ng-confirm-click ng-show="user.role== 'ADMIN'" class="btn btn-danger"
+                ng-click="deleteContribution(contributor)">Törlés</a></li>
+    </ul>
+    </p>
+
+  <a ng-show="user.role== 'ADMIN'" class="btn btn-warning" ng-click="newContribution()">Műsorkészítő hozzáadása</a>
+</section>
+

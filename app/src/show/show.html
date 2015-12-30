@@ -1,127 +1,22 @@
 <section>
-    <h1>{{show.name}}
-        <if-show-admin show="show">
-            <a class="btn btn-danger" role="btn" ng-href="/edit/show/{{show.id}}">Szerkesztés</a>
-        </if-show-admin>
-    </h1>
-    <blockquote ng-bind-html="show.definition"></blockquote>
-    <div ng-bind-html="show.description"></div>
-</section>
+  <h1 class="ubuntu">{{show.name}}</h1>
 
-<section>
-    <h2>Beosztás <a ng-show="user.role== 'ADMIN'" class="btn btn-warning"
-                    ng-click="newScheduling()">Új</a></h2>
+  <p class="show-definition">{{show.definition}}</p>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <td>érv kezdet</td>
-            <td>érv vége</td>
-            <td>nap</td>
-            <td>kezdés</td>
-            <td>időtartam</td>
-            <td>periódus</td>
-            <td ng-show="user.role== 'ADMIN'"></td>
-            <td ng-show="user.role== 'ADMIN'"></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="(key,scheduling) in show.schedulings">
-            <td>{{scheduling.validFrom| date:yyy-MM-dd}}</td>
-            <td>{{scheduling.validTo| date:yyyy-MM-dd}}</td>
-            <td>{{scheduling.weekDay | weekDayName}}</td>
-            <td>{{scheduling.hourFrom}}:{{scheduling.minFrom}}</td>
-            <td>{{scheduling.duration}}&nbsp;perc</td>
-            <td>{{scheduling.weekType}}&nbsp;hetente</td>
-            <td ng-show="user.role== 'ADMIN'"><a class="btn btn-danger" ng-click="editScheduling(key)">Szerkesztés</a>
-            </td>
-            <td
-                    ng-show="user.role== 'ADMIN'"><a class="btn btn-danger"
-                                                           ng-confirm-click
-                                                           ng-click="deleteScheduling(key)">Törlés</a></td>
-        </tr>
-        </tbody>
-    </table>
-
-
-</section>
-
-
-<section>
-    <h2>Linkek <a ng-show="access('/show/' + show.id)" class="btn btn-warning" ng-click="newUrl()">Új</a></h2>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Link</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="url in show.urls">
-            <td><a ng-href="{{url.address}}">{{url.address}}</a>
-                    <a ng-show="access('/show/' + show.id)" class="btn btn-danger"
-                                                           ng-confirm-click
-                                                           ng-click="deleteUrl($index)">Törlés</a>
-        </tr>
-        </tbody>
-    </table>
-
-
-</section>
-
-<section>
-    <h2>Műsorkészítők <a ng-show="user.role== 'ADMIN'" class="btn btn-warning" ng-click="newContribution()">Új</a>
-    </h2>
-
-    <p>
-    <ul ng-repeat="contributor in show.contributors">
-        <li><a ng-href="/author/{{contributor.author.alias}}">{{contributor.nick}}</a> <a
-                ng-confirm-click ng-show="user.role== 'ADMIN'" class="btn btn-danger"
-                ng-click="deleteContribution(contributor)">Törlés</a></li>
+  <div>
+    <ul class="nav nav-tabs" role="tablist">
+      <li ui-sref-active="active"><a ui-sref="show.episodes({id: show.id})">Adásnaplók</a></li>
+      <li ui-sref-active="active"><a ui-sref="show.description({id: show.id})">Leírás</a></li>
+      <li ui-sref-active="active"><a ui-sref="show.scheduling({id: show.id})">Beosztás</a></li>
+      <li ui-sref-active="active"><a ui-sref="show.contribution({id: show.id})">Műsorkészítők</a>
+      <li ui-sref-active="active"><a ui-sref="show.urls({id: show.id})">Linkek</a>
+      </li>
     </ul>
-    </p>
+  </div>
 
+  <br/>
+  <br/>
+  <div ui-view/>
 
 </section>
 
-<section>
-    <h2>Legutóbbi adások</h2>
-    <ul class="pager">
-        <li class="cursorPointer"><a ng-click="prev()">&larr; Korábbi adások</a></li>
-        <li class="cursorPointer"><a ng-click="next()">Későbbi adások &rarr;</a></li>
-    </ul>
-    <div class="panel panel-default episode-box" ng-repeat="episode in show.episodes">
-        <div class="panel-heading">
-            <a ng-show="episode.persistent" ng-href="/episode/{{episode.id}}"><b>
-                {{episode.plannedFrom | date: 'yyyy.MM.dd'}}
-                <span ng-if="episode.text">{{episode.text.title}}</span>
-            </b></a>
-      <span ng-hide="episode.persistent">
-      <b>
-          {{episode.plannedFrom | date: 'yyyy.MM.dd'}}&nbsp;&nbsp;
-          <if-show-admin show="show">
-              <a ng-hide="episode.plannedFrom > now" class="btn btn-danger" role="button"
-                 ng-click="newEpisode(episode)">Adásnapló létrehozás</a>
-              <a ng-show="episode.plannedFrom > now" class="btn btn-danger" role="button"
-                 ng-click="newEpisode(episode)">Műsorajánló létrehozása</a>
-          </if-show-admin>
-      </b>
-      </span>
-
-            <a ng-show="episode.m3uUrl" class="pull-right listen-show" ng-href="{{episode.m3uUrl}}" target="_self">
-                <i class="icon-volume-up"></i> Meghallgat
-            </a>
-            <span ng-show="user && user.role== 'ADMIN'">
-
-
-                </span>
-        </div>
-        <!-- <div ng-if="episode.text" class="panel-body">
-          <span ng-bind-html="episode.text.formatted"></span>
-        </div> -->
-    </div>
-    <ul class="pager">
-        <li class="cursorPointer"><a ng-click="prev()">&larr; Korábbi adások</a></li>
-        <li class="cursorPointer"><a ng-click="next()">Későbbi adások &rarr;</a></li>
-    </ul>
-</section>
