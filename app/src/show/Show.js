@@ -160,7 +160,7 @@ angular.module('tilosAdmin')
       });
     };
     $scope.deleteContribution = function (contribution) {
-      $http.delete(API_SERVER_ENDPOINT + '/api/int/contribution?show=' + $scope.show.id + '&author=' + contribution.author.id).success(function (data) {
+      $http.delete(API_SERVER_ENDPOINT + '/api/v1/contribution?show=' + $scope.show.id + '&author=' + contribution.author.id).success(function (data) {
         $location.path('/show/' + $scope.show.id);
       });
       $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
@@ -288,7 +288,7 @@ angular.module('tilosAdmin').controller('ContributionNewCtrl', function (API_SER
   });
   $scope.save = function () {
     $scope.contribution.show = {"id": $scope.show.id};
-    $http.post(server + '/api/int/contribution', $scope.contribution).success(function (data) {
+    $http.post(server + '/api/v1/contribution', $scope.contribution).success(function (data) {
       var httpCache = $cacheFactory.get('$http');
       httpCache.remove(server + '/api/v1/show/' + $scope.show.id);
       httpCache.remove(server + '/api/v1/author/' + $scope.contribution.author.id);
