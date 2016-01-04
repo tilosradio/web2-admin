@@ -25,7 +25,7 @@
         <a ng-show="episode.persistent" ng-href="/episode/{{episode.id}}"><b>
           <span ng-if="episode.text">{{episode.text.title}}</span>
         </b></a>
-        <span ng-hide="episode.persistent">
+        <span ng-hide="episode.persistent && episode.text.title">
           <b>
             <if-show-admin show="show">
               <a ng-hide="episode.plannedFrom > now" class="btn btn-sm btn-danger" role="button"
