@@ -25,7 +25,10 @@
         <a ng-show="episode.persistent" ng-href="/episode/{{episode.id}}"><b>
           <span ng-if="episode.text">{{episode.text.title}}</span>
         </b></a>
-        <span ng-hide="episode.persistent && episode.text.title">
+        <span ng-show="episode.persistent && !episode.text.title">
+          <a ng-href="/episode/{{episode.id}}" class="btn btn-sm btn-danger" role="button" >Adásnapló létrehozásx</a>
+        </span>
+        <span ng-hide="episode.persistent">
           <b>
             <if-show-admin show="show">
               <a ng-hide="episode.plannedFrom > now" class="btn btn-sm btn-danger" role="button"
