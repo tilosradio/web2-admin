@@ -72,6 +72,7 @@ angular.module('tilosAdmin')
 
     data = data.data;
     $scope.show = data;
+    $scope.now = new Date().getTime();
 
     $scope.prev = function () {
       $scope.currentShowPage--;
