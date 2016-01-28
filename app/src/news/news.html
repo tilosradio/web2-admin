@@ -1,0 +1,44 @@
+<div class="form-horizontal row instant-search" role="form">
+  <div class="form-group col-sm-6">
+    <label for="quicksearch" class="col-xs-2 control-label">Keresés</label>
+
+    <div class="col-xs-10">
+      <input type="search" id="quicksearch" class="form-control" placeholder="Keresés a műsorok között"
+             ng-model="quicksearch">
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <section class="col-lg-6">
+    <h1>Napi hírblokkok</h1>
+    <table class="table">
+      <tbody>
+      <tr ng-repeat="block in blocks | orderBy: 'date'">
+        <td>{{block.name}}</td>
+        <td>{{block.duration}}</td>
+        <td>
+          <div ng-repeat="file in block.files">
+            {{file.path}}
+          </div>
+        </td>
+        <td><a ng-show="block.path" ng-href="http://upload.tilos.hu/hirek/kesz/{{block.path}}" class="label label-primary">Letöltés</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="col-lg-6">
+    <h1>Feltöltött fileok </h1>
+    <table class="table">
+      <tbody>
+      <tr ng-repeat="file in files |  orderBy : 'expiration'">
+        <td>{{file.path}}</td>
+        <td>{{file.category}}</td>
+        <td>{{file.expiration*1000 | date : 'yyyy-MM-dd HH:mm'}}</td>
+
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

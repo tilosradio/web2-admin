@@ -91,11 +91,15 @@
       </li>
 
       <li class="sidebar-list" ng-show="user.role == 'ADMIN'">
-        <a ng-href="/text/news">Hírek<span class="menu-icon fa fa-quote-right"></span></a>
+        <a ng-href="/text/news">Hír bejegyzések<span class="menu-icon fa fa-quote-right"></span></a>
       </li>
 
       <li class="sidebar-list ng-hide" ng-show="user.role == 'ADMIN'">
         <a ng-href="/text/adminnews">Admin hírek<span class="menu-icon fa fa-quote-right"></span></a>
+      </li>
+
+      <li class="sidebar-list">
+        <a ng-href="/news">Tilos hírek<span class="menu-icon fa fa-quote-right"></span></a>
       </li>
 
     </ul>
