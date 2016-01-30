@@ -1,6 +1,6 @@
 <div class="row">
   <section class="col-lg-6">
-    <h1>Napi hírblokkok</h1>
+    <h2>Napi hírblokkok</h2>
     <table class="table">
       <tbody>
       <tr ng-repeat="block in blocks | orderBy: 'date'">
@@ -25,12 +25,36 @@
     </table>
   </section>
 
+
   <section class="col-lg-6">
-    <h1>Feltöltött fileok </h1>
+
+    <h2>Új hír feltöltés</h2>
+    <form>
+      <div class="form-group">
+        <label for="category">Kategória</label>
+        <select ng-model="category" id="category">
+          <option value="kozerdeku">Közérdekű</option>
+          <option value="kultura">Kultúra</option>
+          <option value="tudomany">Tudomány</option>
+          <option value="szines">Színes</option>
+          <option value="idojaras">Időjárás</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="upload">File feltöltés</label>
+        <input type="file" class="custom-file-input" file-model="myFile" name="file" id="upload">
+      </div>
+      <button class="btn btn-default" ng-click="uploadFile()">Upload</button>
+    </form>
+
+
+
+
+    <h2>Feltöltött fileok </h2>
     <table class="table">
       <tbody>
       <tr ng-repeat="file in files |  orderBy : 'expiration' : true">
-        <td><a ng-href="http://hir.tilos.hu/nyers/{{file.path}}">{{file.path}}</a></td>
+        <td><a ng-href="http://hir.tilos.hu/pool/{{file.path}}">{{file.path}}</a></td>
         <td>{{file.category}}</td>
         <td>{{file.expiration*1000 | date : 'yyyy-MM-dd HH:mm'}}</td>
 

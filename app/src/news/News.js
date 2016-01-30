@@ -15,6 +15,23 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
 });
 
 
+angular.module('tilosAdmin').directive('fileModel', ['$parse', function ($parse) {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      var model = $parse(attrs.fileModel);
+      var modelSetter = model.assign;
+
+      element.bind('change', function () {
+        scope.$apply(function () {
+          modelSetter(scope, element[0].files[0]);
+        });
+      });
+    }
+  };
+}]);
+
+
 angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams) {
     $scope.selectedDate = new Date();
     if ($stateParams.year) {
@@ -28,9 +45,12 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
 
     var dateStr = yearStr + '-' + monthStr + '-' + dayStr
 
-    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file').success(function (data) {
-      $scope.files = data;
-    });
+    var loadFiles = function () {
+      $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file').success(function (data) {
+        $scope.files = data;
+      });
+    }
+    loadFiles();
 
     var loadBlocks = function () {
       $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr).success(function (data) {
@@ -54,6 +74,22 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
       });
     }
 
+    $scope.uploadFile = function () {
+      var fd = new FormData();
+      fd.append('newsfile', $scope.myFile);
+      fd.append('category', $scope.category);
+      $http.post(API_SERVER_ENDPOINT + "/api/v1/news/upload", fd, {
+        transformRequest: angular.identity,
+        headers: {
+          'Content-Type': undefined
+        }
+      }).success(function () {
+        alert("File uploaded successfully");
+        loadFiles();
+      }).error(function () {
+        alert("Upload error")
+      });
+    }
   }
 );
 
