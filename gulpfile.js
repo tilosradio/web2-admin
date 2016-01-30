@@ -76,19 +76,20 @@ gulp.task('index', function () {
 
 
   var vendorjs = gulp.src([
-    'app/bower_components/angular/angular.js',
-    'app/bower_components/ng-file-upload/angular-file-upload.min.js',
-    'app/bower_components/ng-file-upload/angular-file-upload-shim.min.js',
-    'app/bower_components/angular-cookies/angular-cookies.js',
-    'app/bower_components/angular-bootstrap/ui-bootstrap.js',
-    'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-    'app/bower_components/angular-resource/angular-resource.js',
-    'app/bower_components/angular-local-storage/dist/angular-local-storage.js',
-    'app/bower_components/angular-ui-router/release/angular-ui-router.js',
-    'app/bower_components/ngDialog/js/ngDialog.min.js',
-    'app/bower_components/textAngular/dist/textAngular.min.js',
-    'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
-    'app/bower_components/textAngular/dist/textAngular-sanitize.min.js'])
+      'app/bower_components/angular/angular.js',
+      'app/bower_components/ng-file-upload/angular-file-upload.min.js',
+      'app/bower_components/ng-file-upload/angular-file-upload-shim.min.js',
+      'app/bower_components/angular-cookies/angular-cookies.js',
+      'app/bower_components/angular-bootstrap/ui-bootstrap.js',
+      'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'app/bower_components/angular-resource/angular-resource.js',
+      'app/bower_components/angular-local-storage/dist/angular-local-storage.js',
+      'app/bower_components/angular-ui-router/release/angular-ui-router.js',
+      'app/bower_components/ngDialog/js/ngDialog.min.js',
+      'app/bower_components/angular-audio/app/angular.audio.js',
+      'app/bower_components/textAngular/dist/textAngular.min.js',
+      'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
+      'app/bower_components/textAngular/dist/textAngular-sanitize.min.js'])
     .pipe(gulp.dest('dist/www/js/'));
 
   var tilosjs = gulp.src(paths.js)
@@ -100,9 +101,10 @@ gulp.task('index', function () {
   var options = {
     module: 'tilosAdmin',
     filename: 'tilos-templates.js',
-    transformUrl: function(url) {
+    transformUrl: function (url) {
       return url;
-    }};
+    }
+  };
 
   var templates = gulp.src(paths.templates)
     .pipe(templateCache(options))

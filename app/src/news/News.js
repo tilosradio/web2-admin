@@ -11,6 +11,11 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
     templateUrl: 'news/news.html',
     controller: 'NewsCtrl'
   });
+  $stateProvider.state('block', {
+    url: '/news/block/:year/:month/:day/:name',
+    templateUrl: 'news/block.html',
+    controller: 'NewsBlockCtrl'
+  });
 
 });
 
@@ -32,6 +37,48 @@ angular.module('tilosAdmin').directive('fileModel', ['$parse', function ($parse)
 }]);
 
 
+angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, ngAudio) {
+  $scope.now = new Date().getTime() / 1000;
+  $scope.ready = true;
+  var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
+  var name = $stateParams.name;
+  var load = function () {
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + $stateParams.name).success(function (data) {
+      $scope.block = data;
+      if ($scope.block.path) {
+        $scope.sound = ngAudio.load("http://hir.tilos.hu/kesz/" + $scope.block.path);
+      }
+    });
+  };
+
+  $scope.playing = false;
+  $scope.play = function () {
+    if (!$scope.playing) {
+      $scope.sound.play();
+      $scope.playing = true;
+    } else {
+      $scope.sound.stop();
+      $scope.playing = false;
+    }
+  };
+  load();
+
+  $scope.generate = function (name) {
+    $scope.ready = false;
+    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '?generate=true').success(function (data) {
+      load();
+      $scope.ready = true;
+    });
+  };
+
+
+  $scope.draw = function (name) {
+    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name).success(function (data) {
+      $scope.sound = null;
+      load();
+    });
+  }
+});
 angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams) {
     $scope.selectedDate = new Date();
     if ($stateParams.year) {

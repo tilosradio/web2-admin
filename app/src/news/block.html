@@ -1,0 +1,27 @@
+<div class="row">
+  <section class="col-lg-6">
+    <h1>{{block.date * 1000| date:'yyyy-MM-dd'}} {{block.name}}  <a ng-show="block.path"
+                                                                 ng-href="http://hir.tilos.hu/kesz/{{block.path}}"
+                                                                 class="btn btn-danger pull-right">Letöltés</a></h1>
+
+    <div>Tervezett adásbakerülés: {{block.date * 1000 | date: 'HH:mm' }}</div>
+    <div>Céllzott hossz: ({{block.expectedDuration / 60}} perc)</div>
+    <div>Hátralévő idő: {{sound.remaining / 60 | number: 0}}:{{sound.remaining % 60 | number: 0}}</div>
+
+    <h2>Tartalom</h2>
+    <div ng-repeat="file in block.files">
+      {{file.path}}
+    </div>
+
+    <h2>Szerkesztés</h2>
+    <button ng-show="now < block.date" class="btn btn-info" ng-click="draw(block.name)">Újrasorsol</button>
+    <span ng-show="now < block.date && block.files">
+     <button ng-show="ready" class="btn btn-primary" ng-click="generate(block.name)">Újravág</button>
+    <label ng-hide="ready" class="label label-info">Vágás folyamatban</label>
+
+    <button ng-hide="playing || !block.path" class="btn btn-warning" ng-click="play()">Belehallgat</button>
+    <button ng-show="playing" class="btn btn-warning" ng-click="play()">Megállít</button>
+
+    </span>
+
+  </section>

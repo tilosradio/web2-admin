@@ -9,7 +9,8 @@ angular.module('tilosAdmin', [
     'configuration',
     'textAngular',
     'LocalStorageModule',
-    'ngDialog'
+    'ngDialog',
+     'ngAudio'
 ])
     .config(function ($locationProvider, $httpProvider) {
         $httpProvider.interceptors.push(function ($q, localStorageService) {
