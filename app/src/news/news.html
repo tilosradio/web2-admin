@@ -5,13 +5,21 @@
       <tbody>
       <tr ng-repeat="block in blocks | orderBy: 'date'">
         <td>{{block.date * 1000 | date: 'HH:mm'}}</td>
-        <td>{{block.name}} ({{block.expectedDuration / 60}} perc)</td>
+        <td>
+          {{block.name}} ({{block.expectedDuration / 60}} perc)<br/>
+          <label ng-show="now < block.date" class="label label-info" ng-click="draw(block.name)">Újrasorsol</label><br/>
+          <span ng-show="now < block.date && block.files">
+            <label ng-show="ready" class="label label-primary" ng-click="generate(block.name)">Újravág</label><br/>
+            <label ng-hide="ready" class="label label-info">Vágás folyamatban</label>
+            </span>
+        </td>
         <td>
           <div ng-repeat="file in block.files">
             {{file.path}}
           </div>
         </td>
-        <td><a ng-show="block.path" ng-href="http://hir.tilos.hu/kesz/{{block.path}}" class="label label-primary">Letöltés</a></td>
+        <td><a ng-show="block.path" ng-href="http://hir.tilos.hu/kesz/{{block.path}}" class="label label-danger">Letöltés</a>
+        </td>
       </tr>
       </tbody>
     </table>
