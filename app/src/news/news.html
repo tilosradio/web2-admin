@@ -1,10 +1,11 @@
 <div class="row">
   <section class="col-lg-6">
-    <h2>Napi hírblokkok</h2>
+    <h2>Napi hírblokkok {{selectedDate| date:'yyyy/MM/dd'}}</h2>
+    <a ng-href="/news/{{current - 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}">Tegnap</a> <a ng-href="/news/{{current+ 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}">Holnap</a>
     <table class="table">
       <tbody>
       <tr ng-repeat="block in blocks | orderBy: 'date'">
-        <td>{{block.date * 1000 | date: 'HH:mm'}}</td>
+        <td>{{block.date * 1000 | date: 'HH:mm' }}</td>
         <td>
           {{block.name}} ({{block.expectedDuration / 60}} perc)<br/>
           <label ng-show="now < block.date" class="label label-info" ng-click="draw(block.name)">Újrasorsol</label><br/>
@@ -46,8 +47,6 @@
       </div>
       <button class="btn btn-default" ng-click="uploadFile()">Upload</button>
     </form>
-
-
 
 
     <h2>Feltöltött fileok </h2>

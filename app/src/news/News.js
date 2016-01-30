@@ -7,7 +7,7 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
     controller: 'NewsCtrl'
   });
   $stateProvider.state('news-day', {
-    url: '/news/:year/:month/$day',
+    url: '/news/:year/:month/:day',
     templateUrl: 'news/news.html',
     controller: 'NewsCtrl'
   });
@@ -39,11 +39,17 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
     }
     $scope.ready = true;
     $scope.now = new Date().getTime() / 1000;
-    var monthStr = ('0' + ($scope.selectedDate.getMonth() + 1)).slice(-2);
-    var dayStr = ('0' + $scope.selectedDate.getDate()).slice(-2);
-    var yearStr = '' + $scope.selectedDate.getFullYear();
 
-    var dateStr = yearStr + '-' + monthStr + '-' + dayStr
+    $scope.current = $scope.selectedDate.getTime();
+
+    var dateToStr = function (dt) {
+      var monthStr = ('0' + (dt.getMonth() + 1)).slice(-2);
+      var dayStr = ('0' + dt.getDate()).slice(-2);
+      var yearStr = '' + dt.getFullYear();
+
+      return yearStr + '-' + monthStr + '-' + dayStr
+    }
+    var dateStr = dateToStr($scope.selectedDate);
 
     var loadFiles = function () {
       $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file').success(function (data) {
