@@ -1,8 +1,19 @@
 <div class="row">
   <section class="col-lg-6">
-    <h1>{{block.date * 1000| date:'yyyy-MM-dd'}} {{block.name}}  <a ng-show="block.path"
-                                                                 ng-href="http://hir.tilos.hu/kesz/{{block.path}}"
-                                                                 class="btn btn-danger pull-right">Letöltés</a></h1>
+    <h1 ng-hide="playing">{{block.date * 1000| date:'yyyy-MM-dd'}} {{block.name}}
+      <a ng-hide="playing || !block.path"
+         ng-click="play()"
+         class="btn btn-danger pull-right">Lejátszik élő adásba!</a>
+      <br/>
+      <a ng-show="block.path"
+         ng-href="http://hir.tilos.hu/kesz/{{block.path}}"
+         class="btn btn-danger pull-right">Letöltés</a>
+    </h1>
+
+    <h1 ng-show="playing" class="pull-right'">Hátravan: {{sound.remaining / 60 | number: 0}}:{{sound.remaining % 60 |
+      number: 0}}<a ng-show="playing"
+                    ng-click="play()"
+                    class="btn btn-danger pull-right">Leállít</a></h1></h1>
 
     <div>Tervezett adásbakerülés: {{block.date * 1000 | date: 'HH:mm' }}</div>
     <div>Céllzott hossz: ({{block.expectedDuration / 60}} perc)</div>
@@ -18,10 +29,10 @@
     <span ng-show="now < block.date && block.files">
      <button ng-show="ready" class="btn btn-primary" ng-click="generate(block.name)">Újravág</button>
     <label ng-hide="ready" class="label label-info">Vágás folyamatban</label>
+    </span>
 
     <button ng-hide="playing || !block.path" class="btn btn-warning" ng-click="play()">Belehallgat</button>
     <button ng-show="playing" class="btn btn-warning" ng-click="play()">Megállít</button>
 
-    </span>
 
   </section>
