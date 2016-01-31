@@ -54,10 +54,15 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
   };
 
   $scope.playing = false;
-  $scope.play = function () {
+  $scope.play = function (real) {
     if (!$scope.playing) {
       $scope.sound.play();
       $scope.playing = true;
+      if (real) {
+        $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '/play').success(function (data) {
+          $scope.block = data;
+        });
+      }
     } else {
       $scope.sound.stop();
       $scope.playing = false;

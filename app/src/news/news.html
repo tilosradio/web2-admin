@@ -29,7 +29,9 @@
           </div>
         </td>
         <td><a ng-show="block.path" ng-href="/news/block/{{block.date * 1000 | date:'yyyy/MM/dd'}}/{{block.name}}"
-               class="label label-danger">Lejátszás</a>
+               class="label label-danger">Lejátszás</a><br/>
+          <label ng-show="block.liveAt.length > 0" class="label label-danger">LEADVA</label>
+
         </td>
       </tr>
       </tbody>
