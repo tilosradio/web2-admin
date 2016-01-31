@@ -63,7 +63,7 @@
     <table class="table">
       <tbody>
       <tr ng-repeat="file in files |  orderBy : 'expiration' : true">
-        <td><a ng-href="http://hir.tilos.hu/pool/{{file.path}}">{{file.path}}</a></td>
+        <td><a ng-href="http://hir.tilos.hu/pool/{{file.path}}">{{file.path}} ({{file.duration}} másodperc)</a></td>
         <td>{{file.category}}</td>
         <td>{{file.expiration*1000 | date : 'yyyy-MM-dd HH:mm'}}</td>
 
