@@ -39,6 +39,8 @@ angular.module('tilosAdmin').directive('fileModel', ['$parse', function ($parse)
 
 angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, ngAudio) {
   $scope.now = new Date().getTime() / 1000;
+  $scope.Math = window.Math;
+
   $scope.ready = true;
   var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
   var name = $stateParams.name;

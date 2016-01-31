@@ -10,14 +10,14 @@
          class="btn btn-danger pull-right">Letöltés</a>
     </h1>
 
-    <h1 ng-show="playing" class="pull-right'">Hátravan: {{sound.remaining / 60 | number: 0}}:{{sound.remaining % 60 |
+    <h1 ng-show="playing" class="pull-right'">Hátravan: {{Math.floor(sound.remaining / 60) | number: 0}}:{{sound.remaining % 60 |
       number: 0}}<a ng-show="playing"
                     ng-click="play()"
                     class="btn btn-danger pull-right">Leállít</a></h1></h1>
 
     <div>Tervezett adásbakerülés: {{block.date * 1000 | date: 'HH:mm' }}</div>
     <div>Céllzott hossz: ({{block.expectedDuration / 60}} perc)</div>
-    <div>Hátralévő idő: {{sound.remaining / 60 | number: 0}}:{{sound.remaining % 60 | number: 0}}</div>
+    <div>Hátralévő idő: {{Math.floor(sound.remaining / 60) | number: 0}}:{{sound.remaining % 60 | number: 0}}</div>
 
     <h2>Tartalom</h2>
     <div ng-repeat="file in block.files">
