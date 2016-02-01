@@ -3,9 +3,9 @@
     <h2>Napi hírblokkok {{selectedDate| date:'yyyy/MM/dd'}}</h2>
     <nav>
       <ul class="pager">
-        <li ><a ng-href="/news/{{current - 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}"><span
+        <li><a ng-href="/news/{{current - 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}"><span
           aria-hidden="true">&larr;</span> Tegnap</a></li>
-        <li ><a ng-href="/news/{{current+ 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}">Holnap <span
+        <li><a ng-href="/news/{{current+ 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}">Holnap <span
           aria-hidden="true">&rarr;</span></a></li>
       </ul>
     </nav>
@@ -66,6 +66,7 @@
       <tbody>
       <tr ng-repeat="file in files |  orderBy : 'expiration' : true">
         <td><a ng-href="http://hir.tilos.hu/pool/{{file.path}}">{{file.path}} ({{file.duration}} másodperc)</a></td>
+        <td><label class="label label-danger" ng-click="delete(file.id)">törlés</label></td>
         <td>{{file.category}}</td>
         <td>{{file.expiration*1000 | date : 'yyyy-MM-dd HH:mm'}}</td>
 

@@ -96,6 +96,13 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
 
     $scope.current = $scope.selectedDate.getTime();
 
+
+    $scope.delete = function (id) {
+      $http.delete(API_SERVER_ENDPOINT + '/api/v1/news/file/' + id).success(function () {
+        loadFiles();
+      });
+    };
+
     var dateToStr = function (dt) {
       var monthStr = ('0' + (dt.getMonth() + 1)).slice(-2);
       var dayStr = ('0' + dt.getDate()).slice(-2);
