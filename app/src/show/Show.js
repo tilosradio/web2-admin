@@ -10,7 +10,7 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
         return $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $stateParams.id);
       }
     },
-    controller: function(data, $scope) {
+    controller: function (data, $scope) {
       data = data.data;
       $scope.show = data;
 
@@ -118,8 +118,17 @@ angular.module('tilosAdmin')
     data = data.data;
     $scope.show = data;
 
+
+    $scope.refresh = function () {
+      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
+        $scope.show = data;
+      });
+    };
+
     $scope.newScheduling = function () {
       $scope.scheduling = {};
+      $scope.scheduling.validTo = new Date("2020-01-01").getTime();
+      $scope.scheduling.validFrom = new Date().getTime();
       $scope.schedulingIndex = $scope.show.schedulings.length;
       ngDialog.open({
         template: 'show/scheduling-form.html',
@@ -209,11 +218,7 @@ angular.module('tilosAdmin')
 
     $scope.currentShowPage = 0;
 
-    $scope.refresh = function () {
-      $http.get(API_SERVER_ENDPOINT + "/api/v1/show/" + $scope.show.id).success(function (data) {
-        $scope.show = data;
-      });
-    };
+
 
 
     $scope.newUrl = function () {
@@ -239,8 +244,8 @@ angular.module('tilosAdmin')
 
 angular.module('tilosAdmin')
   .controller('SchedulingEditCtrl', function ($scope, dateFilter, $location, $http, API_SERVER_ENDPOINT, $cacheFactory) {
-    $scope.validFromDate = new Date().format("yyyy-mm-dd");
-    $scope.validToDate = new Date("2020-01-01").format("yyyy-mm-dd");
+    $scope.validFromDate = new Date($scope.scheduling.validFrom).format("yyyy-mm-dd");
+    $scope.validToDate = new Date($scope.scheduling.validTo).format("yyyy-mm-dd");
     $scope.baseDate = $scope.validFromDate;
     $scope.save = function () {
       $scope.scheduling.validFrom = new Date($scope.validFromDate).getTime();
