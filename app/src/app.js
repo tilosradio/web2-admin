@@ -10,54 +10,62 @@ angular.module('tilosAdmin', [
     'textAngular',
     'LocalStorageModule',
     'ngDialog',
-     'ngAudio'
-])
-    .config(function ($locationProvider, $httpProvider) {
-        $httpProvider.interceptors.push(function ($q, localStorageService) {
-            return {
-                'request': function (config) {
-                    var jwt = localStorageService.get("jwt");
-                    if (jwt) {
-                        config.headers.Authorization = "Bearer " + jwt.access_token;
-                    }
-                    return config;
-                }
-            }
-        });
-
-        $locationProvider.html5Mode(true);
-        //$routeProvider
-        //    .when('/', {
-        //        templateUrl: 'views/main.html',
-        //        controller: 'MainCtrl'
-        //    })
-        //    .otherwise({
-        //        redirectTo: '/'
-        //    });
+    'angular-growl',
+    'ngAudio'
+  ])
+  .config(function ($locationProvider, $httpProvider) {
+    $httpProvider.interceptors.push(function ($q, localStorageService) {
+      return {
+        'request': function (config) {
+          var jwt = localStorageService.get("jwt");
+          if (jwt) {
+            config.headers.Authorization = "Bearer " + jwt.access_token;
+          }
+          return config;
+        }
+      }
     });
+
+    $locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push(function ($q, growl) {
+      return {
+        'responseError': function (rejection) {
+          if (rejection.status != 404) {
+            if (rejection.data.message) {
+              growl.error("Hiba: " + rejection.data.message);
+            } else {
+              growl.error("Ismeretlen hiba történt: " + rejection.status);
+            }
+          }
+          return $q.reject(rejection);
+        }
+      };
+    })
+
+  });
 
 
 angular.module('tilosAdmin').config(['$provide', function ($provide) {
-    // this demonstrates how to register a new tool and add it to the default toolbar
-    $provide.decorator('taOptions', ['$delegate', function (taOptions) {
-        // $delegate is the taOptions we are decorating
-        // here we override the default toolbars and classes specified in taOptions.
-        taOptions.toolbar = [
-            ['h2', 'h3', 'p'],
-            ['bold', 'italics'],
-            ['ol', 'ul'],
-            ['insertLink', 'insertImage'],
-            ['html']
-        ];
-        return taOptions; // whatever you return will be the taOptions
-    }]);
+  // this demonstrates how to register a new tool and add it to the default toolbar
+  $provide.decorator('taOptions', ['$delegate', function (taOptions) {
+    // $delegate is the taOptions we are decorating
+    // here we override the default toolbars and classes specified in taOptions.
+    taOptions.toolbar = [
+      ['h2', 'h3', 'p'],
+      ['bold', 'italics'],
+      ['ol', 'ul'],
+      ['insertLink', 'insertImage'],
+      ['html']
+    ];
+    return taOptions; // whatever you return will be the taOptions
+  }]);
 
-    $provide.decorator('taTools', ['$delegate', function (taTools) {
-        taTools.h2.buttontext = 'Cím';
-        taTools.h3.buttontext = 'Alcím';
-        taTools.p.buttontext = 'Normál';
-        return taTools;
-    }]);
+  $provide.decorator('taTools', ['$delegate', function (taTools) {
+    taTools.h2.buttontext = 'Cím';
+    taTools.h3.buttontext = 'Alcím';
+    taTools.p.buttontext = 'Normál';
+    return taTools;
+  }]);
 
 }]);
 
@@ -65,7 +73,7 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 
-    if($rootScope.stateChangeBypass || toState.name === 'login' || toState.name === 'passwordReminder' || toState.name === 'logout') {
+    if ($rootScope.stateChangeBypass || toState.name === 'login' || toState.name === 'passwordReminder' || toState.name === 'logout') {
       $rootScope.stateChangeBypass = false;
       return;
     }
@@ -79,7 +87,7 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
           $rootScope.stateChangeBypass = true;
           $state.go(toState, toParams);
         }
-      }).error(function(){
+      }).error(function () {
         $state.go('login');
       });
     } else {
@@ -90,71 +98,71 @@ angular.module('tilosAdmin').run(function ($rootScope, $state, $location, $http,
 
   });
 
-    $rootScope.access = function(permission) {
-      var perms = $rootScope.user.permissions;
-      for (var i = 0; i < perms.length; i++) {
-        if (permission.search(perms[i]) == 0) {
-          return true;
-        }
+  $rootScope.access = function (permission) {
+    var perms = $rootScope.user.permissions;
+    for (var i = 0; i < perms.length; i++) {
+      if (permission.search(perms[i]) == 0) {
+        return true;
       }
-      return false;
     }
+    return false;
+  }
 
-    //$rootScope.$on('$locationChangeStart', function (evt, next) {
-    //    if (!('user' in $rootScope)) {
-    //        if (!freeAccess(next)) {
-    //            //evt.preventDefault();
-    //            $location.path("/login");
-    //
-    //        }
-    //    }
-    //
-    //});
+  //$rootScope.$on('$locationChangeStart', function (evt, next) {
+  //    if (!('user' in $rootScope)) {
+  //        if (!freeAccess(next)) {
+  //            //evt.preventDefault();
+  //            $location.path("/login");
+  //
+  //        }
+  //    }
+  //
+  //});
 
-    //$rootScope.$on("$routeChangeStart", function (event, next, current) {
-    //    if ('user' in $rootScope) {
-    //      if ($rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'AUTHOR') {
-    //        //hi friends
-    //        return;
-    //      } else {
-    //        localStorageService.remove('jwt');
-    //        window.location.href = 'http://tilos.hu';
-    //      }
-    //    }
-    //
-    //        // no logged user, we should be going to #login
-    //        if (next.templateUrl == "views/login.html" ||
-    //          next.templateUrl == "views/reset.html" ||
-    //          next.templateUrl == "views/reminder.html" ||
-    //          next.templateUrl == "views/logout.html") {
-    //            // already going to #login, no redirect needed
-    //        } else {
-    //            // not going to #login, we should redirect now
-    //            $location.path("/login");
-    //        }
-    //
-    //});
+  //$rootScope.$on("$routeChangeStart", function (event, next, current) {
+  //    if ('user' in $rootScope) {
+  //      if ($rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'AUTHOR') {
+  //        //hi friends
+  //        return;
+  //      } else {
+  //        localStorageService.remove('jwt');
+  //        window.location.href = 'http://tilos.hu';
+  //      }
+  //    }
+  //
+  //        // no logged user, we should be going to #login
+  //        if (next.templateUrl == "views/login.html" ||
+  //          next.templateUrl == "views/reset.html" ||
+  //          next.templateUrl == "views/reminder.html" ||
+  //          next.templateUrl == "views/logout.html") {
+  //            // already going to #login, no redirect needed
+  //        } else {
+  //            // not going to #login, we should redirect now
+  //            $location.path("/login");
+  //        }
+  //
+  //});
 
-    //$rootScope.initialPath = $location.path();
-    //$http.get(API_SERVER_ENDPOINT + "/api/v1/user/me").success(function (data) {
-    //    if (data && data.username) {
-    //        $rootScope.user = data;
-    //        if ($rootScope.initialPath) {
-    //            var redirectTo = $rootScope.initialPath;
-    //            $rootScope.initialPath = null;
-    //            $location.path(redirectTo);
-    //
-    //        }
-    //    } else {
-    //        if (!freeAccess($location.path())) {
-    //            $location.path("/login");
-    //        }
-    //    }
-    //});
+  //$rootScope.initialPath = $location.path();
+  //$http.get(API_SERVER_ENDPOINT + "/api/v1/user/me").success(function (data) {
+  //    if (data && data.username) {
+  //        $rootScope.user = data;
+  //        if ($rootScope.initialPath) {
+  //            var redirectTo = $rootScope.initialPath;
+  //            $rootScope.initialPath = null;
+  //            $location.path(redirectTo);
+  //
+  //        }
+  //    } else {
+  //        if (!freeAccess($location.path())) {
+  //            $location.path("/login");
+  //        }
+  //    }
+  //});
 });
 var server = window.location.protocol + '//' + window.location.hostname;
 if (window.location.port && window.location.port !== '9000') {
-    server = server + ':' + window.location.port;
+  server = server + ':' + window.location.port;
 }
 
 var tilosHost = window.location.hostname;

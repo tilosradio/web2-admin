@@ -63,7 +63,8 @@ gulp.task('index', function () {
     'app/bower_components/font-awesome/css/font-awesome.css',
     'app/bower_components/textAngular/src/textAngular.css',
     'app/bower_components/ngDialog/css/ngDialog.css',
-    'app/bower_components/ngDialog/css/ngDialog-theme-default.css'
+    'app/bower_components/ngDialog/css/ngDialog-theme-default.css',
+    'app/bower_components/angular-growl-v2/build/angular-growl.css'
   ]).pipe(concat('vendors.css'))
     .pipe(rev())
     .pipe(gulp.dest('dist/www/css/'));
@@ -89,6 +90,7 @@ gulp.task('index', function () {
       'app/bower_components/angular-audio/app/angular.audio.js',
       'app/bower_components/textAngular/dist/textAngular.min.js',
       'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
+      'app/bower_components/angular-growl-v2/build/angular-growl.js',
       'app/bower_components/textAngular/dist/textAngular-sanitize.min.js'])
     .pipe(gulp.dest('dist/www/js/'));
 
