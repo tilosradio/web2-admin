@@ -68,7 +68,7 @@
       <tbody>
       <tr ng-repeat="file in files |  orderBy : 'expiration' : true">
         <td><a ng-href="/news/file/{{file.id}}">{{file.path}} ({{file.duration}} másodperc)</a></td>
-        <td><label class="label label-danger" ng-click="delete(file.id)">törlés</label></td>
+        <td><label class="label label-danger" ng-confirm-click ng-click="delete(file.id)">törlés</label></td>
         <td>{{file.category}}</td>
         <td>{{file.validFrom * 1000 | date : 'yyyy-MM-dd HH:mm'}}</td>
         <td>{{file.expiration * 1000 | date : 'yyyy-MM-dd HH:mm'}}</td>
