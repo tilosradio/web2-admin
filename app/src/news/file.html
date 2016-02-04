@@ -1,0 +1,19 @@
+<div class="row">
+  <section class="col-lg-6">
+    <h1>{{file.path}}
+      <button class="pull-right btn btn-danger" ng-click="delete()" ng-confirm-click>Törlés</button>
+    </h1>
+    <div>Érvényes innentől: {{file.validFrom * 1000 | date:'yyyy-MM-dd HH:mm'}}
+      <button ng-click="modifyDate('validFrom',-1)" class="btn btn-info btn-sm">-1 nap</button>
+      <button ng-click="modifyDate('validFrom',1)" class="btn btn-info btn-sm">+1 nap</button>
+    </div>
+    <div>Érvényes eddig: {{file.expiration * 1000 | date:'yyyy-MM-dd HH:mm'}}
+      <button ng-click="modifyDate('expiration',-1)" class="btn btn-sm btn-info">-1 nap</button>
+      <button ng-click="modifyDate('expiration',1)" class="btn btn-sm btn-info">+1 nap</button>
+    </div>
+    <div>
+      <a class="btn btn-danger" ng-href="https://hir.tilos.hu/pool/{{file.path}}">Letölt</a>
+    </div>
+
+  </section>
+</div>

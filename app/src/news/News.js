@@ -11,6 +11,11 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
     templateUrl: 'news/news.html',
     controller: 'NewsCtrl'
   });
+  $stateProvider.state('news-file', {
+    url: '/news/file/:id',
+    templateUrl: 'news/file.html',
+    controller: 'NewsFileCtrl'
+  });
   $stateProvider.state('block', {
     url: '/news/block/:year/:month/:day/:name',
     templateUrl: 'news/block.html',
@@ -37,6 +42,29 @@ angular.module('tilosAdmin').directive('fileModel', ['$parse', function ($parse)
 }]);
 
 
+angular.module('tilosAdmin').controller('NewsFileCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, ngAudio, $state) {
+  var load = function () {
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file/' + $stateParams.id).success(function (data) {
+      $scope.file = data;
+    });
+  };
+
+  $scope.modifyDate = function (fieldName, no) {
+    $scope.file[fieldName] = $scope.file[fieldName] + 24 * 60 * 60 * no;
+    $http.put(API_SERVER_ENDPOINT + '/api/v1/news/file/' + $stateParams.id, $scope.file).success(function (data) {
+      $scope.file = data;
+
+    });
+  };
+
+  $scope.delete = function () {
+    $http.delete(API_SERVER_ENDPOINT + '/api/v1/news/file/' + $scope.file.id).success(function () {
+      $state.go("news");
+    });
+  };
+  load();
+
+});
 angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, ngAudio) {
   $scope.now = new Date().getTime() / 1000;
   $scope.Math = window.Math;
