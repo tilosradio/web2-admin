@@ -1,5 +1,18 @@
 <div class="row">
+  <div>
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active">
+        <a href ui-sref="news">Hírszerkesztő nézet</a>
+      </li>
+      <li role="presentation">
+        <a href ui-sref="news-dayview-today">Tech nézet</a>
+      </li>
+    </ul>
+  </div>
+
   <section class="col-lg-6">
+    <a href="https://docs.google.com/spreadsheets/d/1m9lLUx8B4UxJ4VCXN_zf5M5xwHWukRgRDjtlxqQ6aEA/edit#gid=1222219321">Elméleti
+      kiosztás</a>
     <h2>Napi hírblokkok {{selectedDate| date:'yyyy/MM/dd'}}</h2>
     <nav>
       <ul class="pager">
@@ -37,7 +50,6 @@
       </tbody>
     </table>
   </section>
-
 
   <section class="col-lg-6">
 

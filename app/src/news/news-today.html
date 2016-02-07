@@ -1,0 +1,41 @@
+<div class="row">
+  <div>
+    <ul class="nav nav-tabs">
+      <li role="presentation">
+        <a href ui-sref="news">Hírszerkesztő nézet</a>
+      </li>
+      <li role="presentation" class="active">
+        <a href ui-sref="news-dayview-today">Tech nézet</a>
+      </li>
+    </ul>
+  </div>
+  <section class="col-lg-6">
+    <a href="https://docs.google.com/spreadsheets/d/1m9lLUx8B4UxJ4VCXN_zf5M5xwHWukRgRDjtlxqQ6aEA/edit#gid=1222219321">Elméleti
+      kiosztás</a>
+    <div style="position: relative" class="col-lg-12">
+      <div ng-repeat="episode in episodes"
+           ng-style="{'position': 'absolute','left':'80px','top': episode.top+ 'px','border-top':'1px solid','width':'180px'};"
+        ng-hide="episode.show.name == 'Tilos Mesék' || episode.show.name == 'Tilos Hírek'">
+        {{episode.show.name}}
+      </div>
+
+      <div ng-repeat="hour in hours"
+           ng-style="{'position': 'absolute','top': hour.position + 'px','border-top':'1px solid'};">
+        {{hour.label}}
+      </div>
+
+      <div ng-repeat="block in blocks | orderBy: 'date'"
+           ng-style="{'position': 'absolute','top': block.top + 'px','left':block.left+'px','height': block.height + 'px','border-top':'1px solid','border-bottom':'1px solid','width':'400px','background-color':'#DEDEDE'};">
+        {{block.date * 1000 | date: 'HH:mm' }}
+        {{block.bottom}}
+        <a ng-href="/news/block/{{block.date * 1000 | date:'yyyy/MM/dd'}}/{{block.name}}">{{block.name}}</a>
+        ({{block.expectedDuration / 60}} perc)
+        <a ng-show="block.path" ng-href="/news/block/{{block.date * 1000 | date:'yyyy/MM/dd'}}/{{block.name}}"
+           class="label label-danger">Lejátszás</a><label ng-show="block.liveAt.length > 0" class="label label-danger">LEADVA</label>
+
+      </div>
+    </div>
+</div>
+</section>
+</div>
+
