@@ -9,6 +9,16 @@
       </li>
     </ul>
   </div>
+  <nav>
+    <ul class="pager">
+      <li><a ng-href="/news/day/{{current - 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}"><span
+        aria-hidden="true">&larr;</span> Tegnap</a></li>
+      <li><a ng-href="/news/day/{{current+ 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}">Holnap <span
+        aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+  </nav>
+
+
   <section class="col-lg-6">
     <div>
       <a class="label label-info"

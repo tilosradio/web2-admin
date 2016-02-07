@@ -170,8 +170,8 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
       }
     });
   };
-  var start = $scope.selectedDate.getTime();
-  var end = start + 24 * 60 * 60 * 1000;
+  var start = $scope.selectedDate.getTime() + 5 * 60 * 60 * 1000;
+  var end = start + 19 * 60 * 60 * 1000;
   $http.get(API_SERVER_ENDPOINT + '/api/v1/episode?start=' + start + "&end=" + end).success(function (data) {
     $scope.episodes = data;
     $scope.episodes.forEach(function (episode) {
