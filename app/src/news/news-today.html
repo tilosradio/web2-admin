@@ -10,12 +10,16 @@
     </ul>
   </div>
   <section class="col-lg-6">
-    <a href="https://docs.google.com/spreadsheets/d/1m9lLUx8B4UxJ4VCXN_zf5M5xwHWukRgRDjtlxqQ6aEA/edit#gid=1222219321">Elméleti
-      kiosztás</a>
+    <div>
+      <a class="label label-info"
+         href="https://docs.google.com/spreadsheets/d/1m9lLUx8B4UxJ4VCXN_zf5M5xwHWukRgRDjtlxqQ6aEA/edit#gid=1222219321">Elméleti
+        kiosztás</a><br/>
+      &nbsp;
+    </div>
     <div style="position: relative" class="col-lg-12">
       <div ng-repeat="episode in episodes"
            ng-style="{'position': 'absolute','left':'80px','top': episode.top+ 'px','border-top':'1px solid','width':'180px'};"
-        ng-hide="episode.show.name == 'Tilos Mesék' || episode.show.name == 'Tilos Hírek'">
+           ng-hide="episode.show.name == 'Tilos Mesék' || episode.show.name == 'Tilos Hírek'">
         {{episode.show.name}}
       </div>
 
