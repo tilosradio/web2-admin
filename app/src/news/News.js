@@ -162,7 +162,7 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
 
         $scope.blocks[i].top = offset * 60;
         $scope.blocks[i].height = ($scope.blocks[i].expectedDuration / 60 / 15 * 30) * 3;
-        if ($scope.blocks[i].name.indexOf("havolt") > 0) {
+        if ($scope.blocks[i].name.indexOf("havolt") > 0 || $scope.blocks[i].name.indexOf("hakell") > 0) {
           $scope.blocks[i].left = 700;
         } else {
           $scope.blocks[i].left = 270;
