@@ -152,6 +152,7 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
   };
   var dateStr = dateToStr($scope.selectedDate);
   var loadBlocks = function () {
+    var lastEnd = 0;
     $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr).success(function (data) {
       $scope.blocks = data;
       for (var i = 0; i < data.length; i++) {
@@ -160,12 +161,16 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
 
         var offset = Math.round(offset) - t * 3;
 
-        $scope.blocks[i].top = offset * 60;
+
         $scope.blocks[i].height = ($scope.blocks[i].expectedDuration / 60 / 15 * 30) * 3;
+
         if ($scope.blocks[i].name.indexOf("havolt") > 0 || $scope.blocks[i].name.indexOf("hakell") > 0) {
+          $scope.blocks[i].top = offset * 60;
           $scope.blocks[i].left = 700;
         } else {
           $scope.blocks[i].left = 270;
+          $scope.blocks[i].top = Math.max(offset * 60, lastEnd);
+          lastEnd = $scope.blocks[i].top + $scope.blocks[i].height;
         }
       }
     });
