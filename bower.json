@@ -20,7 +20,8 @@
     "angular-audio": "~1.7.1"
   },
   "devDependencies": {
-    "to-markdown": "~0.0.2"
+    "to-markdown": "~0.0.2",
+    "angular-media-player": "~0.5.8"
   },
   "resolutions": {
     "angular": "~1.4.3",
