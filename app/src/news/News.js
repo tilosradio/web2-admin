@@ -75,9 +75,18 @@ angular.module('tilosAdmin').controller('NewsFileCtrl', function ($http, API_SER
   load();
 
 });
-angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, ngAudio) {
+angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, $sce) {
   $scope.now = new Date().getTime() / 1000;
   $scope.Math = window.Math;
+
+  $scope.seekPercentage = function ($event) {
+    var percentage = ($event.offsetX / $event.target.offsetWidth);
+    if (percentage <= 1) {
+      return percentage;
+    } else {
+      return 0;
+    }
+  };
 
   $scope.ready = true;
   var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
@@ -86,25 +95,21 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
     $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + $stateParams.name).success(function (data) {
       $scope.block = data;
       if ($scope.block.path) {
-        $scope.sound = ngAudio.load("http://hir.tilos.hu/kesz/" + $scope.block.path);
+        $scope.playlist1 = [{src: "https://hir.tilos.hu/kesz/" + $scope.block.path, type: 'audio/mpeg'}];
+        //      $scope.url = $sce.trustAsResourceUrl("https://hir.tilos.hu/kesz/" + $scope.block.path);
+//        $scope.sound = ngAudio.load("http://hir.tilos.hu/kesz/" + $scope.block.path);
       }
     });
   };
 
-  $scope.playing = false;
-  $scope.play = function (real) {
-    if (!$scope.playing) {
-      $scope.sound.play();
-      $scope.playing = true;
-      if (real) {
-        $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '/play').success(function (data) {
-          $scope.block = data;
-        });
-      }
-    } else {
-      $scope.sound.stop();
-      $scope.playing = false;
-    }
+
+  $scope.playLive = function (real) {
+    $scope.mediaPlayer.play();
+    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '/play').success(function (data) {
+      $scope.block = data;
+      load();
+    });
+
   };
   load();
 
@@ -155,7 +160,11 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
     var lastEnd = 0;
     $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr).success(function (data) {
       $scope.blocks = data;
+      $scope.blocks = $scope.blocks.sort(function (a, b) {
+        return a.date - b.date;
+      });
       for (var i = 0; i < data.length; i++) {
+        console.log($scope.blocks[i].date);
         var offset = ($scope.blocks[i].date * 1000 - zeroDate.getTime()) / (30 * 60 * 1000);
         var t = Math.round(offset) - offset;
 
@@ -196,7 +205,8 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
 
 });
 
-angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams) {
+angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, $state, $rootScope, $timeout) {
+
     $scope.selectedDate = new Date();
     if ($stateParams.year) {
       $scope.selectedDate = new Date($stateParams.year, $stateParams.month - 1, $stateParams.day, 12, 0, 0);

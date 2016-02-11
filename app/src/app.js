@@ -11,7 +11,8 @@ angular.module('tilosAdmin', [
     'LocalStorageModule',
     'ngDialog',
     'angular-growl',
-    'ngAudio'
+//    'ngAudio',
+     'mediaPlayer',
   ])
   .config(function ($locationProvider, $httpProvider) {
     $httpProvider.interceptors.push(function ($q, localStorageService) {
