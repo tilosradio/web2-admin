@@ -28,12 +28,13 @@
       </div>
     </div>
 
-    <h2>Tartalom</h2>
+    <h3>Tartalom</h3>
     <div ng-repeat="file in block.files">
       {{file.path}}
     </div>
 
-    <h2>Adásban volt</h2>
+    Típus: {{block.selection}}
+    <h3>Adásban volt</h3>
 
     <div ng-repeat="data in block.liveAt">{{data * 1000 | date:'HH:mm'}}</div>
 
