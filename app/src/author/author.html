@@ -1,6 +1,6 @@
 <div>
   <h1>{{author.name}}
-    <a class="btn btn-danger" ng-show="access('/author/' + author.id)" role="btn" ng-href="/edit/author/{{author.id}}">Szerkesztés</a>
+    <a class="btn btn-danger" ng-show="access('/author/' + author.alias)" role="btn" ng-href="/edit/author/{{author.id}}">Szerkesztés</a>
   </h1>
 
   <div ng-bind-html="author.introduction"></div>

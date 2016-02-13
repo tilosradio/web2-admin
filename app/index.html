@@ -35,6 +35,14 @@
                 </span>
         </a>
       </li>
+
+      <li class="sidebar-title"><span>MŰSORKÉSZÍTŐ PROFIL</span></li>
+
+      <li class="sidebar-list">
+        <a ng-href="/author/{{user.author.alias}}">{{user.author.name}}<span
+          class="menu-icon fa fa-user"></span></a>
+      </li>
+
       <li class="sidebar-title"><span>SAJÁT MŰSOROK</span></li>
 
       <li class="sidebar-list" data-ng-repeat="contribution in user.author.contributions">
@@ -133,15 +141,15 @@
       <div class="row header" ng-show="user">
         <div class="col-xs-12">
           <div class="user pull-right">
-          <div class="meta">
-            <div class="page">
-              Tilos Rádió
-            </div>
+            <div class="meta">
+              <div class="page">
+                Tilos Rádió
+              </div>
               <div class="breadcrumb-links">
-              <a href="/user/me">{{user.username}}</a>
-              <a ng-click="logout()">
-                Kijelentkezés
-              </a>
+                <a href="/user/me">{{user.username}}</a>
+                <a ng-click="logout()">
+                  Kijelentkezés
+                </a>
               </div>
             </div>
           </div>
