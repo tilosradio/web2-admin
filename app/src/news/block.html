@@ -1,25 +1,70 @@
 <div class="row">
   <section class="col-lg-6">
-    <h1 ng-hide="playing">{{block.date * 1000| date:'yyyy-MM-dd'}} {{block.name}}
-      <a ng-hide="mediaPlayer.playing || !block.path"
-         ng-click="playLive()"
-         class="btn btn-danger pull-right">Lejátszik élő adásba!</a>
-      <a ng-show="mediaPlayer.playing"
-         ng-click="mediaPlayer.stop()"
-         class="btn btn-danger pull-right">Leállít</a>
-      <br/>
-      <a ng-show="block.path"
-         ng-href="http://hir.tilos.hu/kesz/{{block.path}}"
-         class="btn btn-danger pull-right">Letöltés</a>
-
-    </h1>
+    <div class="btn-group pull-right" role="group">
 
 
-    <div>Tervezett adásbakerülés: {{block.date * 1000 | date: 'HH:mm' }}</div>
-    <div>Céllzott hossz: ({{block.expectedDuration / 60}} perc)</div>
-    <div>Hátralévő idő: {{Math.floor((mediaPlayer.duration - mediaPlayer.currentTime) / 60) | number:
-      0}}:{{(mediaPlayer.duration - mediaPlayer.currentTime) % 60 | number: 0}}
+      <button ng-show="block.path"
+              ng-href="http://hir.tilos.hu/kesz/{{block.path}}"
+              class="btn btn-default">Letöltés
+      </button>
+      <button ng-hide="mediaPlayer.playing || !block.path"
+              ng-click="playLive()"
+              class="btn btn-danger">Lejátszik élő adásba!
+      </button>
+
+      <button ng-show="mediaPlayer.playing"
+              ng-click="mediaPlayer.stop()"
+              class="btn btn-danger">Leállít
+      </button>
+
+
     </div>
+
+    <ol class="breadcrumb">
+      <li><a ng-href="news/day/{{block.date * 1000| date:'yyyy/MM/dd'}}">{{block.date * 1000| date:'yyyy-MM-dd'}} </a>
+      </li>
+      <li class="active">{{block.name}}</li>
+    </ol>
+
+
+
+    <table class="table">
+      <tr>
+        <td>Tervezett adásbakerülés</td>
+        <td>{{block.date * 1000 | date: 'HH:mm' }}</td>
+      </tr>
+      <tr>
+        <td>Céllzott hossz</td>
+        <td>({{block.expectedDuration / 60}} perc)</td>
+      </tr>
+      <tr>
+        <td>Hátralévő idő</td>
+        <td>{{Math.floor((mediaPlayer.duration - mediaPlayer.currentTime) / 60) | number:
+          0}}:{{(mediaPlayer.duration - mediaPlayer.currentTime) % 60 | number: 0}}
+        </td>
+      </tr>
+      <tr>
+        <td>Adásban volt</td>
+        <td>
+          <span ng-repeat="data in block.liveAt">{{data * 1000 | date:'HH:mm:ss'}},</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Tartalom
+        </td>
+        <td>
+          <span ng-repeat="file in block.files">
+            {{file.path}}<br/>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>Sorsolás típusa</td>
+        <td>{{block.selection}}</td>
+      </tr>
+    </table>
+
     <div class="progress" ng-click="mediaPlayer.seek(mediaPlayer.duration * seekPercentage($event))">
       <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
            ng-style="{ width: mediaPlayer.currentTime*100/mediaPlayer.duration + '%' }"></div>
@@ -28,17 +73,7 @@
       </div>
     </div>
 
-    <h3>Tartalom</h3>
-    <div ng-repeat="file in block.files">
-      {{file.path}}
-    </div>
 
-    Típus: {{block.selection}}
-    <h3>Adásban volt</h3>
-
-    <div ng-repeat="data in block.liveAt">{{data * 1000 | date:'HH:mm'}}</div>
-
-    <h2>Szerkesztés</h2>
     <button ng-show="now < block.date" class="btn btn-info" ng-click="draw(block.name)">Újrasorsol</button>
     <span ng-show="now < block.date && block.files">
      <button ng-show="ready" class="btn btn-primary" ng-click="generate(block.name)">Újravág</button>

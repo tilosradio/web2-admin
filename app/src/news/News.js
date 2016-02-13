@@ -164,7 +164,6 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
         return a.date - b.date;
       });
       for (var i = 0; i < data.length; i++) {
-        console.log($scope.blocks[i].date);
         var offset = ($scope.blocks[i].date * 1000 - zeroDate.getTime()) / (30 * 60 * 1000);
         var t = Math.round(offset) - offset;
 
@@ -173,7 +172,7 @@ angular.module('tilosAdmin').controller('NewsTodayCtrl', function ($http, API_SE
 
         $scope.blocks[i].height = ($scope.blocks[i].expectedDuration / 60 / 15 * 30) * 3;
 
-        if ($scope.blocks[i].name.indexOf("havolt") > 0 || $scope.blocks[i].name.indexOf("hakell") > 0) {
+        if ($scope.blocks[i].name.indexOf("havolt") > 0 || $scope.blocks[i].name.indexOf("hakell") > 0 || $scope.blocks[i].name.indexOf("pot") > 0) {
           $scope.blocks[i].top = offset * 60;
           $scope.blocks[i].left = 700;
         } else {
