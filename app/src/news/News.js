@@ -52,7 +52,7 @@ angular.module('tilosAdmin').directive('fileModel', ['$parse', function ($parse)
 }]);
 
 
-angular.module('tilosAdmin').controller('NewsFileCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, ngAudio, $state) {
+angular.module('tilosAdmin').controller('NewsFileCtrl', function ($http, API_SERVER_ENDPOINT, $scope, $stateParams, $state) {
   var load = function () {
     $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file/' + $stateParams.id).success(function (data) {
       $scope.file = data;
@@ -96,8 +96,6 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
       $scope.block = data;
       if ($scope.block.path) {
         $scope.playlist1 = [{src: "https://hir.tilos.hu/kesz/" + $scope.block.path, type: 'audio/mpeg'}];
-        //      $scope.url = $sce.trustAsResourceUrl("https://hir.tilos.hu/kesz/" + $scope.block.path);
-//        $scope.sound = ngAudio.load("http://hir.tilos.hu/kesz/" + $scope.block.path);
       }
     });
   };
