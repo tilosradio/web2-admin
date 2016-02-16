@@ -61,7 +61,7 @@
         </td>
         <td>
           <ul dnd-list="block.files" class="dnd-list list-group" style="min-height: 30px;background-color: #31b0d5;">
-            <li ng-hide="block.files.length > 0" class="list-group-item">Még nincs file. Húzz át ide, vagy sorsolj.</li>
+
             <li ng-repeat="file in block.files"
                 dnd-draggable="file"
                 dnd-dragend="dragged(event)"
@@ -71,6 +71,7 @@
                 ng-class="{'selected': models.selected === file}"
                 class="list-group-item"
             >
+            <li ng-hide="block.files.length > 0" class="list-group-item">Még nincs file. Húzz át ide, vagy sorsolj.</li>
               {{file.path}}
               <button class="glyphicon glyphicon-remove pull-right" ng-click="delete($index)"></button>
             </li>

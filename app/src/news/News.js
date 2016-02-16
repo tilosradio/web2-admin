@@ -99,15 +99,18 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
   $scope.dragged = function (event) {
     $scope.block.path = null;
     recalculateLength();
-    console.log(angular.toJson($scope.block, true));
     $http.put(API_SERVER_ENDPOINT + '/api/v1/news/block/' + $scope.block.id, $scope.block).success(function (data) {
       console.log("Saved successfully");
     });
   };
 
   $scope.delete = function (idx) {
+    $scope.block.path = null;
     $scope.block.files.splice(idx, 1);
     recalculateLength();
+    $http.put(API_SERVER_ENDPOINT + '/api/v1/news/block/' + $scope.block.id, $scope.block).success(function (data) {
+      console.log("Saved successfully");
+    });
   }
 
   $scope.seekPercentage = function ($event) {
