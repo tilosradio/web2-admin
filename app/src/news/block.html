@@ -1,5 +1,5 @@
 <div class="row">
-  <section class="col-lg-6">
+  <section class="col-lg-8">
     <div class="btn-group pull-right" role="group">
 
 
@@ -27,7 +27,6 @@
     </ol>
 
 
-
     <table class="table">
       <tr>
         <td>Tervezett adásbakerülés</td>
@@ -37,7 +36,14 @@
         <td>Céllzott hossz</td>
         <td>({{block.expectedDuration / 60}} perc)</td>
       </tr>
-      <tr>
+      <tr ng-show="estimatedDuration">
+        <td>Becsült hossz</td>
+        <td>kb. {{Math.floor((estimatedDuration) / 60) | number: 0}}:{{(estimatedDuration) % 60 | number: 0}} perc +
+          eleje/vége szignál
+        </td>
+      </tr>
+
+      <tr ng-show="block.expectedDuration && block.path">
         <td>Hátralévő idő</td>
         <td>{{Math.floor((mediaPlayer.duration - mediaPlayer.currentTime) / 60) | number:
           0}}:{{(mediaPlayer.duration - mediaPlayer.currentTime) % 60 | number: 0}}
@@ -54,9 +60,22 @@
           Tartalom
         </td>
         <td>
-          <span ng-repeat="file in block.files">
-            {{file.path}}<br/>
-          </span>
+          <ul dnd-list="block.files" class="dnd-list list-group" style="min-height: 30px;background-color: #31b0d5;">
+            <li ng-hide="block.files.length > 0" class="list-group-item">Még nincs file. Húzz át ide, vagy sorsolj.</li>
+            <li ng-repeat="file in block.files"
+                dnd-draggable="file"
+                dnd-dragend="dragged(event)"
+                dnd-moved="block.files.splice($index, 1)"
+                dnd-effect-allowed="move"
+                dnd-selected="models.selected = file"
+                ng-class="{'selected': models.selected === file}"
+                class="list-group-item"
+            >
+              {{file.path}}
+              <button class="glyphicon glyphicon-remove pull-right" ng-click="delete($index)"></button>
+            </li>
+          </ul>
+
         </td>
       </tr>
       <tr>
@@ -89,5 +108,16 @@
 
     </audio>
 
-
   </section>
+  <section class="col-lg-4">
+
+    <h2>Feltöltött fileok </h2>
+    <ul class="list-group">
+      <li dnd-draggable="file" ng-repeat="file in files" class="list-group-item" dnd-dragend="dragged(event)">
+        {{file.path}}
+      </li>
+    </ul>
+  </section>
+
+
+</div>

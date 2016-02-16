@@ -11,7 +11,7 @@ angular.module('tilosAdmin', [
     'LocalStorageModule',
     'ngDialog',
     'angular-growl',
-//    'ngAudio',
+    'dndLists',
      'mediaPlayer',
   ])
   .config(function ($locationProvider, $httpProvider) {

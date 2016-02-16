@@ -17,7 +17,8 @@
     "angular-growl-v2": "~0.7.5",
     "ngDialog": "~0.3.4",
     "ng-file-upload": "~3.2.4",
-    "angular-audio": "~1.7.1"
+    "angular-audio": "~1.7.1",
+    "angular-drag-and-drop-lists": "ngdnd#~1.4.0"
   },
   "devDependencies": {
     "to-markdown": "~0.0.2",

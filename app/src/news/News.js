@@ -79,6 +79,37 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
   $scope.now = new Date().getTime() / 1000;
   $scope.Math = window.Math;
 
+  var loadFiles = function () {
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file').success(function (data) {
+      $scope.files = data;
+
+    });
+  };
+
+  loadFiles();
+
+  var recalculateLength = function () {
+    $scope.estimatedDuration = $scope.block.files.map(function (a) {
+        return a.duration
+      }).reduce(function (a, b) {
+        return a + b;
+      }) + ($scope.block.files.length - 1) * 3;
+  }
+
+  $scope.dragged = function (event) {
+    $scope.block.path = null;
+    recalculateLength();
+    console.log(angular.toJson($scope.block, true));
+    $http.put(API_SERVER_ENDPOINT + '/api/v1/news/block/' + $scope.block.id, $scope.block).success(function (data) {
+      console.log("Saved successfully");
+    });
+  };
+
+  $scope.delete = function (idx) {
+    $scope.block.files.splice(idx, 1);
+    recalculateLength();
+  }
+
   $scope.seekPercentage = function ($event) {
     var percentage = ($event.offsetX / $event.target.offsetWidth);
     if (percentage <= 1) {

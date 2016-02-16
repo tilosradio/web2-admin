@@ -88,6 +88,7 @@ gulp.task('index', function () {
       'app/bower_components/angular-ui-router/release/angular-ui-router.js',
       'app/bower_components/ngDialog/js/ngDialog.min.js',
       'app/bower_components/angular-audio/app/angular.audio.js',
+      'app/bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
       'app/bower_components/angular-media-player/dist/angular-media-player.js',
       'app/bower_components/textAngular/dist/textAngular.min.js',
       'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
