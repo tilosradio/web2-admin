@@ -1,28 +1,26 @@
 <section>
-  <div class="text-center">
+  <div class="text-center" style="position:relative;">
 
     <div class="btn-group" role="group">
       <button class="btn btn-default" ng-click="prev()">&larr; Korábbi adások</button>
-      <button class="btn btn-default ChooseDate">
-        <span ng-click="open()">{{from | date:'yyyy-MM-dd'}} - {{to | date:'yyyy-MM-dd'}}</span>
-        <div class="DatePicker form-horizontald" id="datapicker">
-          <div class="datepicker" datepicker-popup="yyyy.MM.dd" show-weeks="false"
-               ng-model="selectedDate"
-               is-open="opened"
-               min="minDate"
-               max="maxDate"
-               datepicker-options="dateOptions"
-               date-disabled="disabled(date, mode)"
-               ng-required="true"
-               ng-change="goto();"
-          >
-          </div>
-        </div>
+      <button class="btn btn-default ChooseDate"
+
+              datepicker-popup="yyyy.MM.dd"
+              show-weeks="false"
+              ng-model="selectedDate"
+              is-open="opened"
+              ng-required="true"
+              ng-change="goto();"
+
+              ng-click="open()">{{from | date:'yyyy-MM-dd'}} - {{to |
+        date:'yyyy-MM-dd'}}
       </button>
       <button class="btn btn-default" ng-click="next()">Későbbi adások &rarr;</button>
     </div>
-  </div>
 
+    <div >
+    </div>
+  </div>
   <table class="episode-box table">
     <thead>
     <tr>
