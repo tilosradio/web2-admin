@@ -89,7 +89,6 @@ angular.module('tilosAdmin')
       loadEpisodes($scope.from, $scope.to);
     };
     $scope.goto = function () {
-      console.log($scope.selectedDate)
       $scope.to = $scope.selectedDate.getTime();
       $scope.from = $scope.to - window;
       loadEpisodes($scope.from, $scope.to);
