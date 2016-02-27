@@ -68,27 +68,41 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
 });
 
 angular.module('tilosAdmin')
-  .controller('ShowEpisode', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location) {
+  .controller('ShowEpisode', function ($scope, data, API_SERVER_ENDPOINT, $http, $rootScope, $location, $timeout) {
 
     data = data.data;
     $scope.show = data;
     $scope.now = new Date().getTime();
 
-    $scope.prev = function () {
-      $scope.currentShowPage--;
-      var to = $scope.show.episodes[$scope.show.episodes.length - 1].plannedFrom - 60000;
-      var from = to - 6 * 30 * 24 * 60 * 60 * 1000;
+    var window = 3 * 30 * 24 * 60 * 60 * 1000;
+    $scope.to = new Date().getTime();
+    $scope.from = $scope.to - window;
+    var loadEpisodes = function (from, to) {
       $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + "&end=" + to).success(function (data) {
         $scope.show.episodes = data;
       });
-
+    };
+    loadEpisodes($scope.from, $scope.to);
+    $scope.prev = function () {
+      $scope.to = $scope.to - window;
+      $scope.from = $scope.from - window;
+      loadEpisodes($scope.from, $scope.to);
+    };
+    $scope.goto = function () {
+      console.log($scope.selectedDate)
+      $scope.to = $scope.selectedDate.getTime();
+      $scope.from = $scope.to - window;
+      loadEpisodes($scope.from, $scope.to);
     };
     $scope.next = function () {
-      $scope.currentShowPage++;
-      var from = $scope.show.episodes[0].plannedTo + 60000;
-      var to = from + 6 * 30 * 24 * 60 * 60 * 1000;
-      $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + "&end=" + to).success(function (data) {
-        $scope.show.episodes = data;
+      $scope.to = $scope.to + window;
+      $scope.from = $scope.from + window;
+      loadEpisodes($scope.from, $scope.to);
+    };
+
+    $scope.open = function () {
+      $timeout(function () {
+        $scope.opened = true;
       });
     };
 
@@ -98,15 +112,6 @@ angular.module('tilosAdmin')
       $rootScope.newEpisode.show = $scope.show;
       $location.path('/new/episode');
     };
-
-    var to = new Date().getTime();
-    var from = to - ( 6 * 30 * 24 * 3600 * 1000);
-    $http.get(API_SERVER_ENDPOINT + '/api/v1/show/' + data.id + '/episodes?start=' + from + '&end=' + to).success(function (data) {
-      data.sort(function (a, b) {
-        return b.plannedFrom - a.plannedFrom
-      });
-      $scope.show.episodes = data;
-    });
 
 
   });
@@ -217,8 +222,6 @@ angular.module('tilosAdmin')
     $scope.now = new Date().getTime();
 
     $scope.currentShowPage = 0;
-
-
 
 
     $scope.newUrl = function () {

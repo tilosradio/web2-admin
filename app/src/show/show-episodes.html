@@ -1,8 +1,28 @@
 <section>
-  <ul class="pager">
-    <li class="cursorPointer"><a ng-click="prev()">&larr; Korábbi adások</a></li>
-    <li class="cursorPointer"><a ng-click="next()">Későbbi adások &rarr;</a></li>
-  </ul>
+  <div class="text-center">
+
+    <div class="btn-group" role="group">
+      <button class="btn btn-default" ng-click="prev()">&larr; Korábbi adások</button>
+      <button class="btn btn-default ChooseDate">
+        <span ng-click="open()">{{from | date:'yyyy-MM-dd'}} - {{to | date:'yyyy-MM-dd'}}</span>
+        <div class="DatePicker form-horizontald" id="datapicker">
+          <div class="datepicker" datepicker-popup="yyyy.MM.dd" show-weeks="false"
+               ng-model="selectedDate"
+               is-open="opened"
+               min="minDate"
+               max="maxDate"
+               datepicker-options="dateOptions"
+               date-disabled="disabled(date, mode)"
+               ng-required="true"
+               ng-change="goto();"
+          >
+          </div>
+        </div>
+      </button>
+      <button class="btn btn-default" ng-click="next()">Későbbi adások &rarr;</button>
+    </div>
+  </div>
+
   <table class="episode-box table">
     <thead>
     <tr>
@@ -15,7 +35,7 @@
     <tr ng-repeat="episode in show.episodes">
       <td>
         <a ng-show="episode.persistent" ng-href="/episode/{{episode.id}}">
-           {{episode.plannedFrom | date: 'yyyy.MM.dd'}}
+          {{episode.plannedFrom | date: 'yyyy.MM.dd'}}
         </a>
         <span ng-hide="episode.persistent">
            {{episode.plannedFrom | date: 'yyyy.MM.dd'}}
@@ -26,7 +46,7 @@
           <span ng-if="episode.text">{{episode.text.title}}</span>
         </b></a>
         <span ng-show="episode.persistent && !episode.text.title">
-          <a ng-href="/episode/{{episode.id}}" class="btn btn-sm btn-danger" role="button" >Adásnapló létrehozás</a>
+          <a ng-href="/episode/{{episode.id}}" class="btn btn-sm btn-danger" role="button">Adásnapló létrehozás</a>
         </span>
         <span ng-hide="episode.persistent">
           <b>
