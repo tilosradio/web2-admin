@@ -71,10 +71,10 @@
                 ng-class="{'selected': models.selected === file}"
                 class="list-group-item"
             >
-            <li ng-hide="block.files.length > 0" class="list-group-item">Még nincs file. Húzz át ide, vagy sorsolj.</li>
               {{file.path}}
               <button class="glyphicon glyphicon-remove pull-right" ng-click="delete($index)"></button>
             </li>
+            <li ng-hide="block.files.length > 0" class="list-group-item">Még nincs file. Húzz át ide, vagy sorsolj.</li>
           </ul>
 
         </td>
