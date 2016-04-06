@@ -41,6 +41,22 @@
       </div>
     </div>
 
+    <div if-admin class="form-group">
+      <label class="control-label" for="Show">Kapcsolódó műsor</label>
+
+      <div class="controls">
+        <select id="Show" name="Show" type="text" class="input-xlarge" ng-model="episode.show.id"
+                ng-options="s.id as s.name for s in shows"></select>
+      </div>
+    </div>
+
+    <div if-admin class="form-group">
+      <label class="control-label" for="extra">Extra műsor?</label>
+
+      <div class="controls">
+        <input id="extra" name="extra" type="checkbox" class="input-xlarge" ng-model="episode.extra"></select>
+      </div>
+    </div>
 
     <!-- Text input-->
     <div class="form-group">

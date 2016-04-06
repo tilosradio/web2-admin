@@ -5,8 +5,10 @@
 </ol>
 
 
-<h1>{{episode.text.title}} <a class="btn btn-danger" role="button"
-                              ng-href="/edit/episode/{{episode.id}}">Szerkesztés</a></h1>
+<h1>{{episode.text.title}}
+  <a class="btn btn-danger" role="button" ng-href="/edit/episode/{{episode.id}}">Szerkesztés</a>
+  <a if-admin class="btn btn-danger pull-right" role="button" ng-click="delete(episode.id)">Törlés</a>
+</h1>
 
 <div ng-bind-html="episode.text.formatted"></div>
 

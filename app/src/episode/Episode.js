@@ -27,8 +27,13 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
 });
 
 angular.module('tilosAdmin')
-  .controller('EpisodeCtrl', function ($scope, Episodes, data, $sce) {
+  .controller('EpisodeCtrl', function ($scope, Episodes, data, $sce, $state, API_SERVER_ENDPOINT, $http) {
     $scope.episode = data;
+    $scope.delete = function (id) {
+      $http.delete(API_SERVER_ENDPOINT + '/api/v1/episode/' + id).success(function (data) {
+        $state.go('show.episodes', {id: $scope.episode.show.id});
+      });
+    };
     data.$promise.then(function (x) {
       $scope.episode.text.formatted = $sce.trustAsHtml(x.text.formatted);
     });
@@ -57,12 +62,15 @@ angular.module('tilosAdmin').factory('dateUtil', function () {
 })
 
 angular.module('tilosAdmin')
-  .controller('EpisodeEditCtrl', function ($location, $scope, $stateParams, API_SERVER_ENDPOINT, $http, $cacheFactory, $rootScope, dateUtil) {
+  .controller('EpisodeEditCtrl', function ($location, $scope, $stateParams, API_SERVER_ENDPOINT, $http, $cacheFactory, $rootScope, dateUtil, $state) {
 
 
     var id = $stateParams.id;
     $scope.now = new Date().getTime();
 
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/show', {'cache': true}).success(function (data) {
+      $scope.shows = data;//
+    });
 
     $http.get(server + '/api/v1/episode/' + id).success(function (data) {
       $scope.episode = data;
