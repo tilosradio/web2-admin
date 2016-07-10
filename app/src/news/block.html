@@ -55,7 +55,7 @@
           <span ng-repeat="data in block.liveAt">{{data * 1000 | date:'HH:mm:ss'}},</span>
         </td>
       </tr>
-      <tr>
+      <tr ng-show="!block.handmade">
         <td>
           Tartalom
         </td>
@@ -87,7 +87,11 @@
         <td>Szignál típusa</td>
         <td>{{block.signalType}}</td>
       </tr>
-      
+      <tr>
+        <td>Kézzel feltöltött</td>
+        <td>{{block.handmade}}</td>
+      </tr>
+
 
     </table>
 
@@ -102,18 +106,25 @@
 
     <button ng-show="now < block.date" class="btn btn-info" ng-click="draw(block.name)">Újrasorsol</button>
     <span ng-show="now < block.date && block.files">
-     <button ng-show="ready" class="btn btn-primary" ng-click="generate(block.name)">Újravág</button>
+     <button ng-show="ready && !block.handmade" class="btn btn-primary" ng-click="generate(block.name)">Újravág</button>
     <label ng-hide="ready" class="label label-info">Vágás folyamatban</label>
     </span>
 
     <button ng-hide="mediaPlayer.playing || !block.path" class="btn btn-warning" ng-click="mediaPlayer.play()">
       Belehallgat
     </button>
+
     <button ng-show="mediaPlayer.playing" class="btn btn-warning" ng-click="mediaPlayer.stop()">Megállít</button>
 
     <audio media-player="mediaPlayer" data-playlist="playlist1">
-
     </audio>
+
+
+    <div class="form-group" style="border: 1px solid; margin: 10px; padding: 10px;">
+      <input type="file" class="custom-file-input" file-model="myFile" name="file" id="upload">
+    </div>
+
+    <button class="btn btn-default" ng-click="uploadFile()">Lecserél</button>
 
   </section>
   <section class="col-lg-4">

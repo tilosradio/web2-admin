@@ -111,7 +111,23 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
     $http.put(API_SERVER_ENDPOINT + '/api/v1/news/block/' + $scope.block.id, $scope.block).success(function (data) {
       console.log("Saved successfully");
     });
-  }
+  };
+
+  $scope.uploadFile = function () {
+    var fd = new FormData();
+    fd.append('newsfile', $scope.myFile);
+    $http.post(API_SERVER_ENDPOINT + "/api/v1/news/block/" + $scope.block.id + "/upload", fd, {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    }).success(function () {
+      alert("File uploaded successfully");
+      loadFiles();
+    }).error(function () {
+      alert("Upload error")
+    });
+  };
 
   $scope.seekPercentage = function ($event) {
     var percentage = ($event.offsetX / $event.target.offsetWidth);
@@ -147,7 +163,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
 
   $scope.generate = function (name) {
     $scope.ready = false;
-    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '?generate=true').success(function (data) {
+    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '/generate').success(function (data) {
       load();
       $scope.ready = true;
     });
@@ -155,7 +171,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
 
 
   $scope.draw = function (name) {
-    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name).success(function (data) {
+    $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + "/draw").success(function (data) {
       $scope.sound = null;
       load();
     });
@@ -280,7 +296,7 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
 
     $scope.generate = function (name) {
       $scope.ready = false;
-      $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '?generate=true').success(function (data) {
+      $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + '/generate').success(function (data) {
         loadBlocks();
         $scope.ready = true;
       });
@@ -288,7 +304,7 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
 
 
     $scope.draw = function (name) {
-      $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name).success(function (data) {
+      $http.post(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + name + "/draw").success(function (data) {
         loadBlocks();
       });
     }
