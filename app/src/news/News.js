@@ -86,6 +86,20 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
     });
   };
 
+
+
+    var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
+    var name = $stateParams.name;
+    var load = function () {
+      $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + $stateParams.name).success(function (data) {
+        $scope.block = data;
+        if ($scope.block.path) {
+          $scope.playlist1 = [{src: "https://hir.tilos.hu/kesz/" + $scope.block.path, type: 'audio/mpeg'}];
+        }
+      });
+    };
+
+
   loadFiles();
 
   var recalculateLength = function () {
@@ -94,7 +108,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
       }).reduce(function (a, b) {
         return a + b;
       }) + ($scope.block.files.length - 1) * 3;
-  }
+  };
 
   $scope.dragged = function (event) {
     $scope.block.path = null;
@@ -115,6 +129,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
 
   $scope.uploadFile = function () {
     var fd = new FormData();
+    $scope.uploading = "File feltöltés alatt...";
     fd.append('newsfile', $scope.myFile);
     $http.post(API_SERVER_ENDPOINT + "/api/v1/news/block/" + $scope.block.id + "/upload", fd, {
       transformRequest: angular.identity,
@@ -122,9 +137,12 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
         'Content-Type': undefined
       }
     }).success(function () {
+      $scope.uploading = "";
       alert("File uploaded successfully");
-      loadFiles();
+      load();
+
     }).error(function () {
+      $scope.uploading = "";
       alert("Upload error")
     });
   };
@@ -139,17 +157,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
   };
 
   $scope.ready = true;
-  var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
-  var name = $stateParams.name;
-  var load = function () {
-    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + $stateParams.name).success(function (data) {
-      $scope.block = data;
-      if ($scope.block.path) {
-        $scope.playlist1 = [{src: "https://hir.tilos.hu/kesz/" + $scope.block.path, type: 'audio/mpeg'}];
-      }
-    });
-  };
-
+  
 
   $scope.playLive = function (real) {
     $scope.mediaPlayer.play();
@@ -276,14 +284,16 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
       var yearStr = '' + dt.getFullYear();
 
       return yearStr + '-' + monthStr + '-' + dayStr
-    }
+    };
+
     var dateStr = dateToStr($scope.selectedDate);
 
     var loadFiles = function () {
       $http.get(API_SERVER_ENDPOINT + '/api/v1/news/file').success(function (data) {
         $scope.files = data;
       });
-    }
+    };
+
     loadFiles();
 
     var loadBlocks = function () {
@@ -291,7 +301,8 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
         $scope.blocks = data;
 
       });
-    }
+    };
+
     loadBlocks();
 
     $scope.generate = function (name) {
@@ -300,7 +311,7 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
         loadBlocks();
         $scope.ready = true;
       });
-    }
+    };
 
 
     $scope.draw = function (name) {
@@ -310,6 +321,7 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
     }
 
     $scope.uploadFile = function () {
+      $scope.uploading = "File feltöltés alatt..."
       var fd = new FormData();
       fd.append('newsfile', $scope.myFile);
       fd.append('category', $scope.category);
@@ -319,9 +331,12 @@ angular.module('tilosAdmin').controller('NewsCtrl', function ($http, API_SERVER_
           'Content-Type': undefined
         }
       }).success(function () {
+
+        $scope.upoading = "";
         alert("File uploaded successfully");
         loadFiles();
       }).error(function () {
+        $scope.upoading = "";
         alert("Upload error")
       });
     }
