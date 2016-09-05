@@ -1,14 +1,4 @@
 <div class="row">
-  <div>
-    <ul class="nav nav-tabs">
-      <li role="presentation">
-        <a href ui-sref="news">Hírszerkesztő nézet</a>
-      </li>
-      <li role="presentation" class="active">
-        <a href ui-sref="news-dayview-today">Tech nézet</a>
-      </li>
-    </ul>
-  </div>
   <nav>
     <ul class="pager">
       <li><a ng-href="/news/day/{{current - 24 * 60 * 60 * 1000 | date:'yyyy/MM/dd'}}"><span
@@ -42,7 +32,7 @@
            ng-style="{'position': 'absolute','top': block.top + 'px','left':block.left+'px','height': block.height + 'px','border-top':'1px solid','border-bottom':'1px solid','width':'400px','background-color':'#DEDEDE'};">
         {{block.date * 1000 | date: 'HH:mm' }}
         {{block.bottom}}
-        <a ng-href="/news/block/{{block.date * 1000 | date:'yyyy/MM/dd'}}/{{block.name}}">{{block.name}}</a>
+        <a ng-href="/news/sblock/{{block.date * 1000 | date:'yyyy/MM/dd'}}/{{block.name}}">{{block.name}}</a>
         ({{block.expectedDuration / 60}} perc)
         <a ng-show="block.path" ng-href="/news/block/{{block.date * 1000 | date:'yyyy/MM/dd'}}/{{block.name}}"
            class="label label-danger">Lejátszás</a><label ng-show="block.liveAt.length > 0" class="label label-danger">LEADVA</label>

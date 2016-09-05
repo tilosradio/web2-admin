@@ -21,13 +21,13 @@
     </div>
 
     <ol class="breadcrumb">
-      <li><a ng-href="news/{{block.date * 1000| date:'yyyy/MM/dd'}}">{{block.date * 1000| date:'yyyy-MM-dd'}} </a>
+      <li><a ng-href="news/day/{{block.date * 1000| date:'yyyy/MM/dd'}}">{{block.date * 1000| date:'yyyy-MM-dd'}} </a>
       </li>
       <li class="active">{{block.name}}</li>
     </ol>
   </section>
 
-  <section class="col-lg-4">
+  <section class="col-lg-8">
     <h2>Kiválasztott fileok</h2>
     <div ng-show="!block.handmade">
       <ul dnd-list="block.files" class="dnd-list list-group" style="min-height: 30px;background-color: #31b0d5;">
@@ -41,7 +41,6 @@
             class="list-group-item"
         >
           {{file.path}} ({{file.duration}} s)
-          <button class="glyphicon glyphicon-remove pull-right" ng-click="delete($index)"></button>
         </li>
         <li ng-hide="block.files.length > 0" class="list-group-item">Még nincs file. Húzz át ide, vagy sorsolj.</li>
       </ul>
@@ -112,38 +111,9 @@
     </audio>
 
 
-    <div class="form-group" style="border: 1px solid; margin: 10px; padding: 10px;">
-      <input type="file" class="custom-file-input" file-model="myFile" name="file" id="upload">
-    </div>
-
-    <button class="btn btn-default" ng-click="uploadFile()">Lecserél</button>
-
-  </section>
-
-  <section class="col-lg-4">
-    <h2>Feltöltött fileok </h2>
-    <ul class="list-group">
-      <li dnd-draggable="file" ng-repeat="file in files" class="list-group-item" dnd-dragend="dragged(event)">
-        {{file.path}}
-      </li>
-    </ul>
   </section>
 
 
-  <section class="col-lg-4">
-    <h2>Szignálok</h2>
-    <ul class="list-group" ng-repeat="signal in signals">
-      <li dnd-draggable="signal.intro" class="list-group-item" dnd-dragend="dragged(event)">
-        {{signal.intro.path}}
-      </li>
-      <li dnd-draggable="signal.loop" class="list-group-item" dnd-dragend="dragged(event)">
-        {{signal.loop.path}}
-      </li>
-      <li dnd-draggable="signal.outro" class="list-group-item" dnd-dragend="dragged(event)">
-        {{signal.outro.path}}
-      </li>
-    </ul>
-  </section>
 
 
 </div>

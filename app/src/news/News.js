@@ -31,6 +31,12 @@ angular.module('tilosAdmin').config(function ($stateProvider) {
     templateUrl: 'news/block.html',
     controller: 'NewsBlockCtrl'
   });
+  $stateProvider.state('block-simple', {
+    url: '/news/sblock/:year/:month/:day/:name',
+    templateUrl: 'news/block-simple.html',
+    controller: 'NewsBlockCtrl'
+  });
+
 
 });
 
@@ -86,21 +92,27 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
     });
   };
 
+  var loadSignals = function () {
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/signal').success(function (data) {
+      $scope.signals = data;
+    });
+  };
 
 
-    var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
-    var name = $stateParams.name;
-    var load = function () {
-      $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + $stateParams.name).success(function (data) {
-        $scope.block = data;
-        if ($scope.block.path) {
-          $scope.playlist1 = [{src: "https://hir.tilos.hu/kesz/" + $scope.block.path, type: 'audio/mpeg'}];
-        }
-      });
-    };
+  var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
+  var name = $stateParams.name;
+  var load = function () {
+    $http.get(API_SERVER_ENDPOINT + '/api/v1/news/block/' + dateStr + '/' + $stateParams.name).success(function (data) {
+      $scope.block = data;
+      if ($scope.block.path) {
+        $scope.playlist1 = [{src: "https://hir.tilos.hu/kesz/" + $scope.block.path, type: 'audio/mpeg'}];
+      }
+    });
+  };
 
 
   loadFiles();
+  loadSignals();
 
   var recalculateLength = function () {
     $scope.estimatedDuration = $scope.block.files.map(function (a) {
@@ -115,6 +127,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
     recalculateLength();
     $http.put(API_SERVER_ENDPOINT + '/api/v1/news/block/' + $scope.block.id, $scope.block).success(function (data) {
       console.log("Saved successfully");
+      load();
     });
   };
 
@@ -157,7 +170,7 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
   };
 
   $scope.ready = true;
-  
+
 
   $scope.playLive = function (real) {
     $scope.mediaPlayer.play();
