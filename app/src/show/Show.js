@@ -323,7 +323,6 @@ angular.module('tilosAdmin').controller('ShowNewCtrl', function ($location, $sco
     {id: "MUSIC", 'name': "Zenés"}
   ]
   $scope.statuses = [
-    {id: 'PLANNED', 'name': "Tervezett"},
     {id: 'ACTIVE', 'name': "Aktív"},
     {id: 'OLD', 'name': "Archív"},
     {id: 'LEGEND', 'name': "Legenda"}
@@ -345,7 +344,6 @@ angular.module('tilosAdmin')
         {id: "MUSIC", 'name': "Zenés"}
       ]
       $scope.statuses = [
-        {id: 'PLANNED', 'name': "Tervezett"},
         {id: 'ACTIVE', 'name': "Aktív"},
         {id: 'OLD', 'name': "Archív"},
         {id: 'LEGEND', 'name': "Legenda"}
