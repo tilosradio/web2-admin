@@ -143,6 +143,12 @@
         {{signal.outro.path}}
       </li>
     </ul>
+    <h2>Egyéb</h2>
+    <ul class="list-group" ng-repeat="element in plus">
+      <li dnd-draggable="element" class="list-group-item" dnd-dragend="dragged(event)">
+        {{element.path}}
+      </li>
+    </ul>
   </section>
 
 

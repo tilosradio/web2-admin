@@ -98,6 +98,10 @@ angular.module('tilosAdmin').controller('NewsBlockCtrl', function ($http, API_SE
     });
   };
 
+  $http.get(API_SERVER_ENDPOINT + '/api/v1/news/plus').success(function (data) {
+    $scope.plus = data;
+  });
+
 
   var dateStr = $stateParams.year + '-' + $stateParams.month + '-' + $stateParams.day;
   var name = $stateParams.name;
