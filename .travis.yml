@@ -1,21 +1,21 @@
 language: node_js
 
 node_js:
-  - "iojs"
+  - "5"
 
 before_install:
    - gem install sass
 
 script:
    - ./build.sh
-   
+
 after_success:
    -  docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" tilos.hu:5555
    - ./docker.sh
-   
+
 notifications:
-  webhooks: 
-     urls: 
+  webhooks:
+     urls:
        - https://test.tilos.hu/notitest
 
 deploy:
