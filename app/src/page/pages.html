@@ -29,7 +29,7 @@
 
             <td>{{page.created | date:'yyyy-MM-dd'}}</td>
             <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-href="/edit/text/{{type}}/{{page.id}}">Szerkesztés</a>
-            <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-click="delete(type,page.id)">Törlés</a>
+            <td><a ng-show="user && user.role== 'ADMIN'" class="btn btn-danger" ng-click="delete(type,page.alias)">Törlés</a>
             </td>
         </tr>
         </tbody>

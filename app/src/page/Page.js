@@ -44,8 +44,8 @@ angular.module('tilosAdmin')
       $scope.pages = data;
     });
 
-    $scope.delete = function (type, id) {
-      $http.delete(API_SERVER_ENDPOINT + '/api/v1/text/' + type + '/' + id).success(function (data) {
+    $scope.delete = function (type, alias) {
+      $http.delete(`${API_SERVER_ENDPOINT}/api/v1/text/${type}/${alias}`).success(function (data) {
         alert("Text is deleted");
         $http.get(API_SERVER_ENDPOINT + '/api/v1/text/' + $stateParams.type).success(function (data) {
           $scope.pages = data;
@@ -76,10 +76,10 @@ angular.module('tilosAdmin')
 );
 
 angular.module('tilosAdmin')
-  .controller('TextNewCtrl', function ($http, $stateParams, API_SERVER_ENDPOINT, $location, $scope, Texts) {
+  .controller('TextNewCtrl', function ($http, $stateParams, API_SERVER_ENDPOINT, $location, $scope) {
     $scope.text = {};
     $scope.save = function () {
-      $http.post(API_SERVER_ENDPOINT + '/api/v1/text/' + $stateParams.type, $scope.text).success(function (data) {
+      $http.post(`${API_SERVER_ENDPOINT}/api/v1/text/${$stateParams.type}/${$stateParams.alias}`, $scope.text).success(function (data) {
         $location.path('/text/' + $stateParams.type + '/' + data.id);
       });
     }
@@ -98,5 +98,3 @@ angular.module('tilosAdmin').factory('Texts', ['API_SERVER_ENDPOINT', '$resource
     'update': {method: 'PUT'}
   });
 }]);
-
-
