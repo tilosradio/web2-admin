@@ -36,13 +36,15 @@ angular.module('tilosAdmin')
                     });
                 }
             }
-            promise.then(function (data) {
-                result = result.concat(data.data);
-                result.sort(function (a, b) {
-                    return b.plannedFrom - a.plannedFrom;
+            if (promise) {
+                promise.then(function (data) {
+                    result = result.concat(data.data);
+                    result.sort(function (a, b) {
+                        return b.plannedFrom - a.plannedFrom;
+                    });
+                    $scope.episodes = result;
                 });
-                $scope.episodes = result;
-            });
+            }
         }
         $scope.episodes = [];
         $scope.yesterday = new Date();
