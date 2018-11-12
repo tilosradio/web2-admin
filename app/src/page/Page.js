@@ -79,7 +79,8 @@ angular.module('tilosAdmin')
   .controller('TextNewCtrl', function ($http, $stateParams, API_SERVER_ENDPOINT, $location, $scope) {
     $scope.text = {};
     $scope.save = function () {
-      $http.post(`${API_SERVER_ENDPOINT}/api/v1/text/${$stateParams.type}/${$stateParams.alias}`, $scope.text).success(function (data) {
+      const additionalParams = $stateParams.type === 'page' ? `/${$stateParams.alias}` : '';
+      $http.post(`${API_SERVER_ENDPOINT}/api/v1/text/${$stateParams.type}${additionalParams}`, $scope.text).success(function (data) {
         $location.path('/text/' + $stateParams.type + '/' + data.id);
       });
     }
